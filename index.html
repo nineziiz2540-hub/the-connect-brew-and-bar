@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE CONNECT POS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div class="main-container">
+
+        <div class="menu-container">
+            <h1>MENU THE CONNECT</h1>
+            <div class="menu-tabs">
+                <button class="menu-tab active" data-category="drinks">กาแฟ</button>
+                <button class="menu-tab" data-category="fruit-drinks">น้ำสกัดเย็นผลไม้</button>
+                <button class="menu-tab" data-category="food">อาหาร</button>
+                <button class="menu-tab" data-category="bakery">ขนมปัง</button>
+                <button class="menu-tab" data-category="other-drinks">เครื่องดื่มอื่นๆ</button>
+            </div>
+            <div id="menu-items" class="menu-grid">
+                </div>
+        </div>
+
+        <div class="order-container">
+            <h1>รายการออเดอร์</h1>
+            <div id="order-details">
+                <p id="order-timestamp"></p>
+                <ul id="order-list"></ul>
+            </div>
+            
+            <div class="summary-box">
+                <p>ยอดรวม <span id="sub-total">0.00</span> THB</p>
+                <p>ภาษี (7%) <span id="tax-amount">0.00</span> THB</p>
+                <hr>
+                <h3>ยอดชำระ <span id="grand-total">0.00</span> THB</h3>
+            </div>
+            
+            <button id="pay-button">
+                <i class="fas fa-cash-register"></i> ชำระเงิน
+            </button>
+            <button id="print-button" class="print-btn">
+                <i class="fas fa-print"></i> พิมพ์
+            </button>
+        </div>
+
+    </div>
+
+    <div id="sweetness-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>เลือกความหวาน</h2>
+            <div class="sweetness-options">
+                <button class="sweetness-btn" data-level="100">หวาน 100%</button>
+                <button class="sweetness-btn" data-level="50">หวาน 50%</button>
+                <button class="sweetness-btn" data-level="30">หวาน 30%</button>
+                <button class="sweetness-btn" data-level="0">ไม่หวาน 0%</button>
+            </div>
+            <button id="add-to-order-btn">เพิ่มลงในออเดอร์</button>
+        </div>
+    </div>
+    <div id="qr-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>ชำระเงินด้วย QR Code</h2>
+            <div id="qrcode-container"></div>
+            <p>ยอดชำระ: <span id="qr-total-amount">0.00</span> THB</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
