@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +14,13 @@
         <div class="menu-container">
             <div class="menu-title-row">
                 <h1>เมนู</h1>
-                <button id="sales-report-button" class="report-btn">รายงานยอดขาย</button>
+                <div class="header-actions">
+                    <button id="custom-item-btn" class="custom-item-btn"><i class="fas fa-plus"></i> เพิ่มรายการเอง</button>
+                    <button id="sales-report-button" class="report-btn"><i class="fas fa-chart-line"></i> รายงานยอดขาย</button>
+                </div>
             </div>
             <div class="menu-tabs">
-                <button class="menu-tab active" data-category="drinks">กาแฟ</button>
+                <button class="menu-tab active" data-category="drinks">กาแฟ&ชา&มัทฉะ</button>
                 <button class="menu-tab" data-category="fruit-drinks">น้ำผลไม้สกัดเย็น</button>
                 <button class="menu-tab" data-category="food">อาหาร</button>
                 <button class="menu-tab" data-category="bakery">ขนมปัง</button>
@@ -28,26 +31,48 @@
         </div>
 
         <div class="order-container">
-            <h1>รายการออเดอร์</h1>
+            <div class="order-header">
+                <h1>รายการออเดอร์</h1>
+                <button id="clear-order-btn" class="clear-order-btn" title="ล้างรายการทั้งหมด">
+                    <i class="fas fa-undo"></i> เคลียร์
+                </button>
+            </div>
             <div id="order-details">
                 <p id="order-timestamp"></p>
-                <ul id="order-list"></ul>
+                <ul id="order-list">
+                    </ul>
                 <div id="print-qrcode-container"></div>
             </div>
             
-            <div class="summary-box">
-                <p>ยอดรวม <span id="sub-total">0.00</span> THB</p>
-                <p>VAT (7%) <span id="tax-amount">0.00</span> THB</p>
-                <hr>
-                <h3>ยอดชำระ <span id="grand-total">0.00</span> THB</h3>
+            <div class="summary-and-payment">
+                <div class="summary-box">
+                    <p>ยอดรวม <span id="sub-total">0.00</span> บาท</p>
+                    <div class="discount-section">
+                        <p>ส่วนลด</p>
+                        <div class="discount-controls">
+                            <input type="number" id="discount-input" placeholder="0">
+                            <select id="discount-type">
+                                <option value="amount">บาท</option>
+                                <option value="percent">%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>ยอดชำระ <span id="grand-total">0.00</span> บาท</h3>
+                </div>
+                
+                <div class="payment-buttons">
+                    <button id="cash-payment-btn">
+                        <i class="fas fa-money-bill-wave"></i> ชำระด้วยเงินสด
+                    </button>
+                    <button id="pay-and-print-button">
+                        <i class="fas fa-qrcode"></i> QR Code & พิมพ์
+                    </button>
+                </div>
+                <button id="close-order-button" class="close-btn">
+                    <i class="fas fa-check-circle"></i> ปิดออเดอร์
+                </button>
             </div>
-            
-            <button id="pay-and-print-button">
-                <i class="fas fa-cash-register"></i> ชำระเงิน & พิมพ์
-            </button>
-            <button id="close-order-button" class="close-btn">
-                <i class="fas fa-check-circle"></i> ปิดออเดอร์
-            </button>
         </div>
 
     </div>
@@ -65,6 +90,7 @@
             <button id="add-to-order-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
+
     <div id="sales-report-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -74,8 +100,42 @@
                 <button id="delete-last-sale-btn" class="report-action-btn">ลบรายการล่าสุด</button>
                 <button id="reset-sales-btn" class="report-action-btn reset-btn">รีเซ็ทยอดขายวันนี้</button>
             </div>
-            </div>
+        </div>
     </div>
+
+    <div id="cash-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>ชำระด้วยเงินสด</h2>
+            <p class="total-due-text">ยอดที่ต้องชำระ: <span id="modal-total-due">0.00</span> บาท</p>
+            <input type="number" id="cash-received-input" placeholder="จำนวนเงินที่รับมา" class="cash-input">
+            <p class="change-text">เงินทอน: <span id="change-due">0.00</span> บาท</p>
+            <button id="confirm-cash-payment-btn">ยืนยันการชำระเงิน</button>
+        </div>
+    </div>
+
+    <div id="modifiers-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modifiers-item-name">เลือกตัวเลือกเสริม</h2>
+            <div id="modifier-options-container">
+                </div>
+            <button id="add-modified-item-to-order-btn">เพิ่มลงในออเดอร์</button>
+        </div>
+    </div>
+
+    <div id="custom-item-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>เพิ่มรายการ/ราคาเอง</h2>
+            <div class="custom-item-form">
+                <input type="text" id="custom-item-name-input" placeholder="ชื่อรายการ">
+                <input type="number" id="custom-item-price-input" placeholder="ราคา (บาท)">
+            </div>
+            <button id="add-custom-item-btn">เพิ่มลงในออเดอร์</button>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <script src="script.js"></script>
 </body>
