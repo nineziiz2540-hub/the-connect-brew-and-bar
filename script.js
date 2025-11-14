@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'chochcolat', name: 'Chochcolat', price: 60, cost: 20, img: 'https://image.makewebeasy.net/makeweb/m_1920x0/W7OuxZEpB/DefaultData/%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%A7%E0%B8%B1%E0%B8%95%E0%B8%96%E0%B8%B8%E0%B8%94%E0%B8%B4%E0%B8%9A_36.jpg?v=202405291424', hasSweetness: true, category: 'drinks'},
         { id: 'dirty', name: 'Dirty', price: 80, cost: 35, img: 'https://image.bangkokbiznews.com/uploads/images/md/2024/10/QTxhBq33w2ndhtVTvjbw.webp?x-image-process=style/LG-webp', category: 'drinks'},
         { id: 'orange-juice', name: 'น้ำส้มสกัดเย็น', price: 60, cost: 30, img: 'https://img.wongnai.com/p/1920x0/2023/03/31/9a822aee8a9c40c4b23716be4a317b43.jpg', category: 'fruit-drinks' },
-        { id: 'lemon-juice', name: 'น้ำมะนาวสกัดเย็น', price: 60, cost: 25, img: 'https://www.top10.in.th/wp-content/uploads/2022/05/7-%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B0%E0%B8%99%E0%B8%B2%E0%B8%A7%E0%B8%82%E0%B8%A7%E0%B8%94-%E0%B8%A2%E0%B8%B5%E0%B9%88%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B9%84%E0%B8%AB%E0%B8%99-%E0%B8%AD%E0%B8%A3%E0%B9%88%E0%B8%AD%E0%B8%A2-%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B8%A3%E0%B8%AA.jpg', category: 'fruit-drinks' },
+        { id: 'lemon-juice', name: 'น้ำมะนาวสกัดเย็น', price: 60, cost: 25, img: 'https://www.top10.in.th/wp-content/uploads/2022/05/7-%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B0%E0%B8%99%E0%B8%B2%E0%B8%A7%E0%B8%82%E0%B8%A7%E0%B8%94-%E0%B8%A2%E0%B8%B5%E0%B9%88%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B9%84%E0%B8%AB%E0%B8%99-%E0%B8%AD%E0%B8%A3%E0%B9%88%E0%B8%AD%E0%B8%AY-%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B8%A3%E0%B8%AA.jpg', category: 'fruit-drinks' },
         { id: 'apple-juice', name: 'น้ำแอปเปิ้ลสกัดเย็น', price: 60, cost: 25, img: 'https://th.tnnchemical.com/uploads/202133857/tnn-apple-juice-concentrate58000609698.png', category: 'fruit-drinks' },
         { id: 'kapaokaidao', name: 'กะเพราเนื้อ ไข่ดาว', price: 65, cost: 35, img: 'https://s359.thaicdn.net/pagebuilder/420d19a1-f33b-408d-8bee-f94c0b691fc3.jpg', category: 'food' },
         { id: 'kapaomoohkaidao', name: 'กะเพราหมู ไข่ดาว', price: 65, cost: 30, img: 'https://s359.thaicdn.net/pagebuilder/3132fac8-2481-477d-8f83-54af38ccb434.jpg', category: 'food' },
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const discountInput = document.getElementById('discount-input');
     const discountType = document.getElementById('discount-type');
     const clearOrderBtn = document.getElementById('clear-order-btn');
+    // Modals
     const sweetnessModal = document.getElementById('sweetness-modal');
     const sweetnessButtons = document.querySelectorAll('.sweetness-btn');
     const addToOrderButton = document.getElementById('add-to-order-btn');
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cashReceivedInput = document.getElementById('cash-received-input');
     const changeDueSpan = document.getElementById('change-due');
     const confirmCashPaymentBtn = document.getElementById('confirm-cash-payment-btn');
+    // New Function UI
     const customItemBtn = document.getElementById('custom-item-btn');
     const modifiersModal = document.getElementById('modifiers-modal');
     const modifiersItemName = document.getElementById('modifiers-item-name');
@@ -72,13 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const addCustomItemBtn = document.getElementById('add-custom-item-btn');
 
     // --- 3. APP STATE ---
-    // (ลบ dailySales และ localStorage ออก)
     let order = {};
     let selectedItem = null;
     let selectedSweetness = '';
 
     // --- 4. FUNCTIONS ---
-
     // (renderMenuItems, updateSummary, renderOrderList, populateModifiersModal เหมือนเดิม)
     const renderMenuItems = (category) => {
         menuItemsContainer.innerHTML = '';
@@ -176,29 +176,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         modifiersModal.style.display = 'block';
     };
-
-    // ‼️ NEW: ฟังก์ชันส่งออเดอร์ไป Firebase ‼️
+    
+    // ‼️ --- START: โค้ดที่แก้ไข --- ‼️
     const finalizeOrder = async (paymentMethod) => {
         if (Object.keys(order).length === 0) return;
 
-        // 1. เตรียมข้อมูลที่จะส่ง
+        // ‼️ FIX: ตรวจสอบสถานะก่อนส่ง ‼️
+        // ถ้า paymentMethod เป็น 'Cancelled', ให้ status เป็น 'cancelled'
+        // ถ้าไม่ใช่ (เช่น 'QR' หรือ 'Cash') ให้ status เป็น 'pending'
+        const newStatus = (paymentMethod === 'Cancelled') ? 'cancelled' : 'pending';
+
         const orderData = {
             items: order,
             subTotal: parseFloat(subTotalSpan.textContent),
             grandTotal: parseFloat(grandTotalSpan.textContent),
             discount: parseFloat(discountInput.value) || 0,
             discountType: discountType.value,
-            paymentMethod: paymentMethod, // 'QR' หรือ 'Cash'
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(), // ใช้เวลาของ Server
-            status: 'pending' // สถานะสำหรับบาริสต้า
+            paymentMethod: paymentMethod, 
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(), 
+            status: newStatus // ‼️ ใช้ตัวแปร newStatus ที่นี่
         };
 
         try {
-            // 2. ส่งข้อมูลไปที่ Collection 'orders'
-            const docRef = await db.collection("orders").add(orderData);
-            console.log("Order written to Firestore with ID: ", docRef.id);
+            // ถ้าสถานะเป็น 'pending' เท่านั้น ถึงจะส่งไป Firebase
+            // ถ้าเป็น 'cancelled' ก็ไม่ต้องส่ง
+            if (orderData.status === 'pending') {
+                const docRef = await db.collection("orders").add(orderData);
+                console.log("Order written to Firestore with ID: ", docRef.id);
+            } else {
+                console.log("Order was cancelled. Not sending to Firestore.");
+            }
             
-            // 3. เคลียร์หน้าจอ
+            // เคลียร์หน้าจอ (ไม่ว่าจะส่งหรือไม่ก็ตาม)
             order = {};
             discountInput.value = '';
             renderOrderList();
@@ -208,8 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("เกิดข้อผิดพลาดในการบันทึกออเดอร์! กรุณาลองอีกครั้ง");
         }
     };
+    // ‼️ --- END: โค้ดที่แก้ไข --- ‼️
 
-    // ‼️ MODIFIED: แก้ไขฟังก์ชัน QR Code ให้รับ container ได้ ‼️
     const generatePromptPayQR = (amount, containerElement) => {
         const promptPayConfig = { id: '099XXXXXXX', shopName: 'THE CONNECT' }; // <-- แก้ไขเบอร์ PromptPay ที่นี่
         const generatePayload = (promptPayId, amount) => {
@@ -230,8 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return `${promptpayData}6304${checksum}`;
         };
         const payload = generatePayload(promptPayConfig.id, amount);
-        
-        containerElement.innerHTML = ''; // เคลียร์ QR เก่า
+        containerElement.innerHTML = ''; 
         new QRCode(containerElement, {
             text: payload,
             width: 200,
@@ -239,53 +247,40 @@ document.addEventListener('DOMContentLoaded', () => {
             correctLevel: QRCode.CorrectLevel.H
         });
     };
-
-    // ‼️ MODIFIED: แก้ไขรายงานยอดขายให้ดึงจาก Firebase ‼️
     const showSalesReport = async () => {
         salesReportDetails.innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> กำลังโหลดรายงาน...</h3>';
         salesReportModal.style.display = 'block';
-
         try {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
-
             const querySnapshot = await db.collection("orders")
                 .where("createdAt", ">=", today)
                 .where("createdAt", "<", tomorrow)
                 .get();
-
             let totalSalesAmount = 0;
             let totalCost = 0;
             let salesReport = {};
-
             querySnapshot.forEach(doc => {
                 const orderData = doc.data();
-                if (orderData.paymentMethod === 'Cancelled') return; // ไม่นับออเดอร์ที่ถูกยกเลิก
-
+                if (orderData.paymentMethod === 'Cancelled') return; 
                 const orderItems = orderData.items;
-
                 for (const itemId in orderItems) {
                     const item = orderItems[itemId];
                     const itemName = item.name.split(' (')[0]; 
-                    
                     if (!salesReport[itemName]) {
                         salesReport[itemName] = { quantity: 0, total: 0, cost: 0 };
                     }
-                    
                     salesReport[itemName].quantity += item.quantity;
                     salesReport[itemName].total += item.price * item.quantity;
-                    
                     const itemCost = item.cost || 0;
                     salesReport[itemName].cost += itemCost * item.quantity;
                 }
                 totalSalesAmount += orderData.grandTotal;
             });
-            
             totalCost = Object.values(salesReport).reduce((acc, item) => acc + item.cost, 0);
             const totalProfit = totalSalesAmount - totalCost;
-
             let reportHTML = `<h3>ยอดขายรวม: ${totalSalesAmount.toFixed(2)} บาท</h3>`;
             reportHTML += `<h3>ยอดต้นทุนรวม: ${totalCost.toFixed(2)} บาท</h3>`;
             reportHTML += `<h3>กำไรสุทธิ: ${totalProfit.toFixed(2)} บาท</h3>`;
@@ -295,18 +290,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 reportHTML += `<li>${itemName}: ${salesReport[itemName].quantity} ชิ้น (กำไร: ${profitPerItem.toFixed(2)} บาท)</li>`;
             }
             reportHTML += '</ul>';
-
             salesReportDetails.innerHTML = querySnapshot.empty ? '<h3>ยังไม่มีรายการขายในวันนี้</h3>' : reportHTML;
-
         } catch (error) {
             console.error("Error getting sales report: ", error);
             salesReportDetails.innerHTML = '<h3>เกิดข้อผิดพลาดในการโหลดรายงาน</h3>';
         }
     };
 
-    // --- 5. EVENT LISTENERS ---
-    
-    // (Listeners สำหรับ menuTabs, menuItemsContainer, addToOrderButton, addModifiedItemToOrderBtn, customItemBtn, addCustomItemBtn, orderList, sweetnessButtons, clearOrderBtn เหมือนเดิม)
+    // --- 5. EVENT LISTENERS & INITIALIZATION ---
+    // (Listeners ส่วนใหญ่เหมือนเดิม)
     menuTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             menuTabs.forEach(t => t.classList.remove('active'));
@@ -435,43 +427,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     clearOrderBtn.addEventListener('click', () => {
-        if (confirm('คุณต้องการล้างรายการในตะกร้าทั้งหมดใช่หรือไม่?')) {
+        if (confirm('คุณต้องการล้างรายการในตะกร้าทั้งหมดใช่หรือไม่? (จะไม่ถูกบันทึก)')) {
             order = {};
             discountInput.value = '';
             renderOrderList();
         }
     });
-
-    // ‼️ MODIFIED: ปุ่ม QR Code จะเปิด Modal ‼️
     payAndPrintButton.addEventListener('click', () => {
         const grandTotal = parseFloat(grandTotalSpan.textContent);
         if (grandTotal >= 0 && Object.keys(order).length > 0) {
-            
             const qrContainer = document.getElementById('modal-qr-code');
-            generatePromptPayQR(grandTotal, qrContainer); // สร้าง QR ใน Modal
-
+            generatePromptPayQR(grandTotal, qrContainer);
             const summaryContainer = document.getElementById('modal-order-summary');
             summaryContainer.innerHTML = '';
             for (const itemId in order) {
                 summaryContainer.innerHTML += `<p>${order[itemId].name} (x${order[itemId].quantity})</p>`;
             }
-            
             document.getElementById('modal-total-payment').textContent = `ยอดชำระ: ${grandTotal.toFixed(2)} บาท`;
             document.getElementById('payment-qr-modal').style.display = 'block';
-
         } else {
             alert('โปรดเลือกรายการสินค้าก่อนชำระเงิน');
         }
     });
-
-    // ‼️ NEW: ปุ่มยืนยันใน Modal QR Code ‼️
     document.getElementById('confirm-payment-btn').addEventListener('click', () => {
-        finalizeOrder('QR'); // ส่งออเดอร์ไป Firebase
+        finalizeOrder('QR'); 
         document.getElementById('payment-qr-modal').style.display = 'none';
         alert('บันทึกออเดอร์ (QR) เรียบร้อย!');
     });
-
-    // ‼️ MODIFIED: ปุ่มชำระเงินสด จะส่งข้อมูลไป Firebase ‼️
     cashPaymentBtn.addEventListener('click', () => {
         const grandTotal = parseFloat(grandTotalSpan.textContent);
         if (grandTotal >= 0 && Object.keys(order).length > 0) {
@@ -484,49 +466,42 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('โปรดเลือกรายการสินค้าก่อนชำระเงิน');
         }
     });
-    confirmCashPaymentBtn.addEventListener('click', () => {
-        const totalDue = parseFloat(modalTotalDueSpan.textContent);
-        const cashReceived = parseFloat(cashReceivedInput.value) || 0;
-        if (cashReceived >= totalDue) {
-            finalizeOrder('Cash'); // ส่งออเดอร์ไป Firebase
-            cashModal.style.display = 'none';
-            alert('บันทึกออเดอร์ (เงินสด) เรียบร้อย!');
-        } else {
-            alert('จำนวนเงินที่รับมาไม่เพียงพอ');
-        }
-    });
     cashReceivedInput.addEventListener('input', () => {
         const totalDue = parseFloat(modalTotalDueSpan.textContent);
         const cashReceived = parseFloat(cashReceivedInput.value) || 0;
         const change = cashReceived - totalDue;
         changeDueSpan.textContent = change >= 0 ? change.toFixed(2) : '0.00';
     });
-
-    // ‼️ MODIFIED: ปุ่มปิดออเดอร์ (ไม่ชำระเงิน) จะส่งข้อมูลไป Firebase ‼️
+    confirmCashPaymentBtn.addEventListener('click', () => {
+        const totalDue = parseFloat(modalTotalDueSpan.textContent);
+        const cashReceived = parseFloat(cashReceivedInput.value) || 0;
+        if (cashReceived >= totalDue) {
+            finalizeOrder('Cash'); 
+            cashModal.style.display = 'none';
+            alert('บันทึกออเดอร์ (เงินสด) เรียบร้อย!');
+        } else {
+            alert('จำนวนเงินที่รับมาไม่เพียงพอ');
+        }
+    });
     closeOrderButton.addEventListener('click', () => {
         if (Object.keys(order).length > 0) {
-            if (confirm('คุณต้องการ "ยกเลิก" ออเดอร์นี้ใช่หรือไม่? (ออเดอร์จะถูกบันทึกเป็น "ยกเลิก")')) {
-                finalizeOrder('Cancelled'); // ส่งออเดอร์ไป Firebase พร้อมสถานะ Cancelled
-                alert('ออเดอร์ถูกยกเลิกและบันทึกเรียบร้อยแล้ว');
+            if (confirm('คุณต้องการ "ยกเลิก" ออเดอร์นี้ใช่หรือไม่? (จะไม่ถูกส่งไปครัว)')) {
+                finalizeOrder('Cancelled'); 
+                alert('ออเดอร์ถูกยกเลิกเรียบร้อย (ไม่ส่งไปครัว)');
             }
         } else {
             alert('ไม่มีรายการในออเดอร์');
         }
     });
-
-    // (Listeners สำหรับ discount, sales report, และ modals เหมือนเดิม)
     discountInput.addEventListener('input', updateSummary);
     discountType.addEventListener('change', updateSummary);
     salesReportButton.addEventListener('click', showSalesReport);
-    
-    // ‼️ MODIFIED: ปิดการใช้งานปุ่มอันตรายในเวอร์ชันนี้ ‼️
     deleteLastSaleButton.addEventListener('click', () => {
         alert('ฟังก์ชันนี้ถูกปิดใช้งานชั่วคราวในเวอร์ชันฐานข้อมูลออนไลน์ครับ');
     });
     resetSalesButton.addEventListener('click', () => {
         alert('ฟังก์ชันนี้ถูกปิดใช้งานชั่วคราวในเวอร์ชันฐานข้อมูลออนไลน์ครับ');
     });
-
     document.querySelectorAll('.close-button').forEach(button => {
         button.addEventListener('click', () => {
             button.closest('.modal').style.display = 'none';
