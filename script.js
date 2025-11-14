@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const discountInput = document.getElementById('discount-input');
     const discountType = document.getElementById('discount-type');
     const clearOrderBtn = document.getElementById('clear-order-btn');
-    // Modals
     const sweetnessModal = document.getElementById('sweetness-modal');
     const sweetnessButtons = document.querySelectorAll('.sweetness-btn');
     const addToOrderButton = document.getElementById('add-to-order-btn');
@@ -62,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cashReceivedInput = document.getElementById('cash-received-input');
     const changeDueSpan = document.getElementById('change-due');
     const confirmCashPaymentBtn = document.getElementById('confirm-cash-payment-btn');
-    // New Function UI
     const customItemBtn = document.getElementById('custom-item-btn');
     const modifiersModal = document.getElementById('modifiers-modal');
     const modifiersItemName = document.getElementById('modifiers-item-name');
@@ -174,18 +172,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             modifierOptionsContainer.appendChild(groupDiv);
         });
-        modifiersModal.style.display = 'block';
+        modifiersModal.style.display = 'flex'; // ‼️ --- แก้ไข --- ‼️
     };
     
-    // ‼️ --- START: โค้ดที่แก้ไข --- ‼️
     const finalizeOrder = async (paymentMethod) => {
         if (Object.keys(order).length === 0) return;
-
-        // ‼️ FIX: ตรวจสอบสถานะก่อนส่ง ‼️
-        // ถ้า paymentMethod เป็น 'Cancelled', ให้ status เป็น 'cancelled'
-        // ถ้าไม่ใช่ (เช่น 'QR' หรือ 'Cash') ให้ status เป็น 'pending'
         const newStatus = (paymentMethod === 'Cancelled') ? 'cancelled' : 'pending';
-
         const orderData = {
             items: order,
             subTotal: parseFloat(subTotalSpan.textContent),
@@ -194,31 +186,23 @@ document.addEventListener('DOMContentLoaded', () => {
             discountType: discountType.value,
             paymentMethod: paymentMethod, 
             createdAt: firebase.firestore.FieldValue.serverTimestamp(), 
-            status: newStatus // ‼️ ใช้ตัวแปร newStatus ที่นี่
+            status: newStatus 
         };
-
         try {
-            // ถ้าสถานะเป็น 'pending' เท่านั้น ถึงจะส่งไป Firebase
-            // ถ้าเป็น 'cancelled' ก็ไม่ต้องส่ง
             if (orderData.status === 'pending') {
                 const docRef = await db.collection("orders").add(orderData);
                 console.log("Order written to Firestore with ID: ", docRef.id);
             } else {
                 console.log("Order was cancelled. Not sending to Firestore.");
             }
-            
-            // เคลียร์หน้าจอ (ไม่ว่าจะส่งหรือไม่ก็ตาม)
             order = {};
             discountInput.value = '';
             renderOrderList();
-            
         } catch (error) {
             console.error("Error adding document: ", error);
             alert("เกิดข้อผิดพลาดในการบันทึกออเดอร์! กรุณาลองอีกครั้ง");
         }
     };
-    // ‼️ --- END: โค้ดที่แก้ไข --- ‼️
-
     const generatePromptPayQR = (amount, containerElement) => {
         const promptPayConfig = { id: '099XXXXXXX', shopName: 'THE CONNECT' }; // <-- แก้ไขเบอร์ PromptPay ที่นี่
         const generatePayload = (promptPayId, amount) => {
@@ -249,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const showSalesReport = async () => {
         salesReportDetails.innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> กำลังโหลดรายงาน...</h3>';
-        salesReportModal.style.display = 'block';
+        salesReportModal.style.display = 'flex'; // ‼️ --- แก้ไข --- ‼️
         try {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -298,7 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- 5. EVENT LISTENERS & INITIALIZATION ---
-    // (Listeners ส่วนใหญ่เหมือนเดิม)
     menuTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             menuTabs.forEach(t => t.classList.remove('active'));
@@ -306,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderMenuItems(tab.getAttribute('data-category'));
         });
     });
+
     menuItemsContainer.addEventListener('click', (event) => {
         const itemCard = event.target.closest('.menu-item-card');
         if (!itemCard) return;
@@ -315,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedItem.modifiers && selectedItem.modifiers.length > 0) {
             populateModifiersModal(selectedItem);
         } else if (selectedItem.hasSweetness) {
-            sweetnessModal.style.display = 'block';
+            sweetnessModal.style.display = 'flex'; // ‼️ --- แก้ไข --- ‼️
             selectedSweetness = ''; 
             sweetnessButtons.forEach(btn => btn.classList.remove('selected'));
         } else {
@@ -328,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderOrderList();
         }
     });
+    
     addToOrderButton.addEventListener('click', () => {
         if (!selectedItem || selectedSweetness === '') {
             alert('กรุณาเลือกระดับความหวาน');
@@ -350,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderOrderList();
         sweetnessModal.style.display = 'none';
     });
+
     addModifiedItemToOrderBtn.addEventListener('click', () => {
         let finalPrice = selectedItem.price;
         const selectedOptionsNames = [];
@@ -381,12 +367,14 @@ document.addEventListener('DOMContentLoaded', () => {
         renderOrderList();
         modifiersModal.style.display = 'none';
     });
+
     customItemBtn.addEventListener('click', () => {
         customItemNameInput.value = '';
         customItemPriceInput.value = '';
-        customItemModal.style.display = 'block';
+        customItemModal.style.display = 'flex'; // ‼️ --- แก้ไข --- ‼️
         customItemNameInput.focus();
     });
+
     addCustomItemBtn.addEventListener('click', () => {
         const name = customItemNameInput.value.trim();
         const price = parseFloat(customItemPriceInput.value);
@@ -405,6 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderOrderList();
         customItemModal.style.display = 'none';
     });
+    
     orderList.addEventListener('click', (event) => {
         const target = event.target.closest('button');
         if (!target) return;
@@ -419,6 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderOrderList();
     });
+
     sweetnessButtons.forEach(button => {
         button.addEventListener('click', () => {
             selectedSweetness = button.dataset.level;
@@ -426,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.add('selected');
         });
     });
+
     clearOrderBtn.addEventListener('click', () => {
         if (confirm('คุณต้องการล้างรายการในตะกร้าทั้งหมดใช่หรือไม่? (จะไม่ถูกบันทึก)')) {
             order = {};
@@ -433,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderOrderList();
         }
     });
+
     payAndPrintButton.addEventListener('click', () => {
         const grandTotal = parseFloat(grandTotalSpan.textContent);
         if (grandTotal >= 0 && Object.keys(order).length > 0) {
@@ -444,34 +436,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 summaryContainer.innerHTML += `<p>${order[itemId].name} (x${order[itemId].quantity})</p>`;
             }
             document.getElementById('modal-total-payment').textContent = `ยอดชำระ: ${grandTotal.toFixed(2)} บาท`;
-            document.getElementById('payment-qr-modal').style.display = 'block';
+            document.getElementById('payment-qr-modal').style.display = 'flex'; // ‼️ --- แก้ไข --- ‼️
         } else {
             alert('โปรดเลือกรายการสินค้าก่อนชำระเงิน');
         }
     });
+
     document.getElementById('confirm-payment-btn').addEventListener('click', () => {
         finalizeOrder('QR'); 
         document.getElementById('payment-qr-modal').style.display = 'none';
         alert('บันทึกออเดอร์ (QR) เรียบร้อย!');
     });
+
     cashPaymentBtn.addEventListener('click', () => {
         const grandTotal = parseFloat(grandTotalSpan.textContent);
         if (grandTotal >= 0 && Object.keys(order).length > 0) {
             modalTotalDueSpan.textContent = grandTotal.toFixed(2);
             cashReceivedInput.value = '';
             changeDueSpan.textContent = '0.00';
-            cashModal.style.display = 'block';
+            cashModal.style.display = 'flex'; // ‼️ --- แก้ไข --- ‼️
             cashReceivedInput.focus();
         } else {
             alert('โปรดเลือกรายการสินค้าก่อนชำระเงิน');
         }
     });
+    
     cashReceivedInput.addEventListener('input', () => {
         const totalDue = parseFloat(modalTotalDueSpan.textContent);
         const cashReceived = parseFloat(cashReceivedInput.value) || 0;
         const change = cashReceived - totalDue;
         changeDueSpan.textContent = change >= 0 ? change.toFixed(2) : '0.00';
     });
+
     confirmCashPaymentBtn.addEventListener('click', () => {
         const totalDue = parseFloat(modalTotalDueSpan.textContent);
         const cashReceived = parseFloat(cashReceivedInput.value) || 0;
@@ -483,6 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('จำนวนเงินที่รับมาไม่เพียงพอ');
         }
     });
+
     closeOrderButton.addEventListener('click', () => {
         if (Object.keys(order).length > 0) {
             if (confirm('คุณต้องการ "ยกเลิก" ออเดอร์นี้ใช่หรือไม่? (จะไม่ถูกส่งไปครัว)')) {
@@ -493,15 +490,18 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('ไม่มีรายการในออเดอร์');
         }
     });
+
     discountInput.addEventListener('input', updateSummary);
     discountType.addEventListener('change', updateSummary);
     salesReportButton.addEventListener('click', showSalesReport);
+    
     deleteLastSaleButton.addEventListener('click', () => {
         alert('ฟังก์ชันนี้ถูกปิดใช้งานชั่วคราวในเวอร์ชันฐานข้อมูลออนไลน์ครับ');
     });
     resetSalesButton.addEventListener('click', () => {
         alert('ฟังก์ชันนี้ถูกปิดใช้งานชั่วคราวในเวอร์ชันฐานข้อมูลออนไลน์ครับ');
     });
+
     document.querySelectorAll('.close-button').forEach(button => {
         button.addEventListener('click', () => {
             button.closest('.modal').style.display = 'none';
@@ -509,7 +509,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     window.addEventListener('click', (event) => {
         if (event.target.classList.contains('modal')) {
-            event.target.style.display = 'none';
+            // (เราจะไม่ซ่อนเมื่อคลิกที่พื้นหลังอีกต่อไป)
+            // event.target.style.display = 'none';
         }
     });
 

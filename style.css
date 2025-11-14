@@ -229,26 +229,46 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
 .payment-buttons button i, .close-btn i { margin-right: 0.5rem; }
 
 /* --- 5. Modal & Print Styles --- */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
 
+/* ‼️ --- START: โค้ดที่แก้ไข (จัดกลาง) --- ‼️ */
+.modal {
+    display: none; /* JS จะเปลี่ยนเป็น 'flex' เพื่อเปิด */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    
+    /* เพิ่ม 2 บรรทัดนี้เพื่อจัดกลาง */
+    align-items: center;
+    justify-content: center;
+}
 .modal-content { 
     background-color: #fff; 
-    margin: 10% auto; 
+    
+    /* ‼️ --- ลบ margin: 10% auto; --- ‼️ */
+    /* margin: 10% auto; */ 
+    margin: 1rem; /* เพิ่ม margin กันขอบจอ */
+    
     padding: 2rem; 
     border-radius: var(--border-radius); 
     text-align: center; 
     position: relative; 
-    max-width: 450px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
     
-    /* ‼️ --- โค้ดที่แก้ไข --- ‼️ */
+    /* ‼️ --- ทำให้ "เด่นชัด" ขึ้น --- ‼️ */
+    max-width: 500px; /* ขยายจาก 450px */
+    width: 100%; /* ทำให้ยืดหยุ่น */
+    
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
     display: flex;
     flex-direction: column;
-    max-height: 85vh; /* จำกัดความสูงไม่ให้เกิน 85% ของจอ */
+    max-height: 85vh;
 }
+/* ‼️ --- END: โค้ดที่แก้ไข (จัดกลาง) --- ‼️ */
 
-/* ‼️ --- โค้ดที่ลบไป (ถูกต้องแล้ว) --- ‼️ */
-/* .modal-scrollable-content { ... } (ถูกลบไปแล้ว) */
 
 .close-button { color: #aaa; position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; font-weight: bold; cursor: pointer; }
 .sweetness-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
@@ -317,9 +337,9 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     border-radius: var(--border-radius); width: 100%; cursor: pointer;
 }
 
-/* ‼️ --- START: สไตล์ Modal QR Code (เวอร์ชันที่ถูกต้อง) --- ‼️ */
+/* (สไตล์ Modal QR Code ที่ถูกต้อง) */
 .modal-content h2 {
-    flex-shrink: 0; /* ล็อคหัวข้อ */
+    flex-shrink: 0;
 }
 #modal-qr-code {
     width: 200px; 
@@ -328,7 +348,7 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     border: 5px solid white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     background-color: white; 
-    flex-shrink: 0; /* ล็อค QR Code */
+    flex-shrink: 0;
 }
 #modal-order-summary {
     text-align: left;
@@ -338,17 +358,16 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     background: var(--light-gray);
     font-size: 0.9rem;
     margin-bottom: 1rem;
-
-    flex-grow: 1; /* ‼️ ทำให้ส่วนนี้ยืดและเลื่อนได้ ‼️ */
-    overflow-y: auto; /* ‼️ ทำให้ส่วนนี้ยืดและเลื่อนได้ ‼️ */
-    min-height: 50px; /* ‼️ กำหนดความสูงขั้นต่ำ ‼️ */
+    flex-grow: 1;
+    overflow-y: auto;
+    min-height: 50px;
 }
 #modal-total-payment {
     font-size: 1.8rem;
     color: var(--primary-color);
     margin-top: 1rem;
     font-weight: 700;
-    flex-shrink: 0; /* ล็อคยอดชำระ */
+    flex-shrink: 0;
 }
 .confirm-payment-btn {
     margin-top: 1.5rem; 
@@ -362,13 +381,12 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     cursor: pointer;
     font-weight: bold;
     transition: transform 0.2s, box-shadow 0.2s;
-    flex-shrink: 0; /* ล็อคปุ่มยืนยัน */
+    flex-shrink: 0;
 }
 .confirm-payment-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
-/* ‼️ --- END: สไตล์ Modal QR Code --- ‼️ */
 
 @media print {
     /* (โค้ด Print Styles เหมือนเดิม) */
