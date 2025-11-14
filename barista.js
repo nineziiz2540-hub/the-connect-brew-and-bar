@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. ดักฟังออเดอร์ใหม่ (สถานะ "pending")
     db.collection("orders")
       .where("status", "==", "pending") // ดึงเฉพาะออเดอร์ที่ยังไม่เสร็จ
-      .orderBy("createdAt", "asc")     // เรียงจากเก่าไปใหม่
+     // .orderBy("createdAt", "asc")     // เรียงจากเก่าไปใหม่
       .onSnapshot((querySnapshot) => {
         
         // ล้างหน้าจอทุกครั้งที่มีการเปลี่ยนแปลง (เพื่อป้องกันออเดอร์ค้าง)
