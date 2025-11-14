@@ -15,9 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 2. ดักฟังออเดอร์ใหม่ (สถานะ "pending")
+    // ‼️ --- โค้ดที่แก้ไข --- ‼️
+    // (เราเอา // ออกจาก .orderBy แล้ว เพราะเราสร้าง Index ใน Firebase แล้ว)
     db.collection("orders")
       .where("status", "==", "pending") // ดึงเฉพาะออเดอร์ที่ยังไม่เสร็จ
-     // .orderBy("createdAt", "asc")     // เรียงจากเก่าไปใหม่
+      .orderBy("createdAt", "asc")     // เรียงจากเก่าไปใหม่ (เปิดใช้งานแล้ว)
       .onSnapshot((querySnapshot) => {
         
         // ล้างหน้าจอทุกครั้งที่มีการเปลี่ยนแปลง (เพื่อป้องกันออเดอร์ค้าง)
@@ -37,6 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }, (error) => {
           console.error("Error listening to orders: ", error);
       });
+    // ‼️ --- จบส่วนที่แก้ไข --- ‼️
+
 
     // 3. ฟังก์ชันสร้างการ์ดออเดอร์
     const createOrderCard = (order, orderId) => {
@@ -44,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.className = 'order-card';
         card.dataset.id = orderId;
 
+        // ดึงเวลาจาก server timestamp
         const time = order.createdAt.toDate().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
         
         let itemsHtml = '<ul>';
