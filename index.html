@@ -43,7 +43,6 @@
                     </ul>
                 <div id="print-qrcode-container"></div>
             </div>
-            
             <div class="summary-and-payment">
                 <div class="summary-box">
                     <p>ยอดรวม <span id="sub-total">0.00</span> บาท</p>
@@ -60,21 +59,19 @@
                     <hr>
                     <h3>ยอดชำระ <span id="grand-total">0.00</span> บาท</h3>
                 </div>
-                
                 <div class="payment-buttons">
                     <button id="cash-payment-btn">
                         <i class="fas fa-money-bill-wave"></i> ชำระด้วยเงินสด
                     </button>
                     <button id="pay-and-print-button">
-                        <i class="fas fa-qrcode"></i> QR Code & พิมพ์
+                        <i class="fas fa-qrcode"></i> QR Code
                     </button>
                 </div>
                 <button id="close-order-button" class="close-btn">
-                    <i class="fas fa-check-circle"></i> ปิดออเดอร์
+                    <i class="fas fa-check-circle"></i> ปิดออเดอร์ (ไม่ชำระเงิน)
                 </button>
             </div>
         </div>
-
     </div>
 
     <div id="sweetness-modal" class="modal">
@@ -90,7 +87,6 @@
             <button id="add-to-order-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
-
     <div id="sales-report-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -102,7 +98,6 @@
             </div>
         </div>
     </div>
-
     <div id="cash-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -113,7 +108,6 @@
             <button id="confirm-cash-payment-btn">ยืนยันการชำระเงิน</button>
         </div>
     </div>
-
     <div id="modifiers-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -123,7 +117,6 @@
             <button id="add-modified-item-to-order-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
-
     <div id="custom-item-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -135,7 +128,44 @@
             <button id="add-custom-item-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
+    <div id="payment-qr-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>สแกนเพื่อชำระเงิน</h2>
+            <div id="modal-order-summary">
+                </div>
+            <div id="modal-qr-code">
+                </div>
+            <h3 id="modal-total-payment"></h3>
+            <button id="confirm-payment-btn" class="confirm-payment-btn">
+                <i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน
+            </button>
+        </div>
+    </div>
 
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAndhLwumGYso3DYBteCrfCTecPk3NPTfw",
+        authDomain: "the-connect-pos-db.firebaseapp.com",
+        projectId: "the-connect-pos-db",
+        storageBucket: "the-connect-pos-db.firebasestorage.app",
+        messagingSenderId: "955501445672",
+        appId: "1:955501445672:web:07356e61c24957032cab1d",
+        measurementId: "G-7QKZTW0GFF"
+      };
+      
+      // Initialize Firebase (แบบ V8)
+      firebase.initializeApp(firebaseConfig);
+      
+      // ‼️ นี่คือบรรทัดที่สำคัญที่สุดที่ทำให้ script.js ทำงานได้ ‼️
+      const db = firebase.firestore(); 
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <script src="script.js"></script>
 </body>
