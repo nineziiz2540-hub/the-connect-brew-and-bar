@@ -1,6 +1,9 @@
+/* --- ‼️‼️ โค้ดที่เพิ่มเข้ามา ‼️‼️ --- */
+/* (เพิ่ม 3 บรรทัดนี้ไว้บนสุด) */
 * {
     box-sizing: border-box;
 }
+
 /* --- 1. General Styles & Custom Properties --- */
 :root {
     --primary-color: #007bff;
@@ -18,19 +21,19 @@
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+/* (โค้ดที่เหลือทั้งหมดเหมือนเดิมทุกประการ) */
 body {
     font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: var(--body-bg);
     margin: 0;
     color: var(--text-color);
     font-size: var(--base-font-size);
-    overflow: hidden; /* Prevent scrolling on the body */
+    overflow: hidden; 
 }
 
 /* --- 2. Main Layout using CSS Grid --- */
 .main-container {
     display: grid;
-    /* Define grid columns: menu column takes 1.8fr, order column takes 1.2fr */
     grid-template-columns: 1.8fr 1.2fr;
     width: 100vw;
     height: 100vh;
@@ -44,7 +47,7 @@ body {
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Space between header, tabs, and grid */
+    gap: 1.5rem;
 }
 .menu-title-row {
     display: flex;
@@ -108,7 +111,7 @@ body {
     overflow-y: auto;
     flex-grow: 1;
     padding: 0.25rem;
-    align-content: start;
+    align-content: start; 
 }
 .menu-item-card {
     background-color: #fff;
@@ -187,9 +190,7 @@ h1 { font-size: 2rem; font-weight: 700; margin: 0; }
 #order-list .item-quantity span { font-weight: bold; margin: 0 0.75rem; }
 .item-total-price { font-weight: 600; min-width: 60px; text-align: right; }
 .delete-item-btn { background: none; border: none; font-size: 1.1rem; color: var(--danger-color); cursor: pointer; }
-
 #print-qrcode-container { display: none; }
-
 .summary-and-payment {
     background-color: #ffffff;
     border: 1px solid var(--border-color);
@@ -243,8 +244,6 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
 .report-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
 .report-action-btn { flex: 1; padding: 0.75rem; font-size: 1rem; border-radius: 8px; border: none; cursor: pointer; background-color: var(--primary-color); color: white; }
 .reset-btn { background-color: var(--danger-color); }
-
-/* Modifier & Custom Item Modals */
 #modifier-options-container {
     margin-top: 1.5rem;
     text-align: left;
@@ -301,14 +300,13 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     background-color: var(--primary-color); color: white; border: none;
     border-radius: var(--border-radius); width: 100%; cursor: pointer;
 }
-/* --- Styles for new Payment QR Modal --- */
 #modal-qr-code {
-    width: 200px; /* ขนาด QR Code */
+    width: 200px; 
     height: 200px;
     margin: 1.5rem auto;
     border: 5px solid white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    background-color: white; /* พื้นหลังสีขาวเผื่อ QR โหลดช้า */
+    background-color: white; 
 }
 #modal-order-summary {
     text-align: left;
@@ -331,7 +329,7 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     margin-top: 1.5rem; 
     padding: 1rem; 
     font-size: 1.1rem;
-    background-color: var(--success-color); /* สีเขียว */
+    background-color: var(--success-color); 
     color: white; 
     border: none;
     border-radius: var(--border-radius); 
@@ -344,7 +342,9 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
+
 @media print {
+    /* (โค้ด Print Styles เหมือนเดิม) */
     body * { visibility: hidden; }
     .order-container, .order-container * { visibility: visible; }
     body, .main-container { position: static !important; background-color: #fff; width: 100%; max-width: 300px; margin: 0; padding: 0; box-shadow: none; border: none; }
