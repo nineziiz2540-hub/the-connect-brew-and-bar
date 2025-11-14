@@ -248,16 +248,7 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     /* ‼️ --- END: โค้ดที่แก้ไข --- ‼️ */
 }
 
-/* ‼️ --- START: โค้ดที่เพิ่มใหม่ --- ‼️ */
-.modal-scrollable-content {
-    flex-grow: 1; /* ทำให้ส่วนนี้ยืดขยาย */
-    overflow-y: auto; /* ทำให้ส่วนนี้เลื่อนได้ */
-    min-height: 0; /* แก้บั๊ก Flexbox */
-    padding: 0 1rem; /* เพิ่มระยะห่างกันติดขอบ */
-    margin: 0 -1rem; /* ขยายให้เต็มความกว้างของ padding เดิม */
-}
-/* ‼️ --- END: โค้ดที่เพิ่มใหม่ --- ‼️ */
-
+/* ‼️ --- ลบ .modal-scrollable-content --- ‼️ */
 
 .close-button { color: #aaa; position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; font-weight: bold; cursor: pointer; }
 .sweetness-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
@@ -325,6 +316,11 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     background-color: var(--primary-color); color: white; border: none;
     border-radius: var(--border-radius); width: 100%; cursor: pointer;
 }
+
+/* ‼️ --- START: แก้ไขสไตล์ Modal QR Code --- ‼️ */
+.modal-content h2 {
+    flex-shrink: 0; /* ล็อคหัวข้อ */
+}
 #modal-qr-code {
     width: 200px; 
     height: 200px;
@@ -332,23 +328,27 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     border: 5px solid white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     background-color: white; 
+    flex-shrink: 0; /* ล็อค QR Code */
 }
 #modal-order-summary {
     text-align: left;
-    max-height: 150px; /* จำกัดความสูงของ "รายการ" (เหมือนเดิม) */
-    overflow-y: auto; /* ทำให้ "รายการ" เลื่อนได้ (เหมือนเดิม) */
     border: 1px solid var(--border-color);
     padding: 0.5rem 1rem;
     border-radius: 8px;
     background: var(--light-gray);
     font-size: 0.9rem;
     margin-bottom: 1rem;
+
+    flex-grow: 1; /* ‼️ ทำให้ส่วนนี้ยืดและเลื่อนได้ ‼️ */
+    overflow-y: auto; /* ‼️ ทำให้ส่วนนี้ยืดและเลื่อนได้ ‼️ */
+    min-height: 50px; /* ‼️ กำหนดความสูงขั้นต่ำ ‼️ */
 }
 #modal-total-payment {
     font-size: 1.8rem;
     color: var(--primary-color);
     margin-top: 1rem;
     font-weight: 700;
+    flex-shrink: 0; /* ล็อคยอดชำระ */
 }
 .confirm-payment-btn {
     margin-top: 1.5rem; 
@@ -362,15 +362,13 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     cursor: pointer;
     font-weight: bold;
     transition: transform 0.2s, box-shadow 0.2s;
-    
-    /* ‼️ --- START: โค้ดที่แก้ไข --- ‼️ */
-    flex-shrink: 0; /* บังคับให้ปุ่มนี้ "ห้ามหด" */
-    /* ‼️ --- END: โค้ดที่แก้ไข --- ‼️ */
+    flex-shrink: 0; /* ล็อคปุ่มยืนยัน */
 }
 .confirm-payment-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
+/* ‼️ --- END: แก้ไขสไตล์ Modal QR Code --- ‼️ */
 
 @media print {
     /* (โค้ด Print Styles เหมือนเดิม) */
