@@ -2,7 +2,9 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>THE CONNECT POS</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -74,96 +76,27 @@
         </div>
     </div>
 
-    <div id="sweetness-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>เลือกความหวาน</h2>
-            <div class="sweetness-options">
-                <button class="sweetness-btn" data-level="100">หวาน 100%</button>
-                <button class="sweetness-btn" data-level="50">หวาน 50%</button>
-                <button class="sweetness-btn" data-level="30">หวาน 30%</button>
-                <button class="sweetness-btn" data-level="0">ไม่หวาน 0%</button>
-            </div>
-            <button id="add-to-order-btn">เพิ่มลงในออเดอร์</button>
-        </div>
-    </div>
-    <div id="sales-report-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>รายงานยอดขายวันนี้</h2>
-            <div id="sales-report-details"></div>
-            <div class="report-actions">
-                <button id="delete-last-sale-btn" class="report-action-btn">ลบรายการล่าสุด</button>
-                <button id="reset-sales-btn" class="report-action-btn reset-btn">รีเซ็ทยอดขายวันนี้</button>
-            </div>
-        </div>
-    </div>
-    <div id="cash-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>ชำระด้วยเงินสด</h2>
-            <p class="total-due-text">ยอดที่ต้องชำระ: <span id="modal-total-due">0.00</span> บาท</p>
-            <input type="number" id="cash-received-input" placeholder="จำนวนเงินที่รับมา" class="cash-input">
-            <p class="change-text">เงินทอน: <span id="change-due">0.00</span> บาท</p>
-            <button id="confirm-cash-payment-btn">ยืนยันการชำระเงิน</button>
-        </div>
-    </div>
-    <div id="modifiers-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 id="modifiers-item-name">เลือกตัวเลือกเสริม</h2>
-            <div id="modifier-options-container">
-                </div>
-            <button id="add-modified-item-to-order-btn">เพิ่มลงในออเดอร์</button>
-        </div>
-    </div>
-    <div id="custom-item-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>เพิ่มรายการ/ราคาเอง</h2>
-            <div class="custom-item-form">
-                <input type="text" id="custom-item-name-input" placeholder="ชื่อรายการ">
-                <input type="number" id="custom-item-price-input" placeholder="ราคา (บาท)">
-            </div>
-            <button id="add-custom-item-btn">เพิ่มลงในออเดอร์</button>
-        </div>
-    </div>
-    <div id="payment-qr-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>สแกนเพื่อชำระเงิน</h2>
-            <div id="modal-order-summary">
-                </div>
-            <div id="modal-qr-code">
-                </div>
-            <h3 id="modal-total-payment"></h3>
-            <button id="confirm-payment-btn" class="confirm-payment-btn">
-                <i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน
-            </button>
-        </div>
-    </div>
-
+    <div id="sweetness-modal" class="modal"> </div>
+    <div id="sales-report-modal" class="modal"> </div>
+    <div id="cash-modal" class="modal"> </div>
+    <div id="modifiers-modal" class="modal"> </div>
+    <div id="custom-item-modal" class="modal"> </div>
+    <div id="payment-qr-modal" class="modal"> </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
     <script>
       // Your web app's Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyAndhLwumGYso3DYBteCrfCTecPk3NPTfw",
         authDomain: "the-connect-pos-db.firebaseapp.com",
         projectId: "the-connect-pos-db",
-        // ‼️ FIX: แก้ไข .firebasestorage.app เป็น .appspot.com
         storageBucket: "the-connect-pos-db.appspot.com", 
         messagingSenderId: "955501445672",
         appId: "1:955501445672:web:07356e61c24957032cab1d",
         measurementId: "G-7QKZTW0GFF"
       };
-      
-      // Initialize Firebase (แบบ V8)
       firebase.initializeApp(firebaseConfig);
-      
-      // ‼️ นี่คือบรรทัดที่สำคัญที่สุดที่ทำให้ script.js ทำงานได้ ‼️
       const db = firebase.firestore(); 
     </script>
     
