@@ -15,24 +15,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // ‼️ --- START: โค้ดที่แก้ไข --- ‼️
     db.collection("orders")
       .where("status", "==", "pending") 
-      .orderBy("createdAt", "asc")     // (เรียงลำดับตามเวลา - ถูกต้องแล้ว)
+      .orderBy("createdAt", "asc")     // เรียงลำดับตามเวลา (ถูกต้อง)
       .onSnapshot((querySnapshot) => {
         
         orderQueueContainer.innerHTML = ''; 
         
-        let queueNumber = 1; // 1. สร้างตัวนับเลขคิว
+        // (ลบตัวนับ queueNumber ทิ้ง)
+        // let queueNumber = 1; 
 
         querySnapshot.forEach((doc) => {
             const order = doc.data();
             const orderId = doc.id;
             
-            // 2. ส่ง "เลขคิว" เข้าไปในฟังก์ชันสร้างการ์ด
-            const card = createOrderCard(order, orderId, queueNumber); 
-            orderQueueContainer.appendChild(card);
-            
-            setTimeout(() => card.classList.add('new-order'), 10);
-
-            queueNumber++; // 3. เพิ่มค่าตัวนับ
+            // ‼️ ตรวจสอบก่อนว่ามีเลขคิวหรือไม่ (เผื่อออเดอร์เก่าๆ)
+            if (order.queueNumber) {
+                // (ลบการส่ง queueNumber เพราะเราจะอ่านจาก 'order' โดยตรง)
+                const card = createOrderCard(order, orderId); 
+                orderQueueContainer.appendChild(card);
+                
+                setTimeout(() => card.classList.add('new-order'), 10);
+            }
+            // (queueNumber++ ถูกลบออกไปแล้ว)
         });
       }, (error) => {
           console.error("Error listening to orders: ", error);
@@ -41,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ‼️ --- START: โค้ดที่แก้ไข --- ‼️
-    // 4. รับตัวแปร queueNumber เข้ามาในฟังก์ชัน
-    const createOrderCard = (order, orderId, queueNumber) => {
+    // (ลบ queueNumber ออกจากตัวรับ)
+    const createOrderCard = (order, orderId) => {
         const card = document.createElement('div');
         card.className = 'order-card';
         card.dataset.id = orderId;
@@ -68,10 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         itemsHtml += '</ul>';
 
-        // 5. นำ queueNumber มาแสดงผลใน h2
+        // ‼️ อ่านเลขคิวจาก 'order.queueNumber' 
         card.innerHTML = `
             <div class="order-card-header">
-                <h2><span class="queue-number">คิวที่ ${queueNumber}</span></h2>
+                <h2><span class="queue-number">คิวที่ ${order.queueNumber}</span></h2>
                 <span class="order-time">${time}</span>
             </div>
             <div class="order-card-body">
@@ -85,10 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         // ‼️ --- END: โค้ดที่แก้ไข --- ‼️
 
-        // (ส่วนปุ่ม "ทำเสร็จแล้ว" เหมือนเดิม)
         const completeButton = card.querySelector('.complete-btn');
         completeButton.addEventListener('click', async () => {
-            if (confirm(`คุณต้องการปิดออเดอร์คิวที่ ${queueNumber} นี้ใช่หรือไม่?`)) {
+            // ‼️ ใช้อ่านเลขคิวจาก 'order.queueNumber'
+            if (confirm(`คุณต้องการปิดออเดอร์ คิวที่ ${order.queueNumber} นี้ใช่หรือไม่?`)) {
                 try {
                     await db.collection("orders").doc(orderId).update({
                         status: "completed"
