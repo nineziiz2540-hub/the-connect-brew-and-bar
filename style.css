@@ -37,7 +37,6 @@ body {
 }
 
 /* --- 3. Menu Container (Left Column) --- */
-/* (เหมือนเดิม) */
 .menu-container {
     padding: 2rem;
     border-right: 1px solid var(--border-color);
@@ -134,7 +133,6 @@ body {
 .menu-item-card p { margin: 0.25rem 0 0; color: var(--primary-color); font-weight: bold; }
 
 /* --- 4. Order Container (Right Column) --- */
-/* (เหมือนเดิม) */
 .order-container {
     padding: 2rem;
     background-color: var(--light-gray);
@@ -325,6 +323,8 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     background-color: var(--primary-color); color: white; border: none;
     border-radius: var(--border-radius); width: 100%; cursor: pointer;
 }
+
+/* สไตล์ Modal QR Code (ที่ถูกต้อง) */
 .modal-content h2 {
     flex-shrink: 0; 
 }
@@ -375,16 +375,16 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
-/* ‼️ --- START: สไตล์ใหม่สำหรับรายงาน --- ‼️ */
+/* สไตล์ใหม่สำหรับรายงาน (ที่ถูกต้อง) */
 .modal-content h4.sales-subtotal {
     font-size: 1.1rem;
     color: #495057;
-    margin: 0.5rem 0 0.5rem 1.5rem; /* ย่อหน้าเล็กน้อย */
+    margin: 0.5rem 0 0.5rem 1.5rem;
     font-weight: normal;
     text-align: left;
 }
 .order-list-container {
-    max-height: 30vh; /* จำกัดความสูง และเลื่อนได้ */
+    max-height: 30vh;
     overflow-y: auto;
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -408,16 +408,15 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
 .report-order-item summary:hover {
     background-color: #e9ecef;
 }
-/* เปลี่ยนลูกศร (ถ้าเบราว์เซอร์รองรับ) */
 .report-order-item summary::marker {
     content: '▶ ';
-    color: var(--primary-Rcolor);
+    color: var(--primary-color);
 }
 .report-order-item[open] summary::marker {
     content: '▼ ';
 }
 .order-item-details {
-    padding: 1rem 1rem 1rem 2.5rem; /* ย่อหน้ารายละเอียด */
+    padding: 1rem 1rem 1rem 2.5rem;
     background-color: #fff;
     text-align: left;
 }
@@ -425,7 +424,6 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     margin: 0 0 0.5rem 0;
     font-size: 0.9rem;
 }
-/* ‼️ --- END: สไตล์ใหม่สำหรับรายงาน --- ‼️ */
 
 @media print {
     /* (โค้ด Print Styles เหมือนเดิม) */

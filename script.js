@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- 1. DATA AND CONFIGURATION ---
-    // (menuData ... เหมือนเดิม)
     const menuData = [
         {
             id: 'latte-ice', name: 'Latte Ice', price: 70, cost: 25, img: 'https://yalamarketplace.com/upload/1675666033436.jpg', category: 'drinks',
@@ -36,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // --- 2. UI ELEMENTS ---
-    // (เหมือนเดิม)
     const menuItemsContainer = document.getElementById('menu-items');
     const orderList = document.getElementById('order-list');
     const subTotalSpan = document.getElementById('sub-total');
@@ -74,13 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const addCustomItemBtn = document.getElementById('add-custom-item-btn');
 
     // --- 3. APP STATE ---
-    // (เหมือนเดิม)
     let order = {};
     let selectedItem = null;
     let selectedSweetness = '';
 
     // --- 4. FUNCTIONS ---
-    // (renderMenuItems, updateSummary, renderOrderList, populateModifiersModal, finalizeOrder, generatePromptPayQR เหมือนเดิมทั้งหมด)
     const renderMenuItems = (category) => {
         menuItemsContainer.innerHTML = '';
         menuData.filter(item => item.category === category).forEach(item => {
@@ -249,61 +245,43 @@ document.addEventListener('DOMContentLoaded', () => {
             correctLevel: QRCode.CorrectLevel.H
         });
     };
-    
-    // ‼️ --- START: โค้ดที่แก้ไข (ยกเครื่องรายงาน) --- ‼️
     const showSalesReport = async () => {
         salesReportDetails.innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> กำลังโหลดรายงาน...</h3>';
         salesReportModal.style.display = 'flex';
-
         try {
-            // 1. ดึงข้อมูล
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
-
             const querySnapshot = await db.collection("orders")
                 .where("createdAt", ">=", today)
-                .where("createdAt", "<", tomorrow)
                 .get();
-
-            // 2. เตรียมตัวแปร
             let allOrders = [];
             querySnapshot.forEach(doc => {
                 allOrders.push(doc.data());
             });
-
-            // 3. เรียงลำดับออเดอร์ตามเวลา (สำคัญมาก)
             allOrders.sort((a, b) => {
                 if (a.createdAt && b.createdAt) {
                     return a.createdAt.toMillis() - b.createdAt.toMillis();
                 }
-                return 0; // ถ้าข้อมูลเก่าไม่มี createdAt
+                return 0; 
             });
-
             let totalSalesAmount = 0;
             let totalCashSales = 0;
             let totalQRSales = 0;
             let totalCost = 0;
-            let ordersHtml = ''; // HTML สำหรับรายการออเดอร์
-
-            // 4. วนลูปออเดอร์ที่เรียงแล้ว
+            let ordersHtml = ''; 
             allOrders.forEach(orderData => {
-                if (orderData.paymentMethod === 'Cancelled') return; // ข้ามออเดอร์ที่ยกเลิก
-
-                // 4.1. สรุปยอดรวม
+                if (orderData.paymentMethod === 'Cancelled') return; 
                 totalSalesAmount += orderData.grandTotal;
                 if (orderData.paymentMethod === 'Cash') {
                     totalCashSales += orderData.grandTotal;
                 } else if (orderData.paymentMethod === 'QR') {
                     totalQRSales += orderData.grandTotal;
                 }
-
-                // 4.2. สร้าง HTML สำหรับแต่ละออเดอร์ (แบบพับได้)
                 const time = orderData.createdAt.toDate().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
                 const paymentText = orderData.paymentMethod === 'Cash' ? '(เงินสด)' : '(QR Code)';
-                const queueNum = orderData.queueNumber || 'N/A'; // N/A สำหรับออเดอร์เก่าที่ไม่มีเลขคิว
-
+                const queueNum = orderData.queueNumber || 'N/A'; 
                 ordersHtml += `<details class="report-order-item">`;
                 ordersHtml += `
                     <summary>
@@ -312,8 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong>${orderData.grandTotal.toFixed(2)} บาท</strong>
                     </summary>
                 `;
-                
-                // 4.3. สร้าง HTML สำหรับรายการสินค้าในออเดอร์นั้นๆ
                 let itemsHtml = '<div class="order-item-details">';
                 let orderCost = 0;
                 for (const itemId in orderData.items) {
@@ -325,35 +301,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 itemsHtml += '</div>';
                 ordersHtml += itemsHtml + '</details>';
-
-                totalCost += orderCost; // เพิ่มต้นทุนของออเดอร์นี้
+                totalCost += orderCost; 
             });
-            
             const totalProfit = totalSalesAmount - totalCost;
-
-            // 5. สร้าง HTML รายงานฉบับสมบูรณ์
             let reportHTML = `<h3>ยอดขายรวม: ${totalSalesAmount.toFixed(2)} บาท</h3>`;
-            // เพิ่มสรุปยอดเงินสดและ QR (เป้าหมายของคุณ)
             reportHTML += `<h4 class="sales-subtotal"> - ยอดเงินสด: ${totalCashSales.toFixed(2)} บาท</h4>`;
             reportHTML += `<h4 class="sales-subtotal"> - ยอด QR Code: ${totalQRSales.toFixed(2)} บาท</h4>`;
-            
             reportHTML += `<h3>ยอดต้นทุนรวม: ${totalCost.toFixed(2)} บาท</h3>`;
             reportHTML += `<h3>กำไรสุทธิ: ${totalProfit.toFixed(2)} บาท</h3>`;
             reportHTML += '<hr><h4>รายการออเดอร์ตามคิว:</h4>';
-            reportHTML += `<div class="order-list-container">${ordersHtml}</div>`; // ใส่รายการออเดอร์ลงในกล่อง
-
+            reportHTML += `<div class="order-list-container">${ordersHtml}</div>`; 
             salesReportDetails.innerHTML = allOrders.length === 0 ? '<h3>ยังไม่มีรายการขายในวันนี้</h3>' : reportHTML;
-
         } catch (error) {
             console.error("Error getting sales report: ", error);
             salesReportDetails.innerHTML = '<h3>เกิดข้อผิดพลาดในการโหลดรายงาน</h3>';
         }
     };
-    // ‼️ --- END: โค้ดที่แก้ไข --- ‼️
-
 
     // --- 5. EVENT LISTENERS & INITIALIZATION ---
-    // (Listeners ทั้งหมดเหมือนเดิม)
     menuTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             menuTabs.forEach(t => t.classList.remove('active'));
