@@ -263,7 +263,7 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
 .sweetness-btn.selected { background-color: #d3d3d3; border-color: #bbb; }
 #add-to-order-btn, #confirm-cash-payment-btn { margin-top: 1.5rem; padding: 1rem; font-size: 1.1rem; background-color: var(--primary-color); color: white; border: none; border-radius: var(--border-radius); width: 100%; cursor: pointer; }
 .total-due-text, .change-text { font-size: 1.4rem; font-weight: bold; }
-.cash-input { width: 80%; padding: 0.75rem; font-size: 1.25rem; text-align: center; border: 2px solid var(--border-color); border-radius: 8px; margin: 1rem 0; }
+.cash-input { width: 80%; padding: 0.75rem; font-size: 1.25rem; text-align: center; border: 2px solid var(--border-color); border-radius: 8px; margin: 1rem auto; }
 .report-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
 .report-action-btn { flex: 1; padding: 0.75rem; font-size: 1rem; border-radius: 8px; border: none; cursor: pointer; background-color: var(--primary-color); color: white; }
 .reset-btn { background-color: var(--danger-color); }
