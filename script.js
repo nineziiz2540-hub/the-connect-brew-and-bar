@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'americano-ice', name: 'Americano Ice', price: 65, cost: 20, img: 'https://as2.ftcdn.net/v2/jpg/06/09/41/09/1000_F_609410904_L1MJUlP4gAmsVzHfAqwh8dB6s3Rguwn5.jpg', hasSweetness: true, category: 'drinks'},
         { id: 'cappuccino-ice', name: 'Cappuccino Ice', price: 70, cost: 25, img: 'https://yalamarketplace.com/upload/1675665497236.jpg', hasSweetness: true, category: 'drinks'},
         { id: 'mocha-ice', name: 'Mocha Ice', price: 75, cost: 30, img: 'https://yalamarketplace.com/upload/1623747365788.jpg', hasSweetness: true, category: 'drinks'},
-        { id: 'chochcolat', name: 'Chochcolat', price: 60, cost: 20, img: 'https://image.makewebeasy.net/makeweb/m_1920x0/W7OuxZEpB/DefaultData/%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%A7%E0%B8%B1%E0%B8%95%E0%B8%96%E0%B8%B8%E0%B8%94%E0%B8%B4%E0%B8%9A_36.jpg?v=202405291424', hasSweetness: true, category: 'drinks'},
+        { id: 'chochcolat', name: 'Chochcolat', price: 60, cost: 20, img: 'https://image.makewebeasy.net/makeweb/m_1920x0/W7OuxZEpB/DefaultData/%E0%B8%8A%E0%B8%B2%E0%B9%8แ%E0%B8%A5%E0%B8%B0%E0%B8%A7%E0%B8%B1%E0%B8%95%E0%B8%96%E0%B8%B8%E0%B8%94%E0%B8%B4%E0%B8%9A_36.jpg?v=202405291424', hasSweetness: true, category: 'drinks'},
         { id: 'dirty', name: 'Dirty', price: 80, cost: 35, img: 'https://image.bangkokbiznews.com/uploads/images/md/2024/10/QTxhBq33w2ndhtVTvjbw.webp?x-image-process=style/LG-webp', category: 'drinks'},
         { id: 'orange-juice', name: 'น้ำส้มสกัดเย็น', price: 60, cost: 30, img: 'https://img.wongnai.com/p/1920x0/2023/03/31/9a822aee8a9c40c4b23716be4a317b43.jpg', category: 'fruit-drinks' },
         { id: 'lemon-juice', name: 'น้ำมะนาวสกัดเย็น', price: 60, cost: 25, img: 'https://www.top10.in.th/wp-content/uploads/2022/05/7-%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B0%E0%B8%99%E0%B8%B2%E0%B8%A7%E0%B8%82%E0%B8%A7%E0%B8%94-%E0%B8%A2%E0%B8%B5%E0%B9%88%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B9%84%E0%B8%AB%E0%B8%99-%E0%B8%AD%E0%B8%A3%E0%B9%88%E0%B8%AD%E0%B8%AY-%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B8%A3%E0%B8%AA.jpg', category: 'fruit-drinks' },
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedSweetness = '';
 
     // --- 4. FUNCTIONS ---
-    // (renderMenuItems, updateSummary, renderOrderList, populateModifiersModal เหมือนเดิม)
+    // (renderMenuItems, updateSummary, renderOrderList, populateModifiersModal, finalizeOrder, generatePromptPayQR เหมือนเดิมทั้งหมด)
     const renderMenuItems = (category) => {
         menuItemsContainer.innerHTML = '';
         menuData.filter(item => item.category === category).forEach(item => {
@@ -177,38 +177,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         modifiersModal.style.display = 'flex';
     };
-    
-    // ‼️ --- START: โค้ดที่แก้ไข --- ‼️
     const finalizeOrder = async (paymentMethod) => {
         if (Object.keys(order).length === 0) return;
-
         const newStatus = (paymentMethod === 'Cancelled') ? 'cancelled' : 'pending';
-        
-        let newQueueNumber = null; // 1. สร้างตัวแปรเลขคิว
-
-        // 2. ถ้าออเดอร์นี้ "ไม่ใช่" ออเดอร์ที่ยกเลิก ให้ไปหาเลขคิว
+        let newQueueNumber = null; 
         if (newStatus === 'pending') {
             try {
-                // 2.1 หาเวลาเที่ยงคืนของวันนี้
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                
-                // 2.2 ค้นหาว่าวันนี้มีออเดอร์ไปแล้วกี่ใบ (รวม pending, completed, cancelled)
                 const querySnapshot = await db.collection("orders")
                     .where("createdAt", ">=", today)
                     .get();
-                
-                // 2.3 เลขคิวใหม่ = จำนวนออเดอร์ทั้งหมดของวันนี้ + 1
                 newQueueNumber = querySnapshot.size + 1;
-
             } catch (error) {
                 console.error("Error getting queue number: ", error);
                 alert("เกิดข้อผิดพลาดในการดึงเลขคิว!");
-                return; // หยุดทำงานถ้าดึงเลขคิวไม่ได้
+                return;
             }
         }
-
-        // 3. เตรียมข้อมูลออเดอร์
         const orderData = {
             items: order,
             subTotal: parseFloat(subTotalSpan.textContent),
@@ -218,34 +204,23 @@ document.addEventListener('DOMContentLoaded', () => {
             paymentMethod: paymentMethod, 
             createdAt: firebase.firestore.FieldValue.serverTimestamp(), 
             status: newStatus,
-            queueNumber: newQueueNumber // 4. ใส่เลขคิวใหม่ลงไป (ถ้าเป็น null คือออเดอร์ยกเลิก)
+            queueNumber: newQueueNumber 
         };
-
-        // 5. บันทึกข้อมูล
         try {
-            // เราจะบันทึกออเดอร์ทุกสถานะ (รวม 'cancelled') เพื่อเก็บเป็นประวัติ
             const docRef = await db.collection("orders").add(orderData);
-            
             if (newStatus === 'pending') {
                 console.log(`Order written to Firestore with ID: ${docRef.id} and Queue: ${newQueueNumber}`);
             } else {
                 console.log("Order was cancelled. Saved to history.", docRef.id);
             }
-
-            // 6. เคลียร์หน้าจอ
             order = {};
             discountInput.value = '';
             renderOrderList();
-            
         } catch (error) {
             console.error("Error adding document: ", error);
             alert("เกิดข้อผิดพลาดในการบันทึกออเดอร์! กรุณาลองอีกครั้ง");
         }
     };
-    // ‼️ --- END: โค้ดที่แก้ไข --- ‼️
-
-
-    // (generatePromptPayQR เหมือนเดิม)
     const generatePromptPayQR = (amount, containerElement) => {
         const promptPayConfig = { id: '099XXXXXXX', shopName: 'THE CONNECT' }; // <-- แก้ไขเบอร์ PromptPay ที่นี่
         const generatePayload = (promptPayId, amount) => {
@@ -274,59 +249,111 @@ document.addEventListener('DOMContentLoaded', () => {
             correctLevel: QRCode.CorrectLevel.H
         });
     };
-
-    // (showSalesReport เหมือนเดิม)
+    
+    // ‼️ --- START: โค้ดที่แก้ไข (ยกเครื่องรายงาน) --- ‼️
     const showSalesReport = async () => {
         salesReportDetails.innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> กำลังโหลดรายงาน...</h3>';
         salesReportModal.style.display = 'flex';
+
         try {
+            // 1. ดึงข้อมูล
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
+
             const querySnapshot = await db.collection("orders")
                 .where("createdAt", ">=", today)
+                .where("createdAt", "<", tomorrow)
                 .get();
-            let totalSalesAmount = 0;
-            let totalCost = 0;
-            let salesReport = {};
+
+            // 2. เตรียมตัวแปร
+            let allOrders = [];
             querySnapshot.forEach(doc => {
-                const orderData = doc.data();
-                if (orderData.paymentMethod === 'Cancelled') return; 
-                const orderItems = orderData.items;
-                for (const itemId in orderItems) {
-                    const item = orderItems[itemId];
-                    const itemName = item.name.split(' (')[0]; 
-                    if (!salesReport[itemName]) {
-                        salesReport[itemName] = { quantity: 0, total: 0, cost: 0 };
-                    }
-                    salesReport[itemName].quantity += item.quantity;
-                    salesReport[itemName].total += item.price * item.quantity;
-                    const itemCost = item.cost || 0;
-                    salesReport[itemName].cost += itemCost * item.quantity;
-                }
-                totalSalesAmount += orderData.grandTotal;
+                allOrders.push(doc.data());
             });
-            totalCost = Object.values(salesReport).reduce((acc, item) => acc + item.cost, 0);
+
+            // 3. เรียงลำดับออเดอร์ตามเวลา (สำคัญมาก)
+            allOrders.sort((a, b) => {
+                if (a.createdAt && b.createdAt) {
+                    return a.createdAt.toMillis() - b.createdAt.toMillis();
+                }
+                return 0; // ถ้าข้อมูลเก่าไม่มี createdAt
+            });
+
+            let totalSalesAmount = 0;
+            let totalCashSales = 0;
+            let totalQRSales = 0;
+            let totalCost = 0;
+            let ordersHtml = ''; // HTML สำหรับรายการออเดอร์
+
+            // 4. วนลูปออเดอร์ที่เรียงแล้ว
+            allOrders.forEach(orderData => {
+                if (orderData.paymentMethod === 'Cancelled') return; // ข้ามออเดอร์ที่ยกเลิก
+
+                // 4.1. สรุปยอดรวม
+                totalSalesAmount += orderData.grandTotal;
+                if (orderData.paymentMethod === 'Cash') {
+                    totalCashSales += orderData.grandTotal;
+                } else if (orderData.paymentMethod === 'QR') {
+                    totalQRSales += orderData.grandTotal;
+                }
+
+                // 4.2. สร้าง HTML สำหรับแต่ละออเดอร์ (แบบพับได้)
+                const time = orderData.createdAt.toDate().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+                const paymentText = orderData.paymentMethod === 'Cash' ? '(เงินสด)' : '(QR Code)';
+                const queueNum = orderData.queueNumber || 'N/A'; // N/A สำหรับออเดอร์เก่าที่ไม่มีเลขคิว
+
+                ordersHtml += `<details class="report-order-item">`;
+                ordersHtml += `
+                    <summary>
+                        <strong>คิวที่ ${queueNum} ${paymentText}</strong>
+                        <span>(${time})</span>
+                        <strong>${orderData.grandTotal.toFixed(2)} บาท</strong>
+                    </summary>
+                `;
+                
+                // 4.3. สร้าง HTML สำหรับรายการสินค้าในออเดอร์นั้นๆ
+                let itemsHtml = '<div class="order-item-details">';
+                let orderCost = 0;
+                for (const itemId in orderData.items) {
+                    const item = orderData.items[itemId];
+                    const itemCost = item.cost || 0;
+                    const profit = (item.price * item.quantity) - (itemCost * item.quantity);
+                    orderCost += (itemCost * item.quantity);
+                    itemsHtml += `<p>• ${item.name} (x${item.quantity}) (กำไร: ${profit.toFixed(2)} บาท)</p>`;
+                }
+                itemsHtml += '</div>';
+                ordersHtml += itemsHtml + '</details>';
+
+                totalCost += orderCost; // เพิ่มต้นทุนของออเดอร์นี้
+            });
+            
             const totalProfit = totalSalesAmount - totalCost;
+
+            // 5. สร้าง HTML รายงานฉบับสมบูรณ์
             let reportHTML = `<h3>ยอดขายรวม: ${totalSalesAmount.toFixed(2)} บาท</h3>`;
+            // เพิ่มสรุปยอดเงินสดและ QR (เป้าหมายของคุณ)
+            reportHTML += `<h4 class="sales-subtotal"> - ยอดเงินสด: ${totalCashSales.toFixed(2)} บาท</h4>`;
+            reportHTML += `<h4 class="sales-subtotal"> - ยอด QR Code: ${totalQRSales.toFixed(2)} บาท</h4>`;
+            
             reportHTML += `<h3>ยอดต้นทุนรวม: ${totalCost.toFixed(2)} บาท</h3>`;
             reportHTML += `<h3>กำไรสุทธิ: ${totalProfit.toFixed(2)} บาท</h3>`;
-            reportHTML += '<h4>รายการขายตามเมนู:</h4><ul>';
-            for (const itemName in salesReport) {
-                const profitPerItem = salesReport[itemName].total - salesReport[itemName].cost;
-                reportHTML += `<li>${itemName}: ${salesReport[itemName].quantity} ชิ้น (กำไร: ${profitPerItem.toFixed(2)} บาท)</li>`;
-            }
-            reportHTML += '</ul>';
-            salesReportDetails.innerHTML = querySnapshot.empty ? '<h3>ยังไม่มีรายการขายในวันนี้</h3>' : reportHTML;
+            reportHTML += '<hr><h4>รายการออเดอร์ตามคิว:</h4>';
+            reportHTML += `<div class="order-list-container">${ordersHtml}</div>`; // ใส่รายการออเดอร์ลงในกล่อง
+
+            salesReportDetails.innerHTML = allOrders.length === 0 ? '<h3>ยังไม่มีรายการขายในวันนี้</h3>' : reportHTML;
+
         } catch (error) {
             console.error("Error getting sales report: ", error);
             salesReportDetails.innerHTML = '<h3>เกิดข้อผิดพลาดในการโหลดรายงาน</h3>';
         }
     };
+    // ‼️ --- END: โค้ดที่แก้ไข --- ‼️
+
 
     // --- 5. EVENT LISTENERS & INITIALIZATION ---
-    // (Listeners ส่วนใหญ่เหมือนเดิม)
+    // (Listeners ทั้งหมดเหมือนเดิม)
     menuTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             menuTabs.forEach(t => t.classList.remove('active'));

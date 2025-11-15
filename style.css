@@ -37,6 +37,7 @@ body {
 }
 
 /* --- 3. Menu Container (Left Column) --- */
+/* (เหมือนเดิม) */
 .menu-container {
     padding: 2rem;
     border-right: 1px solid var(--border-color);
@@ -133,6 +134,7 @@ body {
 .menu-item-card p { margin: 0.25rem 0 0; color: var(--primary-color); font-weight: bold; }
 
 /* --- 4. Order Container (Right Column) --- */
+/* (เหมือนเดิม) */
 .order-container {
     padding: 2rem;
     background-color: var(--light-gray);
@@ -229,10 +231,8 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
 .payment-buttons button i, .close-btn i { margin-right: 0.5rem; }
 
 /* --- 5. Modal & Print Styles --- */
-
-/* ‼️ --- START: โค้ดที่แก้ไข (จัดกลาง) --- ‼️ */
 .modal {
-    display: none; /* JS จะเปลี่ยนเป็น 'flex' เพื่อเปิด */
+    display: none; 
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -241,34 +241,23 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     height: 100%;
     background-color: rgba(0,0,0,0.6);
     backdrop-filter: blur(5px);
-    
-    /* เพิ่ม 2 บรรทัดนี้เพื่อจัดกลาง */
     align-items: center;
     justify-content: center;
 }
 .modal-content { 
     background-color: #fff; 
-    
-    /* ‼️ --- ลบ margin: 10% auto; --- ‼️ */
-    /* margin: 10% auto; */ 
-    margin: 1rem; /* เพิ่ม margin กันขอบจอ */
-    
+    margin: 1rem;
     padding: 2rem; 
     border-radius: var(--border-radius); 
     text-align: center; 
     position: relative; 
-    
-    /* ‼️ --- ทำให้ "เด่นชัด" ขึ้น --- ‼️ */
-    max-width: 500px; /* ขยายจาก 450px */
-    width: 100%; /* ทำให้ยืดหยุ่น */
-    
+    max-width: 500px;
+    width: 100%;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
     display: flex;
     flex-direction: column;
     max-height: 85vh;
 }
-/* ‼️ --- END: โค้ดที่แก้ไข (จัดกลาง) --- ‼️ */
-
 
 .close-button { color: #aaa; position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; font-weight: bold; cursor: pointer; }
 .sweetness-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
@@ -336,10 +325,8 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     background-color: var(--primary-color); color: white; border: none;
     border-radius: var(--border-radius); width: 100%; cursor: pointer;
 }
-
-/* (สไตล์ Modal QR Code ที่ถูกต้อง) */
 .modal-content h2 {
-    flex-shrink: 0;
+    flex-shrink: 0; 
 }
 #modal-qr-code {
     width: 200px; 
@@ -358,9 +345,9 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     background: var(--light-gray);
     font-size: 0.9rem;
     margin-bottom: 1rem;
-    flex-grow: 1;
-    overflow-y: auto;
-    min-height: 50px;
+    flex-grow: 1; 
+    overflow-y: auto; 
+    min-height: 50px; 
 }
 #modal-total-payment {
     font-size: 1.8rem;
@@ -387,6 +374,58 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 1
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
+
+/* ‼️ --- START: สไตล์ใหม่สำหรับรายงาน --- ‼️ */
+.modal-content h4.sales-subtotal {
+    font-size: 1.1rem;
+    color: #495057;
+    margin: 0.5rem 0 0.5rem 1.5rem; /* ย่อหน้าเล็กน้อย */
+    font-weight: normal;
+    text-align: left;
+}
+.order-list-container {
+    max-height: 30vh; /* จำกัดความสูง และเลื่อนได้ */
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-top: 1rem;
+    background-color: var(--light-gray);
+}
+.report-order-item {
+    border-bottom: 1px solid var(--border-color);
+}
+.report-order-item:last-child {
+    border-bottom: none;
+}
+.report-order-item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+.report-order-item summary:hover {
+    background-color: #e9ecef;
+}
+/* เปลี่ยนลูกศร (ถ้าเบราว์เซอร์รองรับ) */
+.report-order-item summary::marker {
+    content: '▶ ';
+    color: var(--primary-Rcolor);
+}
+.report-order-item[open] summary::marker {
+    content: '▼ ';
+}
+.order-item-details {
+    padding: 1rem 1rem 1rem 2.5rem; /* ย่อหน้ารายละเอียด */
+    background-color: #fff;
+    text-align: left;
+}
+.order-item-details p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+}
+/* ‼️ --- END: สไตล์ใหม่สำหรับรายงาน --- ‼️ */
 
 @media print {
     /* (โค้ด Print Styles เหมือนเดิม) */
