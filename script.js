@@ -640,11 +640,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    window.addEventListener('click', (event) => {
-        if (event.target !== discountInput) {
+    const dismissDiscountKeyboard = (event) => {
+        if (document.activeElement === discountInput && event.target !== discountInput) {
             discountInput.blur(); 
         }
-    });
+    };
+
+    // ใช้ทั้ง click และ touchstart
+    window.addEventListener('click', dismissDiscountKeyboard);
+    window.addEventListener('touchstart', dismissDiscountKeyboard);
 
     // Initial Render
     renderMenuItems('coffee'); // Default to coffee
