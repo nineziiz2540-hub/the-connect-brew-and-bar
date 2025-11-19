@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginModal = document.getElementById('login-modal');
     const loginInput = document.getElementById('login-pin-input');
     const loginBtn = document.getElementById('login-btn');
-    const CORRECT_PIN = "1234"; 
+    const CORRECT_PIN = "5635"; 
 
     const checkLogin = () => {
         if (loginInput.value === CORRECT_PIN) {
