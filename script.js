@@ -486,7 +486,16 @@ document.addEventListener('DOMContentLoaded', () => {
         customItemNameInput.focus();
     });
 
+    customItemModal.addEventListener('click', (event) => {
+        if (event.target !== customItemNameInput && event.target !== customItemPriceInput) {
+            customItemNameInput.blur();
+            customItemPriceInput.blur();
+        }
+    });
+
     addCustomItemBtn.addEventListener('click', () => {
+        customItemNameInput.blur();
+        customItemPriceInput.blur();
         const name = customItemNameInput.value.trim();
         const price = parseFloat(customItemPriceInput.value);
         if (!name || isNaN(price) || price < 0) {
@@ -628,6 +637,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', (event) => {
         if (event.target.classList.contains('modal')) {
             // (เราจะไม่ซ่อนเมื่อคลิกที่พื้นหลังอีกต่อไป)
+        }
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target !== discountInput) {
+            discountInput.blur(); 
         }
     });
 
