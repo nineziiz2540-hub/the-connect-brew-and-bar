@@ -1,37 +1,80 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. DATA AND CONFIGURATION ---
+    // ตัวเลือกเสริมมาตรฐานสำหรับเครื่องดื่ม (แก้ไขตัดหวาน 30% ออกแล้ว)
+    const stdCoffeeModifiers = [
+        { groupName: "ระดับความหวาน", options: [
+            { name: 'หวาน 100% (ปกติ)', price: 0 }, 
+            { name: 'หวาน 50%', price: 0 }, 
+            { name: 'ไม่หวาน 0%', price: 0 }
+        ]},
+        { groupName: "ประเภทนม", options: [
+            { name: 'นมสด (ปกติ)', price: 0 }, { name: 'นมโอ๊ต', price: 10 }, { name: 'นมอัลมอนด์', price: 20 }
+        ]},
+        { groupName: "เพิ่มเติม", options: [
+            { name: 'ปกติ', price: 0 }, { name: 'เพิ่ม 1 ช็อต', price: 20 }, { name: 'เพิ่มวิปครีม', price: 10 }
+        ]}
+    ];
+
+    // สำหรับชาใส/น้ำผลไม้ (แก้ไขตัดหวาน 30% ออกแล้ว)
+    const simpleModifiers = [ 
+        { groupName: "ระดับความหวาน", options: [
+            { name: 'หวาน 100% (ปกติ)', price: 0 }, 
+            { name: 'หวาน 50%', price: 0 }, 
+            { name: 'ไม่หวาน 0%', price: 0 }
+        ]}
+    ];
     const menuData = [
-        {
-            id: 'latte-ice', name: 'Latte Ice', price: 70, cost: 25, img: 'https://yalamarketplace.com/upload/1675666033436.jpg', category: 'drinks',
-            modifiers: [
-                { groupName: "ระดับความหวาน", options: [
-                    { name: 'หวาน 100% (ปกติ)', price: 0 }, { name: 'หวาน 50%', price: 0 }, { name: 'หวาน 30%', price: 0 }, { name: 'ไม่หวาน 0%', price: 0 }
-                ]},
-                { groupName: "ประเภทนม", options: [
-                    { name: 'นมสด (ปกติ)', price: 0 }, { name: 'นมโอ๊ต', price: 15 }, { name: 'นมอัลมอนด์', price: 15 }
-                ]},
-                { groupName: "พิเศษ", options: [
-                    { name: 'ปกติ', price: 0 }, { name: 'เพิ่ม 1 ช็อต', price: 15 }, { name: 'เพิ่มวิปครีม', price: 10 }
-                ]}
-            ]
-        },
-        { id: 'americano-ice', name: 'Americano Ice', price: 65, cost: 20, img: 'https://as2.ftcdn.net/v2/jpg/06/09/41/09/1000_F_609410904_L1MJUlP4gAmsVzHfAqwh8dB6s3Rguwn5.jpg', hasSweetness: true, category: 'drinks'},
-        { id: 'cappuccino-ice', name: 'Cappuccino Ice', price: 70, cost: 25, img: 'https://yalamarketplace.com/upload/1675665497236.jpg', hasSweetness: true, category: 'drinks'},
-        { id: 'mocha-ice', name: 'Mocha Ice', price: 75, cost: 30, img: 'https://yalamarketplace.com/upload/1623747365788.jpg', hasSweetness: true, category: 'drinks'},
-        { id: 'chochcolat', name: 'Chochcolat', price: 60, cost: 20, img: 'https://image.makewebeasy.net/makeweb/m_1920x0/W7OuxZEpB/DefaultData/%E0%B8%8A%E0%B8%B2%E0%B9%8แ%E0%B8%A5%E0%B8%B0%E0%B8%A7%E0%B8%B1%E0%B8%95%E0%B8%96%E0%B8%B8%E0%B8%94%E0%B8%B4%E0%B8%9A_36.jpg?v=202405291424', hasSweetness: true, category: 'drinks'},
-        { id: 'dirty', name: 'Dirty', price: 80, cost: 35, img: 'https://image.bangkokbiznews.com/uploads/images/md/2024/10/QTxhBq33w2ndhtVTvjbw.webp?x-image-process=style/LG-webp', category: 'drinks'},
-        { id: 'orange-juice', name: 'น้ำส้มสกัดเย็น', price: 60, cost: 30, img: 'https://img.wongnai.com/p/1920x0/2023/03/31/9a822aee8a9c40c4b23716be4a317b43.jpg', category: 'fruit-drinks' },
-        { id: 'lemon-juice', name: 'น้ำมะนาวสกัดเย็น', price: 60, cost: 25, img: 'https://www.top10.in.th/wp-content/uploads/2022/05/7-%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B0%E0%B8%99%E0%B8%B2%E0%B8%A7%E0%B8%82%E0%B8%A7%E0%B8%94-%E0%B8%A2%E0%B8%B5%E0%B9%88%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B9%84%E0%B8%AB%E0%B8%99-%E0%B8%AD%E0%B8%A3%E0%B9%88%E0%B8%AD%E0%B8%AY-%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B8%A3%E0%B8%AA.jpg', category: 'fruit-drinks' },
-        { id: 'apple-juice', name: 'น้ำแอปเปิ้ลสกัดเย็น', price: 60, cost: 25, img: 'https://th.tnnchemical.com/uploads/202133857/tnn-apple-juice-concentrate58000609698.png', category: 'fruit-drinks' },
-        { id: 'kapaokaidao', name: 'กะเพราเนื้อ ไข่ดาว', price: 65, cost: 35, img: 'https://s359.thaicdn.net/pagebuilder/420d19a1-f33b-408d-8bee-f94c0b691fc3.jpg', category: 'food' },
-        { id: 'kapaomoohkaidao', name: 'กะเพราหมู ไข่ดาว', price: 65, cost: 30, img: 'https://s359.thaicdn.net/pagebuilder/3132fac8-2481-477d-8f83-54af38ccb434.jpg', category: 'food' },
-        { id: 'croissant-chochorat', name: 'ครัวซองต์-ช็อคโกแลต', price: 45, cost: 20, img: 'https://mooyoo.co.th/wp-content/uploads/2022/07/new-product-croffle-5.png', category: 'bakery' },
-        { id: 'croissant-starberry', name: 'ครัวซองต์-สตอเบอรี่', price: 45, cost: 20, img: 'https://cdn.pixabay.com/photo/2021/09/27/16/10/croissant-6661477_1280.png', category: 'bakery' },
-        { id: 'water', name: 'น้ำเปล่า', price: 15, cost: 5, img: 'https://img.th.my-best.com/product_images/d68638208391099f2dc353bffc6ab717.jpeg?ixlib=rails-4.3.1&q=45&lossless=0&w=160&h=160&fit=clip&s=95a5363c0adb8ee1f760b4c67a7257a8', category: 'other-drinks' },
-        { id: 'coke', name: 'โค้ก', price: 25, cost: 10, img: 'https://gda.thai-tba.or.th/wp-content/uploads/2018/07/coke-rgb-422-ml.png', category: 'other-drinks' },
-        { id: 'pepsi', name: 'เป๊ปซี่', price: 25, cost: 10, img: 'https://gourmetmarketthailand.com/_next/image?url=https%3A%2F%2Fmedia-stark.gourmetmarketthailand.com%2Fproducts%2Fcover%2F8858998581054-1.webp&w=640&q=75', category: 'other-drinks' },
-        { id: 'sprite', name: 'สไปรท์', price: 25, cost: 10, img: 'https://gda.thai-tba.or.th/wp-content/uploads/2018/07/sprite-rgb-1-l-dry.png', category: 'other-drinks' },
-        { id: 'sponsor', name: 'สปอนเซอร์', price: 20, cost: 12, img: 'https://www.halal.co.th/storages/products/499894.jpg', category: 'other-drinks' },
+        // --- COFFEE ---
+        { id: 'c-espresso-h', name: 'Espresso (Hot)', nameThai: 'เอสเพรสโซ่ (ร้อน)', price: 55, cost: 22.53, category: 'coffee', modifiers: [] }, // Espresso usually no mods or custom
+        { id: 'c-americano-h', name: 'Americano (Hot)', nameThai: 'อเมริกาโน่ (ร้อน)', price: 60, cost: 23.13, category: 'coffee', modifiers: simpleModifiers },
+        { id: 'c-americano-i', name: 'Americano (Iced)', nameThai: 'อเมริกาโน่ (เย็น)', price: 60, cost: 23.61, category: 'coffee', modifiers: simpleModifiers },
+        { id: 'c-latte-h', name: 'Latte (Hot)', nameThai: 'ลาเต้ (ร้อน)', price: 60, cost: 26, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-latte-i', name: 'Latte (Iced)', nameThai: 'ลาเต้ (เย็น)', price: 70, cost: 24.74, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-cappu-h', name: 'Cappuccino (Hot)', nameThai: 'คาปูชิโน่ (ร้อน)', price: 60, cost: 26, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-cappu-i', name: 'Cappuccino (Iced)', nameThai: 'คาปูชิโน่ (เย็น)', price: 70, cost: 24.74, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-esyen', name: 'Es Yen Thai Style (Iced)', nameThai: 'เอสเย็น (เย็น)', price: 70, cost: 26.38, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-mocca-h', name: 'Mocca (Hot)', nameThai: 'มอคค่า (ร้อน)', price: 60, cost: 27, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-mocca-i', name: 'Mocca (Iced)', nameThai: 'มอคค่า (เย็น)', price: 70, cost: 26.63, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-caramel-mac', name: 'Caramel Macchiato (Iced)', nameThai: 'คาราเมล มัคคิอาโต้ (เย็น)', price: 70, cost: 25.49, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-orange-cof', name: 'Orange Coffee (Iced)', nameThai: 'ออเรนจ์ คอฟฟี่ (เย็น)', price: 70, cost: 28.31, category: 'coffee', modifiers: simpleModifiers },
+        { id: 'c-coconut-cof', name: 'Coconut Coffee (Iced)', nameThai: 'โคโคนัท คอฟฟี่ (เย็น)', price: 70, cost: 28.31, category: 'coffee', modifiers: simpleModifiers },
+        { id: 'c-affogato', name: 'Affogato Coffee', nameThai: 'อัฟโฟกาโต้ คอฟฟี่', price: 85, cost: 34.5, category: 'coffee', modifiers: [] },
+
+        // --- MATCHA ---
+        { id: 'm-clear-uji-h', name: 'Clear Matcha Uji (Hot)', nameThai: 'เคลียร์ มัทฉะ อูจิ (ร้อน)', price: 70, cost: 29.26, category: 'matcha', modifiers: simpleModifiers },
+        { id: 'm-clear-uji-i', name: 'Clear Matcha Uji (Iced)', nameThai: 'เคลียร์ มัทฉะ อูจิ (เย็น)', price: 75, cost: 29.26, category: 'matcha', modifiers: simpleModifiers },
+        { id: 'm-clear-nishio-h', name: 'Clear Matcha Nishio (Hot)', nameThai: 'เคลียร์ มัทฉะ นิชิโอะ (ร้อน)', price: 135, cost: 74.38, category: 'matcha', modifiers: simpleModifiers },
+        { id: 'm-clear-nishio-i', name: 'Clear Matcha Nishio (Iced)', nameThai: 'เคลียร์ มัทฉะ นิชิโอะ (เย็น)', price: 140, cost: 74.38, category: 'matcha', modifiers: simpleModifiers },
+        { id: 'm-latte-uji-h', name: 'Matcha Latte Uji (Hot)', nameThai: 'มัทฉะ ลาเต้ อูจิ (ร้อน)', price: 80, cost: 35.07, category: 'matcha', modifiers: stdCoffeeModifiers },
+        { id: 'm-latte-uji-i', name: 'Matcha Latte Uji (Iced)', nameThai: 'มัทฉะ ลาเต้ อูจิ (เย็น)', price: 85, cost: 35.07, category: 'matcha', modifiers: stdCoffeeModifiers },
+        { id: 'm-latte-nishio-h', name: 'Matcha Latte Nishio (Hot)', nameThai: 'มัทฉะ ลาเต้ นิชิโอะ (ร้อน)', price: 155, cost: 80.19, category: 'matcha', modifiers: stdCoffeeModifiers },
+        { id: 'm-latte-nishio-i', name: 'Matcha Latte Nishio (Iced)', nameThai: 'มัทฉะ ลาเต้ นิชิโอะ (เย็น)', price: 160, cost: 80.19, category: 'matcha', modifiers: stdCoffeeModifiers },
+        { id: 'm-coco-uji', name: 'Coconut Matcha Uji (Iced)', nameThai: 'โคโคนัท มัทฉะ อูจิ (เย็น)', price: 85, cost: 35, category: 'matcha', modifiers: simpleModifiers },
+        { id: 'm-coco-nishio', name: 'Coconut Matcha Nishio (Iced)', nameThai: 'โคโคนัท มัทฉะ นิชิโอะ (เย็น)', price: 160, cost: 80, category: 'matcha', modifiers: simpleModifiers },
+        { id: 'm-orange-uji', name: 'Orange Matcha Uji (Iced)', nameThai: 'ออเรนจ์ มัทฉะ อูจิ (เย็น)', price: 85, cost: 35, category: 'matcha', modifiers: simpleModifiers },
+        { id: 'm-orange-nishio', name: 'Orange Matcha Nishio (Iced)', nameThai: 'ออเรนจ์ มัทฉะ นิชิโอะ (เย็น)', price: 160, cost: 80, category: 'matcha', modifiers: simpleModifiers },
+        { id: 'm-hojicha', name: 'Hojicha Latte (Iced)', nameThai: 'โฮจิฉะ ลาเต้ (เย็น)', price: 70, cost: 28.10, category: 'matcha', modifiers: stdCoffeeModifiers },
+
+        // --- NON COFFEE ---
+        { id: 'n-thaitea', name: 'Thai Tea (Iced)', nameThai: 'ชาไทย (เย็น)', price: 55, cost: 11.54, category: 'non-coffee', modifiers: stdCoffeeModifiers },
+        { id: 'n-greentea', name: 'Green Tea (Iced)', nameThai: 'ชาเขียว (เย็น)', price: 55, cost: 14.22, category: 'non-coffee', modifiers: stdCoffeeModifiers },
+        { id: 'n-cocoa-h', name: 'Cocoa Latte (Hot)', nameThai: 'โกโก้ ลาเต้ (ร้อน)', price: 50, cost: 18.68, category: 'non-coffee', modifiers: stdCoffeeModifiers },
+        { id: 'n-cocoa-i', name: 'Cocoa Latte (Iced)', nameThai: 'โกโก้ ลาเต้ (เย็น)', price: 55, cost: 18.97, category: 'non-coffee', modifiers: stdCoffeeModifiers },
+        { id: 'n-milk-h', name: 'Fresh Milk (Hot)', nameThai: 'นมสด (ร้อน)', price: 40, cost: 13.33, category: 'non-coffee', modifiers: stdCoffeeModifiers },
+        { id: 'n-milk-i', name: 'Fresh Milk (Iced)', nameThai: 'นมสด (เย็น)', price: 45, cost: 13.61, category: 'non-coffee', modifiers: stdCoffeeModifiers },
+        { id: 'n-lemontea', name: 'Lemon Tea (Iced)', nameThai: 'ชามะนาว (เย็น)', price: 40, cost: 8, category: 'non-coffee', modifiers: simpleModifiers },
+        { id: 'n-honeylemon', name: 'Honey Lemon (Iced)', nameThai: 'น้ำผึ้งมะนาว (เย็น)', price: 40, cost: 7, category: 'non-coffee', modifiers: simpleModifiers },
+        { id: 'n-caramel-h', name: 'Caramel Milk (Hot)', nameThai: 'คาราเมล มิลค์ (ร้อน)', price: 40, cost: 15.11, category: 'non-coffee', modifiers: stdCoffeeModifiers },
+        { id: 'n-caramel-i', name: 'Caramel Milk (Iced)', nameThai: 'คาราเมล มิลค์ (เย็น)', price: 40, cost: 15.11, category: 'non-coffee', modifiers: stdCoffeeModifiers },
+        { id: 'n-orange', name: 'Orange Juice', nameThai: 'น้ำส้ม', price: 40, cost: 10, category: 'non-coffee', modifiers: [] },
+        { id: 'n-coconut', name: 'Coconut Juice', nameThai: 'น้ำมะพร้าว', price: 40, cost: 10, category: 'non-coffee', modifiers: [] },
+
+        // --- FOOD (ตัวอย่าง - แก้ไขราคาได้) ---
+        { id: 'f-kaprao-beef', name: 'Beef Basil + Egg', nameThai: 'กะเพราเนื้อ ไข่ดาว', price: 65, cost: 35, category: 'food', modifiers: [] },
+        { id: 'f-kaprao-pork', name: 'Pork Basil + Egg', nameThai: 'กะเพราหมู ไข่ดาว', price: 65, cost: 30, category: 'food', modifiers: [] },
+
+        // --- BAKERY (ตัวอย่าง - แก้ไขราคาได้) ---
+        { id: 'b-croissant-choc', name: 'Croissant Chocolate', nameThai: 'ครัวซองต์ ช็อคโกแลต', price: 45, cost: 20, category: 'bakery', modifiers: [] },
+        { id: 'b-croissant-straw', name: 'Croissant Strawberry', nameThai: 'ครัวซองต์ สตอเบอรี่', price: 45, cost: 20, category: 'bakery', modifiers: [] },
     ];
 
     // --- 2. UI ELEMENTS ---
@@ -52,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const discountInput = document.getElementById('discount-input');
     const discountType = document.getElementById('discount-type');
     const clearOrderBtn = document.getElementById('clear-order-btn');
+    // Modals
     const sweetnessModal = document.getElementById('sweetness-modal');
     const sweetnessButtons = document.querySelectorAll('.sweetness-btn');
     const addToOrderButton = document.getElementById('add-to-order-btn');
@@ -61,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cashReceivedInput = document.getElementById('cash-received-input');
     const changeDueSpan = document.getElementById('change-due');
     const confirmCashPaymentBtn = document.getElementById('confirm-cash-payment-btn');
+    // New Function UI
     const customItemBtn = document.getElementById('custom-item-btn');
     const modifiersModal = document.getElementById('modifiers-modal');
     const modifiersItemName = document.getElementById('modifiers-item-name');
@@ -83,10 +128,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'menu-item-card';
             card.dataset.id = item.id;
-            card.innerHTML = `<img src="${item.img}" alt="${item.name}"><h4>${item.name}</h4><p>${item.price.toFixed(2)} บาท</p>`;
+            
+            // ‼️ ปรับ HTML ในการ์ดให้โชว์ชื่อไทย/อังกฤษ และลบรูปภาพ ‼️
+            card.innerHTML = `
+                <h4>${item.name}</h4>
+                <p class="thai-name">(${item.nameThai})</p>
+                <p class="price">${item.price.toFixed(0)}</p>
+            `;
             menuItemsContainer.appendChild(card);
         });
     };
+    
     const updateSummary = () => {
         let subTotal = 0;
         for (const itemId in order) {
@@ -98,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         subTotalSpan.textContent = subTotal.toFixed(2);
         grandTotalSpan.textContent = grandTotal >= 0 ? grandTotal.toFixed(2) : '0.00';
     };
+
     const renderOrderList = () => {
         orderList.innerHTML = '';
         if (Object.keys(order).length > 0) {
@@ -109,19 +162,25 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const itemId in order) {
             const item = order[itemId];
             const li = document.createElement('li');
+            
             let mainName = item.name;
             let details = '';
             const detailsMatch = item.name.match(/\(([^)]+)\)/);
-            if (detailsMatch) {
-                mainName = item.name.replace(detailsMatch[0], '').trim();
-                details = detailsMatch[1];
-            }
-            const displayNameWithQuantity = `${mainName} (x${item.quantity})`;
-            const detailsInfo = details ? `<p class="sweetness-detail">- ${details}</p>` : '';
+            // ถ้าชื่อมีวงเล็บ (เช่น Hot/Iced) เราอาจจะเก็บไว้ หรือถ้ามาจาก modifier ก็จะแยก
+            // แต่ในระบบใหม่ ชื่อสินค้ามี (Hot)/(Iced) อยู่แล้ว อาจจะไม่ต้องตัด
+            // แต่ถ้ามี details เพิ่มเติมจาก modifier จะต่อท้าย
+            
+            // โค้ดเดิมพยายามตัด (...) ออกจากชื่อหลัก ซึ่งอาจจะไปตัด (Hot)/(Iced) ออกด้วย
+            // ปรับปรุง: ตัดเฉพาะรายละเอียดที่มาจาก modifier (ซึ่งเรายังไม่ได้รวมในชื่อหลักตอนกด)
+            // หรือวิธีง่ายสุด: แสดงชื่อเต็มๆ ไปเลย แล้วแสดง details แยกบรรทัด
+
+            const displayNameWithQuantity = `${item.name} (x${item.quantity})`;
+            // หา details ที่อยู่ในวงเล็บ "ตัวสุดท้าย" ถ้ามันยาวๆ (มาจาก modifier)
+            // แต่เพื่อความง่าย เราแสดงชื่อเต็มที่สร้างตอนกดปุ่มเลยจะดีกว่า
+            
             li.innerHTML = `
                 <div class="item-info">
                     <h4>${displayNameWithQuantity}</h4>
-                    ${detailsInfo}
                 </div>
                 <div class="item-quantity">
                     <button class="remove-item" data-id="${itemId}"><i class="fas fa-minus-circle"></i></button>
@@ -135,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateSummary();
     };
+
     const populateModifiersModal = (item) => {
         modifiersItemName.textContent = item.name;
         modifierOptionsContainer.innerHTML = '';
@@ -161,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const priceAdjustSpan = document.createElement('span');
                 priceAdjustSpan.className = 'price-adjust';
                 if (option.price > 0) {
-                    priceAdjustSpan.textContent = `(+${option.price} บาท)`;
+                    priceAdjustSpan.textContent = `(+${option.price})`;
                 }
                 label.appendChild(optionNameSpan);
                 label.appendChild(priceAdjustSpan);
@@ -173,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         modifiersModal.style.display = 'flex';
     };
+    
     const finalizeOrder = async (paymentMethod) => {
         if (Object.keys(order).length === 0) return;
         const newStatus = (paymentMethod === 'Cancelled') ? 'cancelled' : 'pending';
@@ -217,8 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("เกิดข้อผิดพลาดในการบันทึกออเดอร์! กรุณาลองอีกครั้ง");
         }
     };
+
     const generatePromptPayQR = (amount, containerElement) => {
-        const promptPayConfig = { id: '099XXXXXXX', shopName: 'THE CONNECT' }; // <-- แก้ไขเบอร์ PromptPay ที่นี่
+        const promptPayConfig = { id: '099XXXXXXX', shopName: 'THE CONNECT' }; 
         const generatePayload = (promptPayId, amount) => {
             const formatField = (id, value) => id + String(value.length).padStart(2, '0') + value;
             const target = promptPayId.replace(/-/g, '');
@@ -245,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             correctLevel: QRCode.CorrectLevel.H
         });
     };
+
     const showSalesReport = async () => {
         salesReportDetails.innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> กำลังโหลดรายงาน...</h3>';
         salesReportModal.style.display = 'flex';
@@ -255,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tomorrow.setDate(tomorrow.getDate() + 1);
             const querySnapshot = await db.collection("orders")
                 .where("createdAt", ">=", today)
+                .where("createdAt", "<", tomorrow)
                 .get();
             let allOrders = [];
             querySnapshot.forEach(doc => {
@@ -326,19 +390,26 @@ document.addEventListener('DOMContentLoaded', () => {
             renderMenuItems(tab.getAttribute('data-category'));
         });
     });
+
     menuItemsContainer.addEventListener('click', (event) => {
         const itemCard = event.target.closest('.menu-item-card');
         if (!itemCard) return;
         const itemId = itemCard.dataset.id;
         selectedItem = menuData.find(item => item.id === itemId);
         if (!selectedItem) return;
+
+        // ถ้ามี modifiers ให้เปิด Modal ใหม่
         if (selectedItem.modifiers && selectedItem.modifiers.length > 0) {
             populateModifiersModal(selectedItem);
-        } else if (selectedItem.hasSweetness) {
+        } 
+        // ถ้าไม่มี modifiers แต่มี hasSweetness (แบบเก่า) ก็ยังรองรับอยู่ (เผื่อไว้)
+        else if (selectedItem.hasSweetness) {
             sweetnessModal.style.display = 'flex';
             selectedSweetness = ''; 
             sweetnessButtons.forEach(btn => btn.classList.remove('selected'));
-        } else {
+        } 
+        // ถ้าไม่มีตัวเลือกอะไรเลย (เช่น อาหารบางอย่าง)
+        else {
             const orderId = selectedItem.id;
             if (order[orderId]) {
                 order[orderId].quantity++;
@@ -348,6 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderOrderList();
         }
     });
+    
     addToOrderButton.addEventListener('click', () => {
         if (!selectedItem || selectedSweetness === '') {
             alert('กรุณาเลือกระดับความหวาน');
@@ -370,23 +442,28 @@ document.addEventListener('DOMContentLoaded', () => {
         renderOrderList();
         sweetnessModal.style.display = 'none';
     });
+
     addModifiedItemToOrderBtn.addEventListener('click', () => {
         let finalPrice = selectedItem.price;
         const selectedOptionsNames = [];
         const selectedOptionsIds = [];
         const checkedRadios = modifierOptionsContainer.querySelectorAll('input[type="radio"]:checked');
+        
         checkedRadios.forEach(radio => {
             const optionPrice = parseFloat(radio.value);
             const optionName = radio.dataset.name;
             finalPrice += optionPrice;
+            // เก็บชื่อตัวเลือกเพื่อไปแสดงผล
             if (!optionName.includes('(ปกติ)')) { 
                 selectedOptionsNames.push(optionName);
             }
             selectedOptionsIds.push(optionName.replace(/[\s%]+/g, '-'));
         });
+
         const finalDetails = selectedOptionsNames.join(', ');
         const displayName = finalDetails ? `${selectedItem.name} (${finalDetails})` : selectedItem.name;
         const finalId = `${selectedItem.id}-${selectedOptionsIds.join('-')}`;
+
         if (order[finalId]) {
             order[finalId].quantity++;
         } else {
@@ -401,12 +478,14 @@ document.addEventListener('DOMContentLoaded', () => {
         renderOrderList();
         modifiersModal.style.display = 'none';
     });
+
     customItemBtn.addEventListener('click', () => {
         customItemNameInput.value = '';
         customItemPriceInput.value = '';
         customItemModal.style.display = 'flex';
         customItemNameInput.focus();
     });
+
     addCustomItemBtn.addEventListener('click', () => {
         const name = customItemNameInput.value.trim();
         const price = parseFloat(customItemPriceInput.value);
@@ -425,6 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderOrderList();
         customItemModal.style.display = 'none';
     });
+    
     orderList.addEventListener('click', (event) => {
         const target = event.target.closest('button');
         if (!target) return;
@@ -439,6 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderOrderList();
     });
+
     sweetnessButtons.forEach(button => {
         button.addEventListener('click', () => {
             selectedSweetness = button.dataset.level;
@@ -446,6 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.add('selected');
         });
     });
+
     clearOrderBtn.addEventListener('click', () => {
         if (confirm('คุณต้องการล้างรายการในตะกร้าทั้งหมดใช่หรือไม่? (จะไม่ถูกบันทึก)')) {
             order = {};
@@ -453,6 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderOrderList();
         }
     });
+
     payAndPrintButton.addEventListener('click', () => {
         const grandTotal = parseFloat(grandTotalSpan.textContent);
         if (grandTotal >= 0 && Object.keys(order).length > 0) {
@@ -469,11 +552,13 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('โปรดเลือกรายการสินค้าก่อนชำระเงิน');
         }
     });
+
     document.getElementById('confirm-payment-btn').addEventListener('click', () => {
         finalizeOrder('QR'); 
         document.getElementById('payment-qr-modal').style.display = 'none';
         alert('บันทึกออเดอร์ (QR) เรียบร้อย!');
     });
+
     cashPaymentBtn.addEventListener('click', () => {
         const grandTotal = parseFloat(grandTotalSpan.textContent);
         if (grandTotal >= 0 && Object.keys(order).length > 0) {
@@ -486,12 +571,14 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('โปรดเลือกรายการสินค้าก่อนชำระเงิน');
         }
     });
+    
     cashReceivedInput.addEventListener('input', () => {
         const totalDue = parseFloat(modalTotalDueSpan.textContent);
         const cashReceived = parseFloat(cashReceivedInput.value) || 0;
         const change = cashReceived - totalDue;
         changeDueSpan.textContent = change >= 0 ? change.toFixed(2) : '0.00';
     });
+
     confirmCashPaymentBtn.addEventListener('click', () => {
         const totalDue = parseFloat(modalTotalDueSpan.textContent);
         const cashReceived = parseFloat(cashReceivedInput.value) || 0;
@@ -503,6 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('จำนวนเงินที่รับมาไม่เพียงพอ');
         }
     });
+
     closeOrderButton.addEventListener('click', () => {
         if (Object.keys(order).length > 0) {
             if (confirm('คุณต้องการ "ยกเลิก" ออเดอร์นี้ใช่หรือไม่? (จะไม่ถูกส่งไปครัว)')) {
@@ -513,15 +601,18 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('ไม่มีรายการในออเดอร์');
         }
     });
+
     discountInput.addEventListener('input', updateSummary);
     discountType.addEventListener('change', updateSummary);
     salesReportButton.addEventListener('click', showSalesReport);
+    
     deleteLastSaleButton.addEventListener('click', () => {
         alert('ฟังก์ชันนี้ถูกปิดใช้งานชั่วคราวในเวอร์ชันฐานข้อมูลออนไลน์ครับ');
     });
     resetSalesButton.addEventListener('click', () => {
         alert('ฟังก์ชันนี้ถูกปิดใช้งานชั่วคราวในเวอร์ชันฐานข้อมูลออนไลน์ครับ');
     });
+
     document.querySelectorAll('.close-button').forEach(button => {
         button.addEventListener('click', () => {
             button.closest('.modal').style.display = 'none';
@@ -534,5 +625,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initial Render
-    renderMenuItems('drinks');
+    renderMenuItems('coffee'); // Default to coffee
 });

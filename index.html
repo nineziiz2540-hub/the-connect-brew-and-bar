@@ -2,19 +2,16 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <title>THE CONNECT POS</title>
     
-    <link rel="stylesheet" href="style.css?v=4.0">
+    <link rel="stylesheet" href="style.css?v=5.0">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
     <div class="main-container">
-
         <div class="menu-container">
             <div class="menu-title-row">
                 <h1>เมนู</h1>
@@ -23,13 +20,15 @@
                     <button id="sales-report-button" class="report-btn"><i class="fas fa-chart-line"></i> รายงานยอดขาย</button>
                 </div>
             </div>
+            
             <div class="menu-tabs">
-                <button class="menu-tab active" data-category="drinks">กาแฟ&ชา&มัทฉะ</button>
-                <button class="menu-tab" data-category="fruit-drinks">น้ำผลไม้สกัดเย็น</button>
-                <button class="menu-tab" data-category="food">อาหาร</button>
-                <button class="menu-tab" data-category="bakery">ขนมปัง</button>
-                <button class="menu-tab" data-category="other-drinks">เครื่องดื่มอื่นๆ</button>
+                <button class="menu-tab active" data-category="coffee">COFFEE</button>
+                <button class="menu-tab" data-category="matcha">MATCHA</button>
+                <button class="menu-tab" data-category="non-coffee">NON COFFEE</button>
+                <button class="menu-tab" data-category="food">FOOD</button>
+                <button class="menu-tab" data-category="bakery">BAKERY</button>
             </div>
+            
             <div id="menu-items" class="menu-grid">
                 </div>
         </div>
@@ -85,13 +84,11 @@
             <div class="sweetness-options">
                 <button class="sweetness-btn" data-level="100">หวาน 100%</button>
                 <button class="sweetness-btn" data-level="50">หวาน 50%</button>
-                <button class="sweetness-btn" data-level="30">หวาน 30%</button>
                 <button class="sweetness-btn" data-level="0">ไม่หวาน 0%</button>
             </div>
             <button id="add-to-order-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
-
     <div id="sales-report-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -103,7 +100,6 @@
             </div>
         </div>
     </div>
-
     <div id="cash-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -114,17 +110,14 @@
             <button id="confirm-cash-payment-btn">ยืนยันการชำระเงิน</button>
         </div>
     </div>
-
     <div id="modifiers-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2 id="modifiers-item-name">เลือกตัวเลือกเสริม</h2>
-            <div id="modifier-options-container">
-                </div>
+            <div id="modifier-options-container"></div>
             <button id="add-modified-item-to-order-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
-
     <div id="custom-item-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -136,25 +129,19 @@
             <button id="add-custom-item-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
-    
     <div id="payment-qr-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            
             <h2>สแกนเพื่อชำระเงิน</h2>
-            
-            <div id="modal-order-summary">
-                </div>
-            
-            <div id="modal-qr-code">
-                </div>
+            <div id="modal-order-summary"></div>
+            <div id="modal-qr-code"></div>
             <h3 id="modal-total-payment"></h3>
             <button id="confirm-payment-btn" class="confirm-payment-btn">
                 <i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน
             </button>
         </div>
     </div>
-    
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
@@ -173,7 +160,7 @@
     
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     
-    <script src="script.js?v=4.1"></script> 
+    <script src="script.js?v=5.0"></script> 
 
 </body>
 </html>
