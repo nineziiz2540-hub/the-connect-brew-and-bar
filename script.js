@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const generatePromptPayQR = (amount, containerElement) => {
-        const promptPayConfig = { id: '0636105597', shopName: 'THE CONNECT' }; 
+        const promptPayConfig = { id: '0066636105597', shopName: 'THE CONNECT' }; 
         const generatePayload = (promptPayId, amount) => {
             const formatField = (id, value) => id + String(value.length).padStart(2, '0') + value;
             const target = promptPayId.replace(/-/g, '');
