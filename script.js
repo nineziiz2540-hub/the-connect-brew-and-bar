@@ -295,38 +295,35 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const generatePromptPayQR = (amount, containerElement) => {
-        // ใส่เบอร์ PromptPay ของคุณตรงนี้ (ไม่ต้องมีขีด)
         const promptPayConfig = { 
-            id: '06361055597',       // เบอร์ PromptPay ของคุณ
-            shopName: 'THE CONNECT'  // ชื่อร้าน (ภาษาอังกฤษ)
+            id: '06361055597',       // เบอร์ของคุณ
+            shopName: 'THE CONNECT'  // ชื่อร้าน (ภาษาอังกฤษ ห้ามยาวเกิน 25 ตัวอักษร)
         }; 
         
         const generatePayload = (promptPayId, amount) => {
             const formatField = (id, value) => id + String(value.length).padStart(2, '0') + value;
             
-            // 1. จัดการเบอร์โทรศัพท์ให้เป็นรูปแบบ 0066...
-            let target = promptPayId.replace(/[^0-9]/g, ''); // ลบขีดออก
+            // 1. แปลงเบอร์โทรศัพท์ (08x... -> 00668x...)
+            let target = promptPayId.replace(/[^0-9]/g, ''); 
             if (target.length === 10 && target.startsWith('0')) {
-                 target = '0066' + target.substring(1); // เปลี่ยน 08x... เป็น 00668x...
+                 target = '0066' + target.substring(1); 
             }
             
-            // 2. สร้าง Payload ตามมาตรฐาน EMVCo (PromptPay)
-            // 000201 = Payload Format Indicator
-            // 010212 = Point of Initiation Method (Dynamic QR)
-            // 2937... = Merchant Account Information (PromptPay)
+            // 2. เริ่มต้นสร้าง Payload
+            // 2937 = Merchant Info (00:AID=20 chars + 01:Mobile=17 chars = 37)
             let promptpayData = `00020101021229370016A000000677010111${formatField('01', target)}5802TH`;
             
-            // 3. ใส่จำนวนเงิน (ถ้ามี)
+            // 3. สกุลเงิน (53) และ จำนวนเงิน (54)
+            promptpayData += `5303764`; 
             if (amount) {
                 promptpayData += formatField('54', amount.toFixed(2));
             }
             
-            // 4. ใส่สกุลเงิน (5303764 = THB) และชื่อร้าน
-            promptpayData += `5303764`; 
-            // (หมายเหตุ: ชื่อร้านมักจะใส่ที่ ID 59 แต่บางแอปอาจไม่แสดง)
-            // promptpayData += formatField('59', promptPayConfig.shopName); 
-            
-            // 5. คำนวณ CRC (Checksum)
+            // 4. ‼️ เพิ่มข้อมูลจำเป็นที่ขาดหายไป ‼️
+            promptpayData += formatField('59', promptPayConfig.shopName); // ชื่อร้าน
+            promptpayData += formatField('60', 'Bangkok'); // จังหวัด (ใส่ Bangkok ไว้เป็นมาตรฐาน)
+
+            // 5. คำนวณ Checksum (CRC)
             const crc16 = (data) => {
                 let crc = 0xFFFF;
                 for (let i = 0; i < data.length; i++) {
@@ -336,7 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
             };
             
-            // เพิ่ม ID 63 (CRC) และความยาว 04 ไว้ท้ายสุดก่อนคำนวณ
             const checksum = crc16(promptpayData + '6304');
             return `${promptpayData}6304${checksum}`;
         };
@@ -347,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
             text: payload,
             width: 200,
             height: 200,
-            correctLevel: QRCode.CorrectLevel.L // เปลี่ยนเป็น L เพื่อให้อ่านง่ายขึ้นสำหรับ QR ข้อมูลเยอะ
+            correctLevel: QRCode.CorrectLevel.L 
         });
     };
 
