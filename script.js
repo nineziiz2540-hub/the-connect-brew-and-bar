@@ -579,7 +579,14 @@ document.addEventListener('DOMContentLoaded', () => {
         changeDueSpan.textContent = change >= 0 ? change.toFixed(2) : '0.00';
     });
 
+    cashModal.addEventListener('click', (event) => {
+        if (event.target !== cashReceivedInput) {
+            cashReceivedInput.blur(); 
+        }
+    });
+
     confirmCashPaymentBtn.addEventListener('click', () => {
+        cashReceivedInput.blur();
         const totalDue = parseFloat(modalTotalDueSpan.textContent);
         const cashReceived = parseFloat(cashReceivedInput.value) || 0;
         if (cashReceived >= totalDue) {
