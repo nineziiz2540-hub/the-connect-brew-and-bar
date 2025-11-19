@@ -73,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'f-kaprao-pork', name: 'Pork Basil + Egg', nameThai: 'กะเพราหมู ไข่ดาว', price: 65, cost: 30, category: 'food', modifiers: [] },
 
         // --- BAKERY (ตัวอย่าง - แก้ไขราคาได้) ---
-        { id: 'b-croissant-choc', name: 'Croissant Chocolate', nameThai: 'ครัวซองต์ ช็อคโกแลต', price: 45, cost: 20, category: 'bakery', modifiers: [] },
-        { id: 'b-croissant-straw', name: 'Croissant Strawberry', nameThai: 'ครัวซองต์ สตอเบอรี่', price: 45, cost: 20, category: 'bakery', modifiers: [] },
+        { id: 'b-croissant', name: 'Croissant', nameThai: 'ครัวซองต์', price: 39, cost: 24, category: 'bakery', modifiers: [] },
+        { id: 'b-toast', name: 'Toasted bread/Steamed', nameThai: 'ขนมปังปิ้ง/นึ่ง', price: 20, cost: 10, category: 'bakery', modifiers: [] },
     ];
 
     // --- 2. UI ELEMENTS ---
