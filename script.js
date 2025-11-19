@@ -31,10 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'ไม่หวาน 0%', price: 0 }
         ]},
         { groupName: "ประเภทนม", options: [
-            { name: 'นมสด (ปกติ)', price: 0 }, { name: 'นมโอ๊ต', price: 15 }, { name: 'นมอัลมอนด์', price: 15 }
+            { name: 'นมสด (ปกติ)', price: 0 }, { name: 'นมโอ๊ต', price: 10 }, { name: 'นมอัลมอนด์', price: 20 }
         ]},
         { groupName: "เพิ่มเติม", options: [
-            { name: 'ปกติ', price: 0 }, { name: 'เพิ่ม 1 ช็อต', price: 15 }, { name: 'เพิ่มวิปครีม', price: 10 }
+            { name: 'ปกติ', price: 0 }, { name: 'เพิ่ม 1 ช็อต', price: 20 }, { name: 'เพิ่มวิปครีม', price: 20 }
         ]}
     ];
 
