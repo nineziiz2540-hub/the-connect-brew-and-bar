@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'f-kaprao-beef', name: 'Beef Basil + Egg', nameThai: 'กะเพราเนื้อ ไข่ดาว', price: 65, cost: 35, category: 'food', modifiers: [] },
         { id: 'f-kaprao-pork', name: 'Pork Basil + Egg', nameThai: 'กะเพราหมู ไข่ดาว', price: 65, cost: 30, category: 'food', modifiers: [] },
 
-        // --- BAKERY ---
+        // --- BAKERY (แก้ไขแล้ว) ---
         { id: 'b-croissant', name: 'Croissant', nameThai: 'ครัวซองต์', price: 39, cost: 24, category: 'bakery', modifiers: [] },
         { id: 'b-toast', name: 'Toasted bread/Steamed', nameThai: 'ขนมปังปิ้ง/นึ่ง', price: 20, cost: 10, category: 'bakery', modifiers: [] },
     ];
@@ -402,7 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 5. EVENT LISTENERS & INITIALIZATION ---
     menuTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             menuTabs.forEach(t => t.classList.remove('active'));
@@ -418,17 +417,14 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedItem = menuData.find(item => item.id === itemId);
         if (!selectedItem) return;
 
-        // ถ้ามี modifiers ให้เปิด Modal ใหม่
         if (selectedItem.modifiers && selectedItem.modifiers.length > 0) {
             populateModifiersModal(selectedItem);
         } 
-        // ถ้าไม่มี modifiers แต่มี hasSweetness (แบบเก่า) ก็ยังรองรับอยู่ (เผื่อไว้)
         else if (selectedItem.hasSweetness) {
             sweetnessModal.style.display = 'flex';
             selectedSweetness = ''; 
             sweetnessButtons.forEach(btn => btn.classList.remove('selected'));
         } 
-        // ถ้าไม่มีตัวเลือกอะไรเลย (เช่น อาหารบางอย่าง)
         else {
             const orderId = selectedItem.id;
             if (order[orderId]) {
@@ -473,7 +469,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const optionPrice = parseFloat(radio.value);
             const optionName = radio.dataset.name;
             finalPrice += optionPrice;
-            // เก็บชื่อตัวเลือกเพื่อไปแสดงผล
             if (!optionName.includes('(ปกติ)')) { 
                 selectedOptionsNames.push(optionName);
             }
@@ -506,7 +501,6 @@ document.addEventListener('DOMContentLoaded', () => {
         customItemNameInput.focus();
     });
     
-    // แตะที่ว่างใน Custom Item Modal เพื่อเก็บแป้นพิมพ์
     customItemModal.addEventListener('click', (event) => {
         if (event.target !== customItemNameInput && event.target !== customItemPriceInput) {
             customItemNameInput.blur();

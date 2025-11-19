@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>THE CONNECT POS</title>
     
-    <link rel="stylesheet" href="style.css?v=5.2">
+    <link rel="stylesheet" href="style.css?v=7.0">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -20,7 +20,6 @@
                     <button id="sales-report-button" class="report-btn"><i class="fas fa-chart-line"></i> รายงานยอดขาย</button>
                 </div>
             </div>
-            
             <div class="menu-tabs">
                 <button class="menu-tab active" data-category="coffee">COFFEE</button>
                 <button class="menu-tab" data-category="matcha">MATCHA</button>
@@ -28,7 +27,6 @@
                 <button class="menu-tab" data-category="food">FOOD</button>
                 <button class="menu-tab" data-category="bakery">BAKERY</button>
             </div>
-            
             <div id="menu-items" class="menu-grid">
                 </div>
         </div>
@@ -40,12 +38,14 @@
                     <i class="fas fa-undo"></i> เคลียร์
                 </button>
             </div>
+            
             <div id="order-details">
                 <p id="order-timestamp"></p>
                 <ul id="order-list">
                     </ul>
                 <div id="print-qrcode-container"></div>
             </div>
+            
             <div class="summary-and-payment">
                 <div class="summary-box">
                     <p>ยอดรวม <span id="sub-total">0.00</span> บาท</p>
@@ -89,6 +89,7 @@
             <button id="add-to-order-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
+
     <div id="sales-report-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -100,24 +101,28 @@
             </div>
         </div>
     </div>
+
     <div id="cash-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>ชำระด้วยเงินสด</h2>
             <p class="total-due-text">ยอดที่ต้องชำระ: <span id="modal-total-due">0.00</span> บาท</p>
-            <input type="number" id="cash-received-input" placeholder="จำนวนเงินที่รับมา" class="cash-input">
+            <input type="number" id="cash-received-input" class="cash-input" placeholder="จำนวนเงินที่รับมา">
             <p class="change-text">เงินทอน: <span id="change-due">0.00</span> บาท</p>
             <button id="confirm-cash-payment-btn">ยืนยันการชำระเงิน</button>
         </div>
     </div>
+
     <div id="modifiers-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2 id="modifiers-item-name">เลือกตัวเลือกเสริม</h2>
-            <div id="modifier-options-container"></div>
+            <div id="modifier-options-container">
+                </div>
             <button id="add-modified-item-to-order-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
+
     <div id="custom-item-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -129,12 +134,15 @@
             <button id="add-custom-item-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
+    
     <div id="payment-qr-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>สแกนเพื่อชำระเงิน</h2>
-            <div id="modal-order-summary"></div>
-            <div id="modal-qr-code"></div>
+            <div id="modal-order-summary">
+                </div>
+            <div id="modal-qr-code">
+                </div>
             <h3 id="modal-total-payment"></h3>
             <button id="confirm-payment-btn" class="confirm-payment-btn">
                 <i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน
@@ -150,6 +158,7 @@
             <button id="login-btn" class="confirm-payment-btn" style="margin-top: 0;">เข้าใช้งาน</button>
         </div>
     </div>
+
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -169,7 +178,7 @@
     
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     
-    <script src="script.js?v=6.2"></script> 
+    <script src="script.js?v=7.0"></script> 
 
 </body>
 </html>
