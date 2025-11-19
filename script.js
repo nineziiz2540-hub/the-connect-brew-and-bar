@@ -1,5 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ตัวเลือกเสริมมาตรฐานสำหรับเครื่องดื่ม (แก้ไขตัดหวาน 30% ออกแล้ว)
+    // --- LOGIN SYSTEM ---
+    const loginModal = document.getElementById('login-modal');
+    const loginInput = document.getElementById('login-pin-input');
+    const loginBtn = document.getElementById('login-btn');
+    const CORRECT_PIN = "1234"; 
+
+    const checkLogin = () => {
+        if (loginInput.value === CORRECT_PIN) {
+            loginModal.style.display = 'none';
+            loginInput.blur();
+        } else {
+            alert("รหัสผ่านไม่ถูกต้อง!");
+            loginInput.value = '';
+            loginInput.focus();
+        }
+    };
+
+    if (loginBtn) {
+        loginBtn.addEventListener('click', checkLogin);
+        loginInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkLogin();
+        });
+    }
+
+    // --- 1. DATA AND CONFIGURATION ---
     const stdCoffeeModifiers = [
         { groupName: "ระดับความหวาน", options: [
             { name: 'หวาน 100% (ปกติ)', price: 0 }, 
@@ -7,14 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'ไม่หวาน 0%', price: 0 }
         ]},
         { groupName: "ประเภทนม", options: [
-            { name: 'นมสด (ปกติ)', price: 0 }, { name: 'นมโอ๊ต', price: 10 }, { name: 'นมอัลมอนด์', price: 20 }
+            { name: 'นมสด (ปกติ)', price: 0 }, { name: 'นมโอ๊ต', price: 15 }, { name: 'นมอัลมอนด์', price: 15 }
         ]},
         { groupName: "เพิ่มเติม", options: [
-            { name: 'ปกติ', price: 0 }, { name: 'เพิ่ม 1 ช็อต', price: 20 }, { name: 'เพิ่มวิปครีม', price: 10 }
+            { name: 'ปกติ', price: 0 }, { name: 'เพิ่ม 1 ช็อต', price: 15 }, { name: 'เพิ่มวิปครีม', price: 10 }
         ]}
     ];
 
-    // สำหรับชาใส/น้ำผลไม้ (แก้ไขตัดหวาน 30% ออกแล้ว)
     const simpleModifiers = [ 
         { groupName: "ระดับความหวาน", options: [
             { name: 'หวาน 100% (ปกติ)', price: 0 }, 
@@ -22,9 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'ไม่หวาน 0%', price: 0 }
         ]}
     ];
+
     const menuData = [
         // --- COFFEE ---
-        { id: 'c-espresso-h', name: 'Espresso (Hot)', nameThai: 'เอสเพรสโซ่ (ร้อน)', price: 55, cost: 22.53, category: 'coffee', modifiers: [] }, // Espresso usually no mods or custom
+        { id: 'c-espresso-h', name: 'Espresso (Hot)', nameThai: 'เอสเพรสโซ่ (ร้อน)', price: 55, cost: 22.53, category: 'coffee', modifiers: [] }, 
         { id: 'c-americano-h', name: 'Americano (Hot)', nameThai: 'อเมริกาโน่ (ร้อน)', price: 60, cost: 23.13, category: 'coffee', modifiers: simpleModifiers },
         { id: 'c-americano-i', name: 'Americano (Iced)', nameThai: 'อเมริกาโน่ (เย็น)', price: 60, cost: 23.61, category: 'coffee', modifiers: simpleModifiers },
         { id: 'c-latte-h', name: 'Latte (Hot)', nameThai: 'ลาเต้ (ร้อน)', price: 60, cost: 26, category: 'coffee', modifiers: stdCoffeeModifiers },
@@ -68,11 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'n-orange', name: 'Orange Juice', nameThai: 'น้ำส้ม', price: 40, cost: 10, category: 'non-coffee', modifiers: [] },
         { id: 'n-coconut', name: 'Coconut Juice', nameThai: 'น้ำมะพร้าว', price: 40, cost: 10, category: 'non-coffee', modifiers: [] },
 
-        // --- FOOD (ตัวอย่าง - แก้ไขราคาได้) ---
+        // --- FOOD ---
         { id: 'f-kaprao-beef', name: 'Beef Basil + Egg', nameThai: 'กะเพราเนื้อ ไข่ดาว', price: 65, cost: 35, category: 'food', modifiers: [] },
         { id: 'f-kaprao-pork', name: 'Pork Basil + Egg', nameThai: 'กะเพราหมู ไข่ดาว', price: 65, cost: 30, category: 'food', modifiers: [] },
 
-        // --- BAKERY (ตัวอย่าง - แก้ไขราคาได้) ---
+        // --- BAKERY ---
         { id: 'b-croissant', name: 'Croissant', nameThai: 'ครัวซองต์', price: 39, cost: 24, category: 'bakery', modifiers: [] },
         { id: 'b-toast', name: 'Toasted bread/Steamed', nameThai: 'ขนมปังปิ้ง/นึ่ง', price: 20, cost: 10, category: 'bakery', modifiers: [] },
     ];
@@ -95,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const discountInput = document.getElementById('discount-input');
     const discountType = document.getElementById('discount-type');
     const clearOrderBtn = document.getElementById('clear-order-btn');
-    // Modals
     const sweetnessModal = document.getElementById('sweetness-modal');
     const sweetnessButtons = document.querySelectorAll('.sweetness-btn');
     const addToOrderButton = document.getElementById('add-to-order-btn');
@@ -105,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cashReceivedInput = document.getElementById('cash-received-input');
     const changeDueSpan = document.getElementById('change-due');
     const confirmCashPaymentBtn = document.getElementById('confirm-cash-payment-btn');
-    // New Function UI
     const customItemBtn = document.getElementById('custom-item-btn');
     const modifiersModal = document.getElementById('modifiers-modal');
     const modifiersItemName = document.getElementById('modifiers-item-name');
@@ -128,8 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'menu-item-card';
             card.dataset.id = item.id;
-            
-            // ‼️ ปรับ HTML ในการ์ดให้โชว์ชื่อไทย/อังกฤษ และลบรูปภาพ ‼️
             card.innerHTML = `
                 <h4>${item.name}</h4>
                 <p class="thai-name">(${item.nameThai})</p>
@@ -166,17 +186,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let mainName = item.name;
             let details = '';
             const detailsMatch = item.name.match(/\(([^)]+)\)/);
-            // ถ้าชื่อมีวงเล็บ (เช่น Hot/Iced) เราอาจจะเก็บไว้ หรือถ้ามาจาก modifier ก็จะแยก
-            // แต่ในระบบใหม่ ชื่อสินค้ามี (Hot)/(Iced) อยู่แล้ว อาจจะไม่ต้องตัด
-            // แต่ถ้ามี details เพิ่มเติมจาก modifier จะต่อท้าย
-            
-            // โค้ดเดิมพยายามตัด (...) ออกจากชื่อหลัก ซึ่งอาจจะไปตัด (Hot)/(Iced) ออกด้วย
-            // ปรับปรุง: ตัดเฉพาะรายละเอียดที่มาจาก modifier (ซึ่งเรายังไม่ได้รวมในชื่อหลักตอนกด)
-            // หรือวิธีง่ายสุด: แสดงชื่อเต็มๆ ไปเลย แล้วแสดง details แยกบรรทัด
+            if (detailsMatch) {
+                mainName = item.name.replace(detailsMatch[0], '').trim();
+                details = detailsMatch[1];
+            }
 
             const displayNameWithQuantity = `${item.name} (x${item.quantity})`;
-            // หา details ที่อยู่ในวงเล็บ "ตัวสุดท้าย" ถ้ามันยาวๆ (มาจาก modifier)
-            // แต่เพื่อความง่าย เราแสดงชื่อเต็มที่สร้างตอนกดปุ่มเลยจะดีกว่า
             
             li.innerHTML = `
                 <div class="item-info">
@@ -280,38 +295,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const generatePromptPayQR = (amount, containerElement) => {
-        // ใส่เบอร์ PromptPay ของคุณตรงนี้ (ไม่ต้องมีขีด)
-        const promptPayConfig = { 
-            id: '0636105597',       // เบอร์ PromptPay ของคุณ
-            shopName: 'THE CONNECT'  // ชื่อร้าน (ภาษาอังกฤษ)
-        }; 
-        
+        const promptPayConfig = { id: '06361055597', shopName: 'THE CONNECT' }; 
         const generatePayload = (promptPayId, amount) => {
             const formatField = (id, value) => id + String(value.length).padStart(2, '0') + value;
-            
-            // 1. จัดการเบอร์โทรศัพท์ให้เป็นรูปแบบ 0066...
-            let target = promptPayId.replace(/[^0-9]/g, ''); // ลบขีดออก
+            let target = promptPayId.replace(/[^0-9]/g, '');
             if (target.length === 10 && target.startsWith('0')) {
-                 target = '0066' + target.substring(1); // เปลี่ยน 08x... เป็น 00668x...
+                 target = '0066' + target.substring(1);
             }
-            
-            // 2. สร้าง Payload ตามมาตรฐาน EMVCo (PromptPay)
-            // 000201 = Payload Format Indicator
-            // 010212 = Point of Initiation Method (Dynamic QR)
-            // 2937... = Merchant Account Information (PromptPay)
             let promptpayData = `00020101021229370016A000000677010111${formatField('01', target)}5802TH`;
-            
-            // 3. ใส่จำนวนเงิน (ถ้ามี)
             if (amount) {
                 promptpayData += formatField('54', amount.toFixed(2));
             }
-            
-            // 4. ใส่สกุลเงิน (5303764 = THB) และชื่อร้าน
             promptpayData += `5303764`; 
-            // (หมายเหตุ: ชื่อร้านมักจะใส่ที่ ID 59 แต่บางแอปอาจไม่แสดง)
-            // promptpayData += formatField('59', promptPayConfig.shopName); 
-            
-            // 5. คำนวณ CRC (Checksum)
             const crc16 = (data) => {
                 let crc = 0xFFFF;
                 for (let i = 0; i < data.length; i++) {
@@ -320,19 +315,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
             };
-            
-            // เพิ่ม ID 63 (CRC) และความยาว 04 ไว้ท้ายสุดก่อนคำนวณ
             const checksum = crc16(promptpayData + '6304');
             return `${promptpayData}6304${checksum}`;
         };
-
         const payload = generatePayload(promptPayConfig.id, amount);
         containerElement.innerHTML = ''; 
         new QRCode(containerElement, {
             text: payload,
             width: 200,
             height: 200,
-            correctLevel: QRCode.CorrectLevel.L // เปลี่ยนเป็น L เพื่อให้อ่านง่ายขึ้นสำหรับ QR ข้อมูลเยอะ
+            correctLevel: QRCode.CorrectLevel.L 
         });
     };
 
@@ -513,7 +505,8 @@ document.addEventListener('DOMContentLoaded', () => {
         customItemModal.style.display = 'flex';
         customItemNameInput.focus();
     });
-
+    
+    // แตะที่ว่างใน Custom Item Modal เพื่อเก็บแป้นพิมพ์
     customItemModal.addEventListener('click', (event) => {
         if (event.target !== customItemNameInput && event.target !== customItemPriceInput) {
             customItemNameInput.blur();
@@ -524,6 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addCustomItemBtn.addEventListener('click', () => {
         customItemNameInput.blur();
         customItemPriceInput.blur();
+
         const name = customItemNameInput.value.trim();
         const price = parseFloat(customItemPriceInput.value);
         if (!name || isNaN(price) || price < 0) {
@@ -545,12 +539,17 @@ document.addEventListener('DOMContentLoaded', () => {
     orderList.addEventListener('click', (event) => {
         const target = event.target.closest('button');
         if (!target) return;
-        const itemId = target.dataset.id;
+        const itemId = target.getAttribute('data-id');
         if (target.classList.contains('remove-item')) {
-            if (order[itemId] && order[itemId].quantity > 1) order[itemId].quantity--;
-            else delete order[itemId];
+            if (order[itemId] && order[itemId].quantity > 1) {
+                order[itemId].quantity--;
+            } else {
+                delete order[itemId];
+            }
         } else if (target.classList.contains('add-item')) {
-            if (order[itemId]) order[itemId].quantity++;
+            if (order[itemId]) {
+                order[itemId].quantity++;
+            }
         } else if (target.classList.contains('delete-item-btn')) {
             delete order[itemId];
         }
@@ -559,7 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sweetnessButtons.forEach(button => {
         button.addEventListener('click', () => {
-            selectedSweetness = button.dataset.level;
+            selectedSweetness = button.getAttribute('data-level');
             sweetnessButtons.forEach(btn => btn.classList.remove('selected'));
             button.classList.add('selected');
         });
@@ -616,14 +615,16 @@ document.addEventListener('DOMContentLoaded', () => {
         changeDueSpan.textContent = change >= 0 ? change.toFixed(2) : '0.00';
     });
 
+    // แตะที่ว่างใน Modal เพื่อเก็บแป้นพิมพ์ (ช่องเงินสด)
     cashModal.addEventListener('click', (event) => {
         if (event.target !== cashReceivedInput) {
-            cashReceivedInput.blur(); 
+            cashReceivedInput.blur();
         }
     });
 
     confirmCashPaymentBtn.addEventListener('click', () => {
-        cashReceivedInput.blur();
+        cashReceivedInput.blur(); // เก็บแป้นพิมพ์ก่อน
+        
         const totalDue = parseFloat(modalTotalDueSpan.textContent);
         const cashReceived = parseFloat(cashReceivedInput.value) || 0;
         if (cashReceived >= totalDue) {
@@ -664,10 +665,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     window.addEventListener('click', (event) => {
         if (event.target.classList.contains('modal')) {
-            // (เราจะไม่ซ่อนเมื่อคลิกที่พื้นหลังอีกต่อไป)
+            // event.target.style.display = 'none';
         }
     });
 
+    // เพิ่มโค้ดเก็บแป้นพิมพ์ช่องส่วนลด (รองรับ iPad ดีขึ้น)
     const dismissDiscountKeyboard = (event) => {
         if (document.activeElement === discountInput && event.target !== discountInput) {
             discountInput.blur(); 
@@ -679,5 +681,5 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('touchstart', dismissDiscountKeyboard);
 
     // Initial Render
-    renderMenuItems('coffee'); // Default to coffee
+    renderMenuItems('coffee');
 });
