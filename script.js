@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const generatePromptPayQR = (amount, containerElement) => {
         const promptPayConfig = { 
-            id: '0636105597',       // เบอร์ของคุณ
+            id: '0970925445',       // เบอร์ของคุณ
             shopName: 'THE CONNECT'  // ชื่อร้าน (ภาษาอังกฤษ ห้ามยาวเกิน 25 ตัวอักษร)
         }; 
         
