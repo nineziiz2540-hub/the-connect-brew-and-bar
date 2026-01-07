@@ -14,134 +14,143 @@
             --card-bg: #ffffff;
             --text-main: #111827;
             --text-muted: #6b7280;
-            --sidebar-bg: #1e293b;
-            --sidebar-width: 280px; /* ขยายให้กว้างขึ้น */
+            --sidebar-bg: #1e293b; /* สีน้ำเงินเข้มเดิม */
+            --sidebar-width: 280px; /* ความกว้างปกติ */
+            --sidebar-collapsed-width: 80px; /* ความกว้างตอนพับ */
             --accent-color: #3b82f6;
-            --radius: 20px; /* มุมโค้งมนกว่าเดิม */
-            --spacing: 30px; /* ระยะห่างมาตรฐาน */
+            --radius: 20px;
+            --spacing: 30px;
+            --transition-speed: 0.3s; /* ความนุ่มนวล */
         }
 
-        /* Reset & Base */
         * { box-sizing: border-box; }
         body { margin: 0; font-family: 'Kanit', sans-serif; background-color: var(--primary-bg); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* --- 1. Sidebar (Fixed Left) --- */
+        /* --- 1. Sidebar (แถบซ้าย) --- */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--sidebar-bg);
             color: white;
-            padding: 40px 25px;
+            padding: 40px 20px;
             display: flex; flex-direction: column;
             position: fixed; top: 0; left: 0; bottom: 0;
             z-index: 1000;
             box-shadow: 5px 0 15px rgba(0,0,0,0.05);
+            transition: width var(--transition-speed) ease; /* 🔥 Animation */
         }
         
-        .sidebar-brand { font-size: 1.5rem; font-weight: 600; margin-bottom: 50px; display: flex; align-items: center; gap: 15px; color: #fff; }
+        /* ปุ่มหางปลาทู (Toggle Button) */
+        .sidebar-toggle-btn {
+            position: absolute;
+            right: -15px; /* ยื่นออกมาข้างนอกเหมือนหาง */
+            top: 45px;
+            width: 30px;
+            height: 30px;
+            background: var(--accent-color);
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform var(--transition-speed);
+            z-index: 1001;
+        }
+        .sidebar-toggle-btn:hover { background: #2563eb; transform: scale(1.1); }
+
+        .sidebar-brand {
+            font-size: 1.5rem; font-weight: 600; margin-bottom: 50px; 
+            display: flex; align-items: center; gap: 15px; 
+            overflow: hidden; white-space: nowrap; /* ห้ามตัดคำ */
+            transition: all var(--transition-speed);
+        }
+        
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
         .sidebar-menu li { margin-bottom: 15px; }
         .sidebar-menu a {
             display: flex; align-items: center; gap: 15px;
             color: #94a3b8; text-decoration: none; padding: 15px 20px;
-            border-radius: 15px; transition: all 0.3s ease; font-size: 1rem; font-weight: 500;
+            border-radius: 15px; transition: all 0.2s ease; 
+            font-size: 1rem; font-weight: 500;
+            overflow: hidden; white-space: nowrap;
         }
-        .sidebar-menu a:hover, .sidebar-menu a.active { background: var(--accent-color); color: white; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
+        .sidebar-menu a:hover, .sidebar-menu a.active { background: var(--accent-color); color: white; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+        .sidebar-menu a i { min-width: 24px; text-align: center; font-size: 1.2rem; } /* จัดไอคอนให้นิ่ง */
 
-        /* --- 2. Main Layout (Right Side) --- */
+        /* --- 🔥 Styling ตอนพับ (Collapsed State) --- */
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+            padding: 40px 10px; /* ลด padding */
+        }
+        .sidebar.collapsed .sidebar-brand span, 
+        .sidebar.collapsed .sidebar-menu a span {
+            opacity: 0; 
+            width: 0; 
+            display: none; /* ซ่อนตัวหนังสือ */
+        }
+        .sidebar.collapsed .sidebar-brand { justify-content: center; }
+        .sidebar.collapsed .sidebar-menu a { justify-content: center; padding: 15px 10px; }
+        .sidebar.collapsed .sidebar-toggle-btn { transform: rotate(180deg); } /* หมุนลูกศร */
+
+        /* --- 2. Main Layout (ขวา) --- */
         .main-wrapper {
-            margin-left: var(--sidebar-width); /* เว้นที่ให้ Sidebar */
-            width: calc(100% - var(--sidebar-width)); /* พื้นที่ที่เหลือ */
-            padding: 40px; /* 🔥 ช่องไฟขอบรอบๆ ใหญ่ขึ้น */
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing); /* 🔥 ช่องไฟระหว่างแต่ละ Section */
+            margin-left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width)); 
+            padding: 40px; 
+            display: flex; flex-direction: column; gap: var(--spacing);
+            transition: all var(--transition-speed) ease; /* 🔥 Animation ตาม Sidebar */
         }
 
-        /* --- 3. Cards & Containers --- */
-        .dashboard-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 25px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0,0,0,0.02);
+        /* ตอนพับ Sidebar ขยาย Main เต็มจอ */
+        .main-wrapper.expanded {
+            margin-left: var(--sidebar-collapsed-width);
+            width: calc(100% - var(--sidebar-collapsed-width));
         }
 
-        /* Header & Filter */
-        .header-section {
-            display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;
-            background: transparent; box-shadow: none; padding: 0; border: none; /* ปลดล็อกพื้นหลัง */
-        }
-        .header-title h1 { margin: 0; font-size: 1.8rem; color: #1f2937; }
-        .header-title p { margin: 5px 0 0; color: #6b7280; }
-        
+        /* --- Components (Cards & Charts) --- */
+        .header-section { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
+        .header-title h1 { margin: 0; font-size: 1.8rem; color: #1f2937; } .header-title p { margin: 5px 0 0; color: #6b7280; }
         .controls { display: flex; gap: 15px; align-items: center; background: white; padding: 10px 20px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .date-input { border: none; font-family: 'Kanit'; color: #374151; padding: 5px; outline: none; background: transparent; }
-        .btn-search { background: var(--accent-color); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .btn-search { background: var(--accent-color); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-search:hover { transform: scale(1.1); }
 
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 ช่องเป๊ะๆ */
-            gap: var(--spacing); /* 🔥 ช่องไฟระหว่างการ์ด */
-        }
-        .stat-card {
-            background: white; padding: 30px 25px; border-radius: var(--radius);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
-            display: flex; align-items: center; justify-content: space-between;
-            transition: transform 0.2s ease;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing); }
+        .stat-card { background: white; padding: 30px; border-radius: var(--radius); box-shadow: 0 10px 25px rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; transition: transform 0.2s; }
         .stat-card:hover { transform: translateY(-5px); }
-        .stat-icon { width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
-        .stat-text h3 { margin: 0; font-size: 0.9rem; color: #9ca3af; font-weight: 400; }
-        .stat-text p { margin: 5px 0 0; font-size: 1.6rem; font-weight: 700; color: #111827; }
+        .stat-icon { width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+        .stat-text h3 { margin: 0; font-size: 1rem; color: #9ca3af; font-weight: 400; } .stat-text p { margin: 10px 0 0; font-size: 2rem; font-weight: 700; color: #111827; }
+        .stat-badge { position: absolute; top: 20px; right: 20px; background: #f3f4f6; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; color: #6b7280; font-weight: 500; }
 
-        /* Charts Layout */
-        .charts-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 ช่องเท่ากัน */
-            gap: var(--spacing); /* 🔥 ช่องไฟระหว่างกราฟ */
-        }
-        .chart-box {
-            background: white; padding: 30px; border-radius: var(--radius);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            height: 450px; /* สูงพอดีๆ */
-            display: flex; flex-direction: column;
-            min-width: 0; /* แก้บั๊กกราฟล้น */
-        }
+        .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing); }
+        .chart-box { background: white; padding: 30px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.03); height: 450px; display: flex; flex-direction: column; min-width: 0; }
         .chart-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #374151; }
         .chart-container { flex-grow: 1; position: relative; width: 100%; height: 100%; }
+        
+        .table-box { background: white; padding: 35px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.03); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; } 
+        th { text-align: left; padding: 20px; border-bottom: 2px solid #f3f4f6; color: #9ca3af; font-weight: 500; } 
+        td { padding: 20px; border-bottom: 1px solid #f9fafb; color: #1f2937; }
+        .badge { padding: 6px 15px; border-radius: 30px; font-size: 0.85rem; font-weight: 500; } 
+        .bg-qr { background: #eff6ff; color: #2563eb; } .bg-cash { background: #f0fdf4; color: #16a34a; }
 
-        /* Table */
-        .table-box {
-            background: white; padding: 35px; border-radius: var(--radius);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            overflow-x: auto;
-        }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { text-align: left; padding: 20px 15px; border-bottom: 2px solid #f3f4f6; color: #9ca3af; font-weight: 500; font-size: 0.9rem; }
-        td { padding: 20px 15px; border-bottom: 1px solid #f9fafb; color: #1f2937; font-size: 1rem; }
-        .badge { padding: 6px 15px; border-radius: 30px; font-size: 0.85rem; font-weight: 500; }
-        .bg-qr { background: #eff6ff; color: #2563eb; }
-        .bg-cash { background: #f0fdf4; color: #16a34a; }
-
-        /* Mobile Responsive */
-        @media (max-width: 1200px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; } /* 2 คอลัมน์บนจอกลาง */
-        }
-        @media (max-width: 900px) {
-            .charts-row { grid-template-columns: 1fr; } /* กราฟเรียงเดี่ยว */
-            .sidebar { width: 80px; padding: 20px 10px; }
-            .sidebar-brand span, .sidebar-menu a span { display: none; }
-            .sidebar-brand { justify-content: center; margin-bottom: 30px; }
-            .sidebar-menu a { justify-content: center; padding: 15px; }
-            .main-wrapper { margin-left: 80px; width: calc(100% - 80px); padding: 20px; }
+        @media (max-width: 1200px) { .stats-grid { grid-template-columns: 1fr; } .charts-row { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { 
+            .sidebar { width: var(--sidebar-collapsed-width); padding: 20px 10px; } 
+            .sidebar-brand span, .sidebar-menu a span { display: none; } 
+            .sidebar-brand { justify-content: center; } .sidebar-menu a { justify-content: center; } 
+            .main-wrapper { margin-left: var(--sidebar-collapsed-width); width: calc(100% - var(--sidebar-collapsed-width)); padding: 20px; } 
+            .sidebar-toggle-btn { display: none; } /* ซ่อนปุ่มบนมือถือเพราะมันเล็กอยู่แล้ว */
         }
     </style>
 </head>
 <body>
 
-    <nav class="sidebar">
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-toggle-btn" id="sidebarToggle">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+
         <div class="sidebar-brand">
             <i class="fas fa-layer-group fa-lg" style="color: var(--accent-color);"></i>
             <span>THE CONNECT</span>
@@ -152,14 +161,13 @@
         </ul>
     </nav>
 
-    <div class="main-wrapper">
+    <div class="main-wrapper" id="mainWrapper">
         
         <div class="header-section">
             <div class="header-title">
                 <h1>Executive Dashboard</h1>
                 <p>รายงานภาพรวมธุรกิจประจำวัน</p>
             </div>
-            
             <div class="controls">
                 <i class="far fa-calendar-alt" style="color: #9ca3af;"></i>
                 <input type="date" id="startDate" class="date-input">
@@ -170,8 +178,7 @@
         </div>
 
         <div id="loading" style="text-align: center; padding: 100px 0; color: #cbd5e1;">
-            <i class="fas fa-circle-notch fa-spin fa-3x"></i>
-            <p style="margin-top: 20px; font-size: 1.1rem;">กำลังประมวลผลข้อมูล...</p>
+            <i class="fas fa-circle-notch fa-spin fa-3x"></i><p style="margin-top: 20px;">กำลังโหลด...</p>
         </div>
 
         <div id="dashboard-content" style="display: none; display: flex; flex-direction: column; gap: var(--spacing);">
@@ -180,6 +187,7 @@
                 <div class="stat-card">
                     <div class="stat-text"><h3>ยอดขายรวม</h3><p id="total-sales">0 ฿</p></div>
                     <div class="stat-icon" style="background:#eff6ff; color:#3b82f6;"><i class="fas fa-wallet"></i></div>
+                    <div class="stat-badge">เฉลี่ย <span id="avg-ticket">0</span>/บิล</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-text"><h3>ออเดอร์ทั้งหมด</h3><p id="total-orders">0</p></div>
@@ -188,10 +196,6 @@
                 <div class="stat-card">
                     <div class="stat-text"><h3>กำไรโดยประมาณ</h3><p id="total-profit">0 ฿</p></div>
                     <div class="stat-icon" style="background:#f0fdf4; color:#10b981;"><i class="fas fa-coins"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-text"><h3>เฉลี่ยต่อบิล</h3><p id="avg-ticket">0 ฿</p></div>
-                    <div class="stat-icon" style="background:#f5f3ff; color:#8b5cf6;"><i class="fas fa-users"></i></div>
                 </div>
             </div>
 
@@ -220,26 +224,43 @@
             <div class="table-box">
                 <div class="chart-title" style="margin-bottom: 25px;"><i class="fas fa-list-ul"></i> 10 รายการล่าสุด</div>
                 <table>
-                    <thead>
-                        <tr>
-                            <th width="15%">เวลา</th>
-                            <th width="10%">คิว</th>
-                            <th width="40%">รายการ</th>
-                            <th width="15%">ยอดเงิน</th>
-                            <th width="20%">ชำระโดย</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recent-orders-body">
-                        </tbody>
+                    <thead><tr><th width="15%">เวลา</th><th width="10%">คิว</th><th width="40%">รายการ</th><th width="15%">ยอดเงิน</th><th width="20%">ชำระโดย</th></tr></thead>
+                    <tbody id="recent-orders-body"></tbody>
                 </table>
             </div>
 
-        </div> </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 🔥 LOGIC สำหรับปุ่มพับ Sidebar
+        const sidebar = document.getElementById('sidebar');
+        const mainWrapper = document.getElementById('mainWrapper');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = toggleBtn.querySelector('i');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            mainWrapper.classList.toggle('expanded');
+            
+            // หมุนลูกศรไปมา
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.add('fa-chevron-right');
+            } else {
+                toggleIcon.classList.remove('fa-chevron-right');
+                toggleIcon.classList.add('fa-chevron-left');
+            }
+            
+            // สั่งให้กราฟปรับขนาดใหม่ทันที (แก้บั๊กกราฟเบี้ยว)
+            setTimeout(() => {
+                for (let id in charts) { charts[id].resize(); }
+            }, 350);
+        });
 
         const firebaseConfig = {
             apiKey: "AIzaSyAndhLwumGYso3DYBteCrfCTecPk3NPTfw",
@@ -255,18 +276,15 @@
         const db = getFirestore(app);
         let charts = {};
 
-        // Helper: Format Date
         function formatDate(date) {
             const d = new Date(date), month = '' + (d.getMonth() + 1), day = '' + d.getDate(), year = d.getFullYear();
             return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
         }
 
-        // Set Default Date (Today)
         const today = new Date();
         document.getElementById('startDate').value = formatDate(today);
         document.getElementById('endDate').value = formatDate(today);
 
-        // Load Data
         window.loadDashboardData = async function() {
             const startStr = document.getElementById('startDate').value;
             const endStr = document.getElementById('endDate').value;
@@ -276,7 +294,7 @@
             const endDate = new Date(endStr); endDate.setHours(23, 59, 59, 999);
 
             document.getElementById('loading').style.display = 'block';
-            document.getElementById('dashboard-content').style.display = 'none'; // ซ่อนก่อนโหลดเสร็จ
+            document.getElementById('dashboard-content').style.display = 'none';
 
             const q = query(collection(db, "orders"), where("createdAt", ">=", startDate), where("createdAt", "<=", endDate));
             const querySnapshot = await getDocs(q);
@@ -291,8 +309,6 @@
 
                 orderCount++;
                 totalSales += data.grandTotal;
-                
-                // Payment Stats
                 const payMethod = data.paymentMethod || 'Unknown';
                 paymentCounts[payMethod] = (paymentCounts[payMethod] || 0) + 1;
 
@@ -301,7 +317,6 @@
                     const hour = date.getHours(); 
                     const hourLabel = `${hour}:00`;
                     hourCounts[hourLabel] = (hourCounts[hourLabel] || 0) + data.grandTotal;
-                    
                     recentOrders.push({ time: date, queue: data.queueNumber || '-', total: data.grandTotal, payment: payMethod, items: data.items });
                 }
 
@@ -323,19 +338,15 @@
                 }
             });
 
-            // Show Content
             document.getElementById('loading').style.display = 'none';
-            const contentDiv = document.getElementById('dashboard-content');
-            contentDiv.style.display = 'flex'; // กลับมาโชว์แบบ Flex
-
-            // Update Stats
+            document.getElementById('dashboard-content').style.display = 'flex';
+            
             document.getElementById("total-sales").innerText = totalSales.toLocaleString() + ' ฿';
             document.getElementById("total-orders").innerText = orderCount;
             document.getElementById("total-profit").innerText = (totalSales - totalCost).toLocaleString() + ' ฿';
             const avg = orderCount > 0 ? Math.round(totalSales / orderCount) : 0;
-            document.getElementById("avg-ticket").innerText = avg + ' ฿';
+            document.getElementById("avg-ticket").innerText = avg.toLocaleString() + ' ฿';
 
-            // Charts
             renderChart('topMenuChart', 'bar', 
                 Object.entries(menuCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(x => x[0]),
                 Object.entries(menuCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(x => x[1]),
@@ -379,7 +390,6 @@
             });
         }
 
-        // Auto Load Today
         loadDashboardData();
     </script>
 </body>
