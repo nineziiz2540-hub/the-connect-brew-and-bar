@@ -14,100 +14,58 @@
             --card-bg: #ffffff;
             --text-main: #111827;
             --text-muted: #6b7280;
-            --sidebar-bg: #1e293b; /* สีน้ำเงินเข้มเดิม */
-            --sidebar-width: 280px; /* ความกว้างปกติ */
-            --sidebar-collapsed-width: 80px; /* ความกว้างตอนพับ */
+            --sidebar-bg: #1e293b;
+            --sidebar-width: 240px; /* 🔥 ปรับลดความกว้างลงจาก 280px ให้ดูเพรียวขึ้น */
             --accent-color: #3b82f6;
             --radius: 20px;
             --spacing: 30px;
-            --transition-speed: 0.3s; /* ความนุ่มนวล */
         }
 
         * { box-sizing: border-box; }
         body { margin: 0; font-family: 'Kanit', sans-serif; background-color: var(--primary-bg); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* --- 1. Sidebar (แถบซ้าย) --- */
+        /* --- Sidebar (ปรับให้กระชับ) --- */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--sidebar-bg);
             color: white;
-            padding: 40px 20px;
+            padding: 30px 20px; /* ลด padding บนล่างนิดนึง */
             display: flex; flex-direction: column;
             position: fixed; top: 0; left: 0; bottom: 0;
             z-index: 1000;
             box-shadow: 5px 0 15px rgba(0,0,0,0.05);
-            transition: width var(--transition-speed) ease; /* 🔥 Animation */
         }
         
-        /* ปุ่มหางปลาทู (Toggle Button) */
-        .sidebar-toggle-btn {
-            position: absolute;
-            right: -15px; /* ยื่นออกมาข้างนอกเหมือนหาง */
-            top: 45px;
-            width: 30px;
-            height: 30px;
-            background: var(--accent-color);
-            color: white;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: transform var(--transition-speed);
-            z-index: 1001;
-        }
-        .sidebar-toggle-btn:hover { background: #2563eb; transform: scale(1.1); }
-
         .sidebar-brand {
-            font-size: 1.5rem; font-weight: 600; margin-bottom: 50px; 
-            display: flex; align-items: center; gap: 15px; 
-            overflow: hidden; white-space: nowrap; /* ห้ามตัดคำ */
-            transition: all var(--transition-speed);
+            font-size: 1.4rem; /* ลดขนาดฟอนต์โลโก้นิดนึงให้สมดุล */
+            font-weight: 600; 
+            margin-bottom: 40px; 
+            display: flex; align-items: center; gap: 12px; 
+            white-space: nowrap;
         }
         
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-        .sidebar-menu li { margin-bottom: 15px; }
+        .sidebar-menu li { margin-bottom: 12px; }
         .sidebar-menu a {
-            display: flex; align-items: center; gap: 15px;
-            color: #94a3b8; text-decoration: none; padding: 15px 20px;
-            border-radius: 15px; transition: all 0.2s ease; 
-            font-size: 1rem; font-weight: 500;
-            overflow: hidden; white-space: nowrap;
+            display: flex; align-items: center; gap: 12px;
+            color: #94a3b8; text-decoration: none; 
+            padding: 12px 15px; /* ปรับ padding ให้กระชับ */
+            border-radius: 12px; 
+            transition: all 0.2s ease; 
+            font-size: 0.95rem; font-weight: 500;
         }
         .sidebar-menu a:hover, .sidebar-menu a.active { background: var(--accent-color); color: white; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
-        .sidebar-menu a i { min-width: 24px; text-align: center; font-size: 1.2rem; } /* จัดไอคอนให้นิ่ง */
+        .sidebar-menu a i { width: 20px; text-align: center; }
 
-        /* --- 🔥 Styling ตอนพับ (Collapsed State) --- */
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
-            padding: 40px 10px; /* ลด padding */
-        }
-        .sidebar.collapsed .sidebar-brand span, 
-        .sidebar.collapsed .sidebar-menu a span {
-            opacity: 0; 
-            width: 0; 
-            display: none; /* ซ่อนตัวหนังสือ */
-        }
-        .sidebar.collapsed .sidebar-brand { justify-content: center; }
-        .sidebar.collapsed .sidebar-menu a { justify-content: center; padding: 15px 10px; }
-        .sidebar.collapsed .sidebar-toggle-btn { transform: rotate(180deg); } /* หมุนลูกศร */
-
-        /* --- 2. Main Layout (ขวา) --- */
+        /* --- Main Layout --- */
         .main-wrapper {
-            margin-left: var(--sidebar-width); 
+            margin-left: var(--sidebar-width); /* ขยับตาม Sidebar */
             width: calc(100% - var(--sidebar-width)); 
             padding: 40px; 
             display: flex; flex-direction: column; gap: var(--spacing);
-            transition: all var(--transition-speed) ease; /* 🔥 Animation ตาม Sidebar */
         }
 
-        /* ตอนพับ Sidebar ขยาย Main เต็มจอ */
-        .main-wrapper.expanded {
-            margin-left: var(--sidebar-collapsed-width);
-            width: calc(100% - var(--sidebar-collapsed-width));
-        }
-
-        /* --- Components (Cards & Charts) --- */
+        /* --- Components --- */
         .header-section { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
         .header-title h1 { margin: 0; font-size: 1.8rem; color: #1f2937; } .header-title p { margin: 5px 0 0; color: #6b7280; }
         .controls { display: flex; gap: 15px; align-items: center; background: white; padding: 10px 20px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
@@ -136,21 +94,16 @@
 
         @media (max-width: 1200px) { .stats-grid { grid-template-columns: 1fr; } .charts-row { grid-template-columns: 1fr; } }
         @media (max-width: 900px) { 
-            .sidebar { width: var(--sidebar-collapsed-width); padding: 20px 10px; } 
+            .sidebar { width: 80px; padding: 20px 10px; align-items: center; } 
             .sidebar-brand span, .sidebar-menu a span { display: none; } 
-            .sidebar-brand { justify-content: center; } .sidebar-menu a { justify-content: center; } 
-            .main-wrapper { margin-left: var(--sidebar-collapsed-width); width: calc(100% - var(--sidebar-collapsed-width)); padding: 20px; } 
-            .sidebar-toggle-btn { display: none; } /* ซ่อนปุ่มบนมือถือเพราะมันเล็กอยู่แล้ว */
+            .sidebar-brand { justify-content: center; } .sidebar-menu a { justify-content: center; padding: 15px; } 
+            .main-wrapper { margin-left: 80px; width: calc(100% - 80px); padding: 20px; } 
         }
     </style>
 </head>
 <body>
 
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-toggle-btn" id="sidebarToggle">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-
+    <nav class="sidebar">
         <div class="sidebar-brand">
             <i class="fas fa-layer-group fa-lg" style="color: var(--accent-color);"></i>
             <span>THE CONNECT</span>
@@ -161,7 +114,7 @@
         </ul>
     </nav>
 
-    <div class="main-wrapper" id="mainWrapper">
+    <div class="main-wrapper">
         
         <div class="header-section">
             <div class="header-title">
@@ -236,31 +189,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // 🔥 LOGIC สำหรับปุ่มพับ Sidebar
-        const sidebar = document.getElementById('sidebar');
-        const mainWrapper = document.getElementById('mainWrapper');
-        const toggleBtn = document.getElementById('sidebarToggle');
-        const toggleIcon = toggleBtn.querySelector('i');
-
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            mainWrapper.classList.toggle('expanded');
-            
-            // หมุนลูกศรไปมา
-            if (sidebar.classList.contains('collapsed')) {
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-chevron-right');
-            } else {
-                toggleIcon.classList.remove('fa-chevron-right');
-                toggleIcon.classList.add('fa-chevron-left');
-            }
-            
-            // สั่งให้กราฟปรับขนาดใหม่ทันที (แก้บั๊กกราฟเบี้ยว)
-            setTimeout(() => {
-                for (let id in charts) { charts[id].resize(); }
-            }, 350);
-        });
 
         const firebaseConfig = {
             apiKey: "AIzaSyAndhLwumGYso3DYBteCrfCTecPk3NPTfw",
