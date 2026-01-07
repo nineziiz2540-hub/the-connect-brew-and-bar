@@ -1,168 +1,174 @@
 :root {
     --primary-color: #007bff;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --light-gray: #f8f9fa;
-    --border-color: #dee2e6;
-    --text-color: #343a40;
-    --body-bg: #f4f7fc;
-    --border-radius: 12px;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --success-color: #27ae60;
+    --warning-color: #e67e22;
+    --danger-color: #e74c3c;
+    --bg-color: #ecf0f1;
+    --text-color: #2c3e50;
 }
 
 body {
-    font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color: var(--body-bg);
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--bg-color);
     margin: 0;
+    padding: 100px 20px 20px 20px;
     color: var(--text-color);
-    font-size: 16px;
-    padding: 1.5rem;
 }
 
 .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* กางปีกเต็มจอ */
+    z-index: 1000; /* สั่งให้อยู่ชั้นบนสุด ทับทุกอย่าง */
+    box-sizing: border-box; /* สำคัญ! ป้องกันไม่ให้ Padding ดันจนล้นจอ */
+
+    /* จัดความสวยงาม */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem;
-    background-color: #fff;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 1.5rem;
+    background: white;
+    padding: 15px 25px;
+    
+    /* ปรับมุมมนเฉพาะด้านล่าง ให้ดูเหมือนลิ้นชักดึงลงมา */
+    border-radius: 0 0 20px 20px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-.header h1 {
-    margin: 0;
-    color: var(--primary-color);
-}
-
-#connection-status {
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-.status-offline {
-    color: #fff;
-    background-color: var(--danger-color);
-}
-.status-online {
-    color: #fff;
-    background-color: var(--success-color);
-}
+.title-group h1 { margin: 0; font-size: 1.8rem; color: var(--text-color); }
+.shop-name { color: #7f8c8d; font-weight: 500; }
+.status-online { color: var(--success-color); font-weight: bold; }
+.status-offline { color: var(--danger-color); font-weight: bold; }
 
 #order-queue-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
+    gap: 20px;
+    justify-content: start;
+    direction: ltr;
+    width: 100%;
 }
 
 .order-card {
-    background-color: #fff;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.2s;
+    border: 1px solid #eee;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    transition: transform 0.2s ease;
 }
+.order-card:hover { transform: translateY(-3px); }
 
-.order-card:hover {
-    transform: translateY(-5px);
+.order-card-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+.header-paid { background-color: #e3f2fd; border-bottom: 2px solid #90caf9; }
+.header-held { background-color: #fff3e0; border-bottom: 2px solid #ffb74d; }
+
+.queue-badge, .table-badge { 
+    color: white; padding: 5px 12px; border-radius: 20px; font-size: 1.3rem; font-weight: bold;
 }
+.queue-badge { background: var(--primary-color); }
+.table-badge { background: var(--warning-color); }
+.order-time { font-size: 0.9rem; font-weight: 600; }
 
-.order-card.new-order {
-    animation: fadeIn 0.5s ease;
-}
+.order-card-body { padding: 10px 15px; flex-grow: 1; }
+.item-list { list-style: none; padding: 0; margin: 0; }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-.order-card-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+/* --- โซนจัดระเบียบเมนู (Layout ใหม่) --- */
+.order-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--light-gray);
+    align-items: flex-start; /* ให้เลขจำนวนแก้วอยู่บนสุดเสมอ */
+    padding: 12px 0;
+    border-bottom: 1px dashed #ddd;
 }
-.order-card-header h2 {
-    margin: 0;
-    font-size: 1.2rem;
+.order-item:last-child { border-bottom: none; }
+
+.item-qty-box {
+    margin-right: 12px;
+    padding-top: 2px;
 }
-.order-card-header .order-time {
-    font-size: 0.9rem;
-    color: #6c757d;
-    font-weight: 600;
+.item-qty {
+    background: #2c3e50; color: white;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-weight: bold; font-size: 1.1rem;
 }
 
-/* ‼️ --- START: โค้ดที่เพิ่มใหม่ --- ‼️ */
-.queue-number {
-    display: inline-block;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px; /* ทำให้ป้ายมนๆ */
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-/* ‼️ --- END: โค้ดที่เพิ่มใหม่ --- ‼️ */
-
-.order-card-body {
-    padding: 1.5rem;
+.item-content {
+    display: flex;
+    flex-direction: column; /* เรียงลงมาเป็นชั้นๆ */
     flex-grow: 1;
+    gap: 4px; /* ระยะห่างระหว่างบรรทัด */
 }
 
-.order-card-body ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+/* บรรทัด 1: ชื่อเมนู + ป้ายร้อนเย็น */
+.row-main {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
 }
-
-.order-card-body li {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px dashed #eee;
+.item-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.2;
 }
-
-.order-card-body li:last-child {
-    margin-bottom: 0;
-    border-bottom: none;
-}
-
-.order-card-body li strong {
-    font-size: 1.2rem;
-    color: var(--primary-color);
-}
-
-.order-card-body li .item-details {
-    font-size: 0.9rem;
-    color: #6c757d;
-    padding-left: 1.5rem;
-    display: block;
-}
-
-.order-card-footer {
-    padding: 1rem 1.5rem;
-    background-color: var(--light-gray);
-    border-top: 1px solid var(--border-color);
-}
-
-.complete-btn {
-    width: 100%;
-    padding: 1rem;
-    background-color: var(--success-color);
+.badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
     color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    text-transform: uppercase;
+}
+.badge-hot { background-color: #e74c3c; }
+.badge-iced { background-color: #3498db; }
+.badge-frappe { background-color: #9b59b6; }
+
+/* บรรทัด 2: ความหวาน (เด่นมาก) */
+.row-sweet {
+    margin-top: 2px;
+}
+.badge-sweetness {
+    color: #e65100;
+    background-color: #ffe0b2;
+    border: 1px solid #ffcc80;
+    font-weight: bold;
+    font-size: 0.95rem;
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 15px; /* ทรงแคปซูล */
 }
 
-.complete-btn:hover {
-    background-color: #218838;
+/* บรรทัด 3: Option อื่นๆ (ตัวเล็กหน่อย) */
+.row-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
+.option-row {
+    font-size: 0.9rem;
+    color: #666;
+    background: #f5f5f5;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.order-card-footer { padding: 15px; background: #fafafa; border-top: 1px solid #eee; margin-top: auto;}
+.complete-btn {
+    width: 100%; padding: 12px; border: none; border-radius: 8px;
+    background: var(--success-color); color: white;
+    font-size: 1.2rem; font-weight: bold; cursor: pointer;
+    transition: background 0.2s;
+}
+.complete-btn:hover { background: #219150; }
+
+.clear-all-btn {
+    background-color: #e74c3c; color: white; border: none;
+    padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer;
+    display: flex; gap: 5px;
+}
+.clear-all-btn:hover { background-color: #c0392b; }

@@ -3,40 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barista View - THE CONNECT</title>
-    
-    <link rel="stylesheet" href="barista.css?v=1.3">
-    
+    <title>Barista Monitor - The Connect</title>
+    <link rel="stylesheet" href="barista.css?v=2.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="header">
-        <h1><i class="fas fa-coffee"></i> Barista Order Queue</h1>
-        <div id="connection-status" class="status-offline">
-            <i class="fas fa-wifi"></i> กำลังเชื่อมต่อ...
+        <div class="title-group">
+            <h1><i class="fas fa-mug-hot"></i> BARISTA Monitor</h1>
+            <span class="shop-name">The Connect Brew & Bar</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="clear-all-btn" class="clear-all-btn" style="display: none;"> <i class="fas fa-trash-alt"></i> เคลียร์ทั้งหมด
+            </button>
+
+            <div id="connection-status" class="status-offline">
+                <i class="fas fa-wifi"></i> กำลังเชื่อมต่อ...
+            </div>
         </div>
     </div>
+
     <div id="order-queue-container">
         </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyAndhLwumGYso3DYBteCrfCTecPk3NPTfw",
-        authDomain: "the-connect-pos-db.firebaseapp.com",
-        projectId: "the-connect-pos-db",
-        storageBucket: "the-connect-pos-db.appspot.com", 
-        messagingSenderId: "955501445672",
-        appId: "1:955501445672:web:07356e6gitch24957032cab1d",
-        measurementId: "G-7QKZTW0GFF"
-      };
-      
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore(); 
-    </script>
-
-    <script src="barista.js?v=1.3"></script>
+    <script type="module" src="barista.js?v=2.0"></script>
 </body>
 </html>

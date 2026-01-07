@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>THE CONNECT POS</title>
     
-    <link rel="stylesheet" href="style.css?v=7.0">
-    
+    <link rel="stylesheet" href="style.css?v=11.0"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -16,17 +15,33 @@
             <div class="menu-title-row">
                 <h1>เมนู</h1>
                 <div class="header-actions">
-                    <button id="custom-item-btn" class="custom-item-btn"><i class="fas fa-plus"></i> เพิ่มรายการเอง</button>
-                    <button id="sales-report-button" class="report-btn"><i class="fas fa-chart-line"></i> รายงานยอดขาย</button>
+                    <button id="manage-menu-btn" class="custom-item-btn" style="background-color: #3498db; color: white;">
+                        <i class="fas fa-edit"></i> เมนูพิเศษ
+                    </button>
+
+                    <button id="view-held-orders-btn" class="custom-item-btn" style="background-color: #e67e22; color: white; border: none;">
+                        <i class="fas fa-clock"></i> บิลที่พักไว้
+                    </button>
+                    <button id="custom-item-btn" class="custom-item-btn"><i class="fas fa-plus"></i> เพิ่มเอง</button>
+                    <button id="sales-report-button" class="report-btn"><i class="fas fa-chart-line"></i> รายงาน</button>
+                    <a href="dashboard.html" class="report-btn" style="background-color: #34495e; text-decoration: none; display: flex; align-items: center; margin-right: 5px;">
+                    <i class="fas fa-chart-pie" style="margin-right: 5px;"></i> Dashboard
+                    </a>
                 </div>
             </div>
+            
             <div class="menu-tabs">
                 <button class="menu-tab active" data-category="coffee">COFFEE</button>
                 <button class="menu-tab" data-category="matcha">MATCHA</button>
                 <button class="menu-tab" data-category="non-coffee">NON COFFEE</button>
+                
+                <button class="menu-tab" data-category="bean">BEAN SPECIALS</button>
+                <button class="menu-tab" data-category="beer">CRAFT BEER</button>
+                
                 <button class="menu-tab" data-category="food">FOOD</button>
                 <button class="menu-tab" data-category="bakery">BAKERY</button>
             </div>
+            
             <div id="menu-items" class="menu-grid">
                 </div>
         </div>
@@ -41,8 +56,7 @@
             
             <div id="order-details">
                 <p id="order-timestamp"></p>
-                <ul id="order-list">
-                    </ul>
+                <ul id="order-list"></ul>
                 <div id="print-qrcode-container"></div>
             </div>
             
@@ -62,16 +76,22 @@
                     <hr>
                     <h3>ยอดชำระ <span id="grand-total">0.00</span> บาท</h3>
                 </div>
-                <div class="payment-buttons">
+                
+                <div class="payment-buttons" style="margin-bottom: 2px;">
                     <button id="cash-payment-btn">
-                        <i class="fas fa-money-bill-wave"></i> ชำระด้วยเงินสด
+                        <i class="fas fa-money-bill-wave"></i> เงินสด
                     </button>
                     <button id="pay-and-print-button">
                         <i class="fas fa-qrcode"></i> QR Code
                     </button>
                 </div>
-                <button id="close-order-button" class="close-btn">
-                    <i class="fas fa-check-circle"></i> ปิดออเดอร์ (ไม่ชำระเงิน)
+
+                <button id="hold-order-btn" class="close-btn" style="background-color: #f39c12; margin-bottom: 2px; border: none;">
+                    <i class="fas fa-pause-circle"></i> พักบิล (ยังไม่จ่าย)
+                </button>
+
+                <button id="close-order-button" class="close-btn" style="border: none;">
+                    <i class="fas fa-times-circle"></i> ยกเลิกออเดอร์
                 </button>
             </div>
         </div>
@@ -90,14 +110,85 @@
         </div>
     </div>
 
+    <div id="manage-menu-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px; padding: 0; overflow: hidden;">
+            
+            <div class="modal-header-custom" style="padding: 20px; background: white; border-bottom: 1px solid #eee;">
+                <span class="close-button" style="position: relative; top: 0; right: 0; float: right;">&times;</span>
+                <h2 style="margin: 0; text-align: center;">จัดการเมนูพิเศษ</h2>
+            </div>
+
+            <div class="modal-body-custom" style="padding: 20px; overflow-y: auto; flex-grow: 1;">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #eee;">
+                    <h4 style="margin-top:0; color: #2c3e50; margin-bottom: 10px;"><i class="fas fa-plus-circle"></i> เพิ่มสินค้าใหม่</h4>
+                    
+                    <div class="custom-item-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0;">
+                        <input type="text" id="new-item-name" placeholder="ชื่อเมนู (เช่น Beer IPA)" 
+                               style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
+                        
+                        <input type="text" id="new-item-thai" placeholder="ชื่อไทย (ถ้ามี)" 
+                               style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
+                        
+                        <input type="number" id="new-item-price" placeholder="ราคาขาย" 
+                               style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
+                        <input type="number" id="new-item-cost" placeholder="ต้นทุน" 
+                               style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
+                        
+                        <select id="new-item-category" 
+                                style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; background-color: white; color: #333; height: 45px; width: 100%; box-sizing: border-box;">
+                            <option value="" disabled selected>-- เลือกหมวดหมู่ --</option>
+                            <option value="bean">BEAN SPECIALS</option>
+                            <option value="beer">CRAFT BEER</option>
+                            <option value="matcha">MATCHA</option>
+                            <option value="bakery">BAKERY</option>
+                            <option value="coffee">Coffee</option>
+                            <option value="non-coffee">Non-Coffee</option>
+                            <option value="food">Food</option>
+                        </select>
+                    </div>
+
+                    <button id="save-new-item-btn" class="confirm-payment-btn" style="margin-top: 12px; background: #27ae60; font-size: 1rem;">
+                        บันทึกเมนู
+                    </button>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
+
+                <h4 style="color: #7f8c8d; margin-bottom: 10px;">รายการที่มีอยู่</h4>
+                
+                <div id="dynamic-menu-list">
+                    </div>
+            </div>
+        </div>
+    </div>
+
     <div id="sales-report-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>รายงานยอดขายวันนี้</h2>
+            <h2>รายงานยอดขาย</h2>
             <div id="sales-report-details"></div>
-            <div class="report-actions">
-                <button id="delete-last-sale-btn" class="report-action-btn">ลบรายการล่าสุด</button>
-                <button id="reset-sales-btn" class="report-action-btn reset-btn">รีเซ็ทยอดขายวันนี้</button>
+            
+            <div class="report-actions" style="flex-direction: column; gap: 10px;">
+                <div style="display: flex; gap: 10px; align-items: center; width: 100%; justify-content: center; background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-size: 0.8rem; color: #666;">ตั้งแต่:</label>
+                        <input type="date" id="export-start-date" style="padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <span style="align-self: flex-end; padding-bottom: 5px;">-</span>
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-size: 0.8rem; color: #666;">ถึง:</label>
+                        <input type="date" id="export-end-date" style="padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <button id="export-excel-btn" class="report-action-btn" style="background-color: #217346; color: white; width: 100%;">
+                    <i class="fas fa-file-excel"></i> ดาวน์โหลด Excel (ตามช่วงเวลา)
+                </button>
+                
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <button id="delete-last-sale-btn" class="report-action-btn" style="flex: 1;">ลบรายการล่าสุด</button>
+                    <button id="reset-sales-btn" class="report-action-btn reset-btn" style="flex: 1;">รีเซ็ทยอดขายวันนี้</button>
+                </div>
             </div>
         </div>
     </div>
@@ -117,8 +208,7 @@
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2 id="modifiers-item-name">เลือกตัวเลือกเสริม</h2>
-            <div id="modifier-options-container">
-                </div>
+            <div id="modifier-options-container"></div>
             <button id="add-modified-item-to-order-btn">เพิ่มลงในออเดอร์</button>
         </div>
     </div>
@@ -139,13 +229,11 @@
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>สแกนเพื่อชำระเงิน</h2>
-            <div id="modal-order-summary">
-                </div>
-            <div id="modal-qr-code">
-                </div>
+            <div id="modal-order-summary"></div>
+            <div id="modal-qr-code"></div>
             <h3 id="modal-total-payment"></h3>
             <button id="confirm-payment-btn" class="confirm-payment-btn">
-                <i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน
+                <i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน (เมื่อเงินเข้าแล้ว)
             </button>
         </div>
     </div>
@@ -159,26 +247,25 @@
         </div>
     </div>
 
+    <div id="hold-order-modal" class="modal">
+        <div class="modal-content" style="max-width: 350px;">
+            <span class="close-button">&times;</span>
+            <h2>พักบิล / รอจ่าย</h2>
+            <p style="margin-bottom: 1rem;">ระบุชื่อลูกค้า หรือ เบอร์โต๊ะ:</p>
+            <input type="text" id="hold-order-name" class="cash-input" placeholder="เช่น โต๊ะ 5, เสื้อแดง">
+            <button id="confirm-hold-order-btn" class="confirm-payment-btn" style="background-color: #f39c12;">บันทึกพักบิล</button>
+        </div>
+    </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyAndhLwumGYso3DYBteCrfCTecPk3NPTfw",
-        authDomain: "the-connect-pos-db.firebaseapp.com",
-        projectId: "the-connect-pos-db",
-        storageBucket: "the-connect-pos-db.appspot.com", 
-        messagingSenderId: "955501445672",
-        appId: "1:955501445672:web:07356e61c24957032cab1d",
-        measurementId: "G-7QKZTW0GFF"
-      };
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore(); 
-    </script>
-    
+    <div id="held-orders-list-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>รายการบิลที่พักไว้</h2>
+            <div id="held-orders-container" style="max-height: 400px; overflow-y: auto;"></div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
-    
-    <script src="script.js?v=7.3"></script> 
-
+    <script type="module" src="script.js?v=11.0"></script> 
 </body>
 </html>

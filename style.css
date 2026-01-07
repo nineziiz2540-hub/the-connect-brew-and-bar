@@ -321,3 +321,97 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 0
     .summary-box hr { display: none; }
     .summary-box h3 { font-size: 1.4em; }
 }
+
+/* --- 🛠️ New: Fix Manage Menu Modal Overflow (เพิ่มใหม่) --- */
+
+/* 1. คุมความสูง Modal ไม่ให้ล้นจอ iPad */
+#manage-menu-modal .modal-content {
+    max-height: 85vh; /* สูงไม่เกิน 85% ของจอ */
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* ล้าง Padding เดิม เพื่อจัด Layout ใหม่ */
+    overflow: hidden; /* ซ่อนส่วนเกิน */
+}
+
+/* Header ของ Modal */
+.modal-header-custom {
+    padding: 20px;
+    background: white;
+    border-bottom: 1px solid #eee;
+    flex-shrink: 0; /* ห้ามหด */
+}
+
+/* ส่วนฟอร์มกรอกข้อมูล (ให้เลื่อนได้ถ้าจอเล็กมาก) */
+.modal-body-custom {
+    padding: 20px;
+    overflow-y: auto; /* ให้เลื่อนได้ */
+    flex-grow: 1;
+}
+
+/* 2. แต่งรายการเมนูให้ดูโปร (Card Style) */
+#dynamic-menu-list {
+    margin-top: 10px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.menu-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fff;
+    transition: background 0.2s;
+}
+
+.menu-list-item:last-child {
+    border-bottom: none;
+}
+
+.menu-list-item:hover {
+    background-color: #f8f9fa;
+}
+
+.menu-item-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 15px;
+}
+
+.menu-item-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.menu-item-meta {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-top: 2px;
+}
+
+/* ปุ่มลบแบบผู้ดี (Outline Style) */
+.delete-menu-btn-pro {
+    background: transparent;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.delete-menu-btn-pro:hover {
+    background: #e74c3c;
+    color: white;
+    box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
+}

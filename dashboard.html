@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE CONNECT - Executive Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-bg: #f8f9fa; /* พื้นหลังสีเทาอ่อน สบายตา */
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --sidebar-bg: #2c3e50;
+            --sidebar-width: 260px; /* ขยาย Sidebar ให้กว้างขึ้นนิดนึง */
+            --accent-color: #3498db;
+            --radius: 16px; /* ความมนของมุม */
+        }
+
+        * { box-sizing: border-box; } /* สำคัญมาก! ช่วยแก้ปัญหา layout ล้น */
+
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            background-color: var(--primary-bg); 
+            margin: 0; 
+            color: var(--text-main); 
+            display: flex; 
+            min-height: 100vh; 
+            overflow-x: hidden; /* ห้ามเลื่อนซ้ายขวา */
+        }
+
+        /* --- 1. Sidebar (เมนูซ้าย) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 30px 20px; /* เพิ่ม padding บนล่าง */
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar h2 { 
+            font-size: 1.4rem; 
+            margin: 0 0 40px 10px; /* เว้นระยะห่างจากขอบซ้าย */
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-menu li { margin-bottom: 12px; }
+        
+        .sidebar-menu a {
+            display: flex; 
+            align-items: center; 
+            gap: 15px;
+            color: #b2bec3; 
+            text-decoration: none; 
+            padding: 12px 20px; /* เพิ่มพื้นที่กด */
+            border-radius: 12px; 
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active { 
+            background: rgba(255,255,255,0.1); 
+            color: white; 
+            transform: translateX(5px); /* ลูกเล่นขยับนิดๆ */
+        }
+        
+        /* --- 2. Main Content (เนื้อหาขวา) --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width)); /* คำนวณพื้นที่ที่เหลือ */
+            padding: 40px; /* เว้นขอบรอบๆ ให้ดูโปร */
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* ระยะห่างระหว่าง Section */
+        }
+
+        /* --- 3. Filter Bar (แถบเลือกวันที่) --- */
+        .filter-container {
+            background: var(--card-bg);
+            padding: 20px 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .date-inputs { display: flex; gap: 10px; align-items: center; }
+        
+        .date-inputs input { 
+            padding: 10px 15px; 
+            border: 1px solid #dfe6e9; 
+            border-radius: 8px; 
+            font-family: 'Kanit'; 
+            color: var(--text-main);
+            background: #fdfdfd;
+        }
+
+        .btn-primary {
+            background: var(--accent-color); color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; cursor: pointer; font-family: 'Kanit'; font-weight: 500;
+            display: flex; align-items: center; gap: 8px;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #2980b9; }
+
+        .quick-presets button {
+            background: #dfe6e9; border: none; padding: 6px 14px; border-radius: 20px;
+            font-size: 0.85rem; cursor: pointer; color: var(--text-muted); margin-left: 5px;
+            font-family: 'Kanit'; transition: all 0.2s;
+        }
+        .quick-presets button:hover { background: #b2bec3; color: white; }
+
+        /* --- 4. Stats Grid (กล่องยอดขาย) --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* ยืดหยุ่นตามหน้าจอ */
+            gap: 25px; /* เพิ่มช่องไฟ */
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s;
+            border-left: 5px solid transparent; /* เส้นสีด้านซ้าย */
+        }
+        
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+
+        .stat-info h3 { margin: 0; font-size: 0.95rem; color: var(--text-muted); font-weight: 400; }
+        .stat-info p { margin: 8px 0 0; font-size: 1.8rem; font-weight: 600; color: var(--text-main); }
+        
+        .stat-icon {
+            width: 55px; height: 55px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Colors */
+        .card-sales { border-color: #3b82f6; } .card-sales .stat-icon { background: #eff6ff; color: #3b82f6; }
+        .card-orders { border-color: #f59e0b; } .card-orders .stat-icon { background: #fffbeb; color: #f59e0b; }
+        .card-profit { border-color: #10b981; } .card-profit .stat-icon { background: #ecfdf5; color: #10b981; }
+        .card-avg { border-color: #8b5cf6; } .card-avg .stat-icon { background: #f5f3ff; color: #8b5cf6; }
+
+        /* --- 5. Charts Grid (แก้ปัญหากราฟล้น) --- */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* แบ่งครึ่งหน้าจอ */
+            gap: 25px; /* ช่องไฟ */
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            
+            /* 🔥 สำคัญมาก: แก้ปัญหากราฟยืด */
+            min-width: 0; 
+            height: 400px; /* กำหนดความสูงตายตัว */
+        }
+
+        .chart-header { margin-bottom: 20px; border-bottom: 1px solid #f1f2f6; padding-bottom: 10px; }
+        .chart-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+
+        .chart-body {
+            flex-grow: 1;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* ตัดส่วนเกิน */
+        }
+
+        /* --- 6. Table (ตารางล่าสุด) --- */
+        .table-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            overflow-x: auto;
+        }
+        
+        table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 600px; }
+        th { text-align: left; padding: 15px; border-bottom: 2px solid #f1f2f6; color: var(--text-muted); font-weight: 500; }
+        td { padding: 15px; border-bottom: 1px solid #f1f2f6; color: var(--text-main); font-size: 0.95rem; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8f9fa; }
+
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; display: inline-block; }
+        .badge-qr { background: #e0f2fe; color: #0284c7; }
+        .badge-cash { background: #dcfce7; color: #16a34a; }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar { width: 80px; padding: 20px 10px; align-items: center; } /* ย่อเมนู */
+            .sidebar h2 span { display: none; } /* ซ่อนชื่อ */
+            .sidebar-menu a span { display: none; } /* ซ่อนข้อความเมนู */
+            .sidebar-menu a { justify-content: center; padding: 15px; }
+            
+            .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 20px; }
+            .charts-container { grid-template-columns: 1fr; } /* กราฟเรียงเดี่ยวบนจอเล็ก */
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar { display: none; } /* ซ่อนเมนูบนมือถือ */
+            .main-content { margin-left: 0; width: 100%; padding: 15px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2><i class="fas fa-chart-pie" style="color: #3498db;"></i> <span>THE CONNECT</span></h2>
+        <ul class="sidebar-menu" style="margin-top: 30px;">
+            <li><a href="#" class="active"><i class="fas fa-th-large"></i> <span>ภาพรวม</span></a></li>
+            <li><a href="index.html"><i class="fas fa-store"></i> <span>กลับหน้าร้าน</span></a></li>
+        </ul>
+        <div style="margin-top: auto; text-align: center; font-size: 0.8rem; color: #64748b;">
+            <span>v2.5 Pro</span>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        
+        <div class="filter-container">
+            <div>
+                <h1 style="margin: 0; font-size: 1.5rem; color: #2c3e50;">Executive Dashboard</h1>
+                <p style="margin: 5px 0 0; color: #95a5a6; font-size: 0.9rem;">สรุปผลการดำเนินงานประจำวัน</p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+                <div class="date-inputs">
+                    <label style="font-size: 0.9rem; color: #7f8c8d;">ช่วงเวลา:</label>
+                    <input type="date" id="startDate">
+                    <span style="color:#bdc3c7">-</span>
+                    <input type="date" id="endDate">
+                    <button class="btn-primary" onclick="loadDashboardData()">
+                        <i class="fas fa-search"></i> ค้นหา
+                    </button>
+                </div>
+                <div class="quick-presets">
+                    <button onclick="setPreset('today')">วันนี้</button>
+                    <button onclick="setPreset('yesterday')">เมื่อวาน</button>
+                    <button onclick="setPreset('thisMonth')">เดือนนี้</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="loading" style="text-align: center; padding: 50px; color: #bdc3c7;">
+            <i class="fas fa-circle-notch fa-spin fa-2x"></i> <br> กำลังประมวลผลข้อมูล...
+        </div>
+
+        <div id="dashboard-content" style="display: none;">
+            
+            <div class="stats-grid">
+                <div class="stat-card card-sales">
+                    <div class="stat-info">
+                        <h3>ยอดขายรวม</h3>
+                        <p id="total-sales">0 ฿</p>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+                </div>
+                <div class="stat-card card-orders">
+                    <div class="stat-info">
+                        <h3>จำนวนออเดอร์</h3>
+                        <p id="total-orders">0</p>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+                </div>
+                <div class="stat-card card-profit">
+                    <div class="stat-info">
+                        <h3>กำไรโดยประมาณ</h3>
+                        <p id="total-profit">0 ฿</p>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                </div>
+                <div class="stat-card card-avg">
+                    <div class="stat-info">
+                        <h3>เฉลี่ยต่อบิล</h3>
+                        <p id="avg-ticket">0 ฿</p>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-crown" style="color: #f1c40f;"></i> 5 อันดับเมนูขายดี</h3>
+                    </div>
+                    <div class="chart-body"><canvas id="topMenuChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-line" style="color: #3498db;"></i> ยอดขายรายชั่วโมง (Peak Time)</h3>
+                    </div>
+                    <div class="chart-body"><canvas id="salesByHourChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-mug-hot" style="color: #9b59b6;"></i> สัดส่วนหมวดหมู่สินค้า</h3>
+                    </div>
+                    <div class="chart-body" style="padding: 0 40px;"><canvas id="categoryChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-money-bill-wave" style="color: #2ecc71;"></i> ช่องทางการชำระเงิน</h3>
+                    </div>
+                    <div class="chart-body" style="padding: 0 40px;"><canvas id="paymentChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <h3 style="margin: 0 0 20px; font-size: 1.1rem; color: #2c3e50; border-bottom: 2px solid #f1f2f6; padding-bottom: 10px;">
+                    <i class="fas fa-list-ul"></i> รายการออเดอร์ล่าสุด (Live)
+                </h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">เวลา</th>
+                            <th style="width: 10%;">คิว</th>
+                            <th style="width: 45%;">รายการ</th>
+                            <th style="width: 15%;">ยอดเงิน</th>
+                            <th style="width: 15%;">ชำระโดย</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-orders-body">
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAndhLwumGYso3DYBteCrfCTecPk3NPTfw",
+            authDomain: "the-connect-pos-db.firebaseapp.com",
+            projectId: "the-connect-pos-db",
+            storageBucket: "the-connect-pos-db.firebasestorage.app",
+            messagingSenderId: "955501445672",
+            appId: "1:955501445672:web:07356e61c24957032cab1d",
+            measurementId: "G-7QKZTW0GFF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        let charts = {};
+
+        window.setPreset = function(mode) {
+            const today = new Date();
+            const startInput = document.getElementById('startDate');
+            const endInput = document.getElementById('endDate');
+            let start = new Date(today);
+            let end = new Date(today);
+
+            if (mode === 'yesterday') {
+                start.setDate(today.getDate() - 1);
+                end.setDate(today.getDate() - 1);
+            } else if (mode === 'thisMonth') {
+                start = new Date(today.getFullYear(), today.getMonth(), 1);
+                end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            }
+            startInput.value = formatDate(start);
+            endInput.value = formatDate(end);
+            loadDashboardData();
+        };
+        
+        function formatDate(date) {
+            const d = new Date(date), month = '' + (d.getMonth() + 1), day = '' + d.getDate(), year = d.getFullYear();
+            return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+        }
+
+        window.loadDashboardData = async function() {
+            const startStr = document.getElementById('startDate').value;
+            const endStr = document.getElementById('endDate').value;
+            if (!startStr || !endStr) return;
+
+            const startDate = new Date(startStr); startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date(endStr); endDate.setHours(23, 59, 59, 999);
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('dashboard-content').style.display = 'none';
+
+            const q = query(collection(db, "orders"), where("createdAt", ">=", startDate), where("createdAt", "<=", endDate));
+            const querySnapshot = await getDocs(q);
+
+            let totalSales = 0, totalCost = 0, orderCount = 0;
+            let menuCounts = {}, hourCounts = {}, categoryCounts = {}, paymentCounts = { 'Cash': 0, 'QR': 0 };
+            let recentOrders = [];
+
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                if (data.status === 'cancelled') return;
+
+                orderCount++;
+                totalSales += data.grandTotal;
+                if (data.paymentMethod) paymentCounts[data.paymentMethod] = (paymentCounts[data.paymentMethod] || 0) + 1;
+
+                if (data.createdAt) {
+                    const date = data.createdAt.toDate();
+                    const hour = date.getHours(); 
+                    const hourLabel = `${hour}:00`;
+                    hourCounts[hourLabel] = (hourCounts[hourLabel] || 0) + data.grandTotal;
+                    
+                    recentOrders.push({ time: date, queue: data.queueNumber || '-', total: data.grandTotal, payment: data.paymentMethod, items: data.items });
+                }
+
+                for (const key in data.items) {
+                    const item = data.items[key];
+                    const qty = item.quantity;
+                    let cleanName = item.name.split('(')[0].trim(); 
+                    menuCounts[cleanName] = (menuCounts[cleanName] || 0) + qty;
+
+                    let catName = 'อื่นๆ';
+                    if (item.id.startsWith('c-')) catName = 'Coffee';
+                    else if (item.id.startsWith('m-')) catName = 'Matcha';
+                    else if (item.id.startsWith('n-')) catName = 'Non-Coffee';
+                    else if (item.id.startsWith('b-')) catName = 'Bakery';
+                    else if (item.id.startsWith('f-')) catName = 'Food';
+
+                    categoryCounts[catName] = (categoryCounts[catName] || 0) + (item.price * qty);
+                    if (item.cost) totalCost += (item.cost * qty);
+                }
+            });
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('dashboard-content').style.display = 'block';
+            
+            document.getElementById("total-sales").innerText = totalSales.toLocaleString() + ' ฿';
+            document.getElementById("total-orders").innerText = orderCount;
+            document.getElementById("total-profit").innerText = (totalSales - totalCost).toLocaleString() + ' ฿';
+            const avg = orderCount > 0 ? Math.round(totalSales / orderCount) : 0;
+            document.getElementById("avg-ticket").innerText = avg + ' ฿';
+
+            renderChart('topMenuChart', 'bar', 
+                Object.entries(menuCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(x => x[0]),
+                Object.entries(menuCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(x => x[1]),
+                'แก้ว', '#f59e0b', { indexAxis: 'y', maintainAspectRatio: false }
+            );
+
+            const sortedHours = Object.keys(hourCounts).sort((a, b) => parseInt(a) - parseInt(b));
+            renderChart('salesByHourChart', 'line', sortedHours, sortedHours.map(h => hourCounts[h]), 'บาท', '#3b82f6', { maintainAspectRatio: false });
+
+            renderChart('categoryChart', 'doughnut', Object.keys(categoryCounts), Object.values(categoryCounts), 'บาท', ['#8b5cf6', '#10b981', '#f59e0b', '#3b82f6', '#ef4444'], { maintainAspectRatio: false });
+            renderChart('paymentChart', 'pie', Object.keys(paymentCounts), Object.values(paymentCounts), 'บิล', ['#10b981', '#3b82f6'], { maintainAspectRatio: false });
+
+            renderRecentTable(recentOrders);
+        };
+
+        function renderRecentTable(orders) {
+            orders.sort((a, b) => b.time - a.time);
+            const top10 = orders.slice(0, 10);
+            const tbody = document.getElementById('recent-orders-body');
+            tbody.innerHTML = '';
+            
+            if(top10.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">ไม่มีรายการ</td></tr>'; return; }
+
+            top10.forEach(o => {
+                let itemStr = '';
+                for(let k in o.items) itemStr += `${o.items[k].name} x${o.items[k].quantity}, `;
+                itemStr = itemStr.slice(0, -2);
+                const badgeClass = o.payment === 'QR' ? 'badge-qr' : 'badge-cash';
+                const timeStr = o.time.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'});
+                tbody.innerHTML += `<tr><td>${timeStr}</td><td>${o.queue}</td><td style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color:#555;">${itemStr}</td><td style="font-weight:bold; color:#2c3e50;">${o.total.toFixed(0)}</td><td><span class="status-badge ${badgeClass}">${o.payment}</span></td></tr>`;
+            });
+        }
+
+        function renderChart(id, type, labels, data, label, colors, options = {}) {
+            if (charts[id]) charts[id].destroy();
+            const ctx = document.getElementById(id).getContext('2d');
+            charts[id] = new Chart(ctx, {
+                type: type,
+                data: { labels: labels, datasets: [{ label: label, data: data, backgroundColor: colors, borderColor: type === 'line' ? colors : undefined, tension: 0.3, fill: type === 'line', borderWidth: 2 }] },
+                options: { responsive: true, maintainAspectRatio: false, ...options }
+            });
+        }
+
+        setPreset('today');
+    </script>
+</body>
+</html>
