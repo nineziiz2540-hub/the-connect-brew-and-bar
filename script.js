@@ -16,13 +16,13 @@ const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- VARIABLES ---
+    // VARIABLES
     let dynamicMenuItems = []; 
     let order = {};
     let selectedItem = null;
     let selectedSweetness = '';
 
-    // --- DOM Elements ---
+    // DOM
     const menuItemsContainer = document.getElementById('menu-items');
     const orderList = document.getElementById('order-list');
     const subTotalSpan = document.getElementById('sub-total');
@@ -48,17 +48,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const cashReceivedInput = document.getElementById('cash-received-input');
     const changeDueSpan = document.getElementById('change-due');
     const confirmCashPaymentBtn = document.getElementById('confirm-cash-payment-btn');
-    // Removed customItemBtn elements
+    
+    // Modifiers & Menu Management
     const modifiersModal = document.getElementById('modifiers-modal');
     const modifiersItemName = document.getElementById('modifiers-item-name');
     const modifierOptionsContainer = document.getElementById('modifier-options-container');
     const addModifiedItemToOrderBtn = document.getElementById('add-modified-item-to-order-btn');
-    
     const manageMenuBtn = document.getElementById('manage-menu-btn');
     const manageMenuModal = document.getElementById('manage-menu-modal');
     const saveNewItemBtn = document.getElementById('save-new-item-btn');
     const dynamicMenuList = document.getElementById('dynamic-menu-list');
     
+    // Hold Order & Export
     const holdOrderBtn = document.getElementById('hold-order-btn');
     const holdOrderModal = document.getElementById('hold-order-modal');
     const confirmHoldOrderBtn = document.getElementById('confirm-hold-order-btn');
@@ -186,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNCTIONS ---
     
-    // 🔥 FIX: โหลดเสร็จแล้วค่อย Render
     const loadDynamicMenu = () => {
         const q = query(collection(db, "dynamic_menu_items"));
         onSnapshot(q, (snapshot) => {
@@ -224,12 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // 🔥 Logic ใหม่: เรนเดอร์เมนูหลังจากข้อมูลมาครบแล้วเท่านั้น
+            // 🔥 FIX: โหลดเสร็จแล้วค่อยสั่งเรนเดอร์เมนู
             const activeTab = document.querySelector('.menu-tab.active');
             if (activeTab) {
                 renderMenuItems(activeTab.dataset.category);
             } else {
-                renderMenuItems('coffee'); // ถ้ายังไม่มีอะไรเลือก ให้เลือก Coffee ก่อนเลย
+                renderMenuItems('coffee');
             }
         });
     };
@@ -550,8 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderOrderList(); modifiersModal.style.display = 'none';
     });
     
-    // Removed customItem logic here
-
     orderList.addEventListener('click', (e) => {
         const btn = e.target.closest('button'); if (!btn) return;
         const id = btn.dataset.id;
