@@ -5,33 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>THE CONNECT POS</title>
     
-    <link rel="stylesheet" href="style.css?v=14.0"> 
+    <link rel="stylesheet" href="style.css?v=15.0"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="main-container">
         <div class="menu-container">
             <div class="menu-title-row">
-                <h1 style="margin:0; font-size:1.6rem; color:#2c3e50;">เมนู</h1>
+                <h1 style="margin:0; font-size:1.8rem; color:#2c3e50; font-weight:700;">THE CONNECT</h1>
                 
                 <div class="header-actions">
-                    <button id="manage-menu-btn" class="custom-item-btn compact-btn" title="จัดการเมนู">
-                        <i class="fas fa-edit"></i> <span class="btn-text">เพิ่มเมนู</span>
+                    <button id="manage-menu-btn" class="pro-btn btn-outline" title="จัดการเมนู">
+                        <i class="fas fa-edit"></i> <span>เพิ่มเมนู</span>
                     </button>
 
-                    <button id="view-held-orders-btn" class="custom-item-btn compact-btn" style="background-color: #f39c12; color: white; border: none;" title="ดูบิลที่พักไว้">
-                        <i class="fas fa-clock"></i> <span class="btn-text">บิลที่พักไว้</span>
+                    <button id="view-held-orders-btn" class="pro-btn btn-outline" title="ดูบิลที่พักไว้">
+                        <i class="fas fa-clock"></i> <span>บิลที่พักไว้</span>
                     </button>
 
                     <div class="header-divider"></div>
 
-                    <button id="sales-report-button" class="report-btn compact-btn" title="ดูรายงานยอดขาย">
-                        <i class="fas fa-chart-line"></i> <span class="btn-text">รายงาน</span>
+                    <button id="sales-report-button" class="pro-btn btn-filled" title="ดูรายงานยอดขาย">
+                        <i class="fas fa-chart-line"></i> <span>รายงาน</span>
                     </button>
 
-                    <a href="dashboard.html" class="report-btn compact-btn" style="background-color: #2c3e50; text-decoration: none;" title="ไปหน้า Dashboard">
-                        <i class="fas fa-chart-pie"></i> <span class="btn-text">Dashboard</span>
+                    <a href="dashboard.html" class="pro-btn btn-dark" style="text-decoration: none;" title="ไปหน้า Dashboard">
+                        <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
                     </a>
                 </div>
             </div>
@@ -39,7 +40,7 @@
             <div class="menu-tabs">
                 <button class="menu-tab active" data-category="coffee">COFFEE</button>
                 <button class="menu-tab" data-category="matcha">MATCHA</button>
-                <button class="menu-tab" data-category="non-coffee">NON COFFEE</button>
+                <button class="menu-tab" data-category="non-coffee">NON-COFFEE</button>
                 <button class="menu-tab" data-category="bean">BEAN SPECIALS</button>
                 <button class="menu-tab" data-category="beer">CRAFT BEER</button>
                 <button class="menu-tab" data-category="food">FOOD</button>
@@ -54,7 +55,7 @@
             <div class="order-header">
                 <h1>รายการออเดอร์</h1>
                 <button id="clear-order-btn" class="clear-order-btn" title="ล้างรายการทั้งหมด">
-                    <i class="fas fa-undo"></i> เคลียร์
+                    <i class="fas fa-trash-alt"></i> เคลียร์
                 </button>
             </div>
             
@@ -81,7 +82,7 @@
                     <h3>ยอดชำระ <span id="grand-total">0.00</span> บาท</h3>
                 </div>
                 
-                <div class="payment-buttons" style="margin-bottom: 2px;">
+                <div class="payment-buttons" style="margin-bottom: 8px;">
                     <button id="cash-payment-btn">
                         <i class="fas fa-money-bill-wave"></i> เงินสด
                     </button>
@@ -90,7 +91,7 @@
                     </button>
                 </div>
 
-                <button id="hold-order-btn" class="close-btn" style="background-color: #f39c12; margin-bottom: 2px; border: none;">
+                <button id="hold-order-btn" class="close-btn" style="background-color: #f39c12; margin-bottom: 8px; border: none;">
                     <i class="fas fa-pause-circle"></i> พักบิล (ยังไม่จ่าย)
                 </button>
 
@@ -101,138 +102,18 @@
         </div>
     </div>
     
-    <div id="sweetness-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>เลือกความหวาน</h2>
-            <div class="sweetness-options">
-                <button class="sweetness-btn" data-level="100">หวาน 100%</button>
-                <button class="sweetness-btn" data-level="50">หวาน 50%</button>
-                <button class="sweetness-btn" data-level="0">ไม่หวาน 0%</button>
-            </div>
-            <button id="add-to-order-btn">เพิ่มลงในออเดอร์</button>
-        </div>
-    </div>
-
-    <div id="manage-menu-modal" class="modal">
-        <div class="modal-content" style="max-width: 500px; padding: 0; overflow: hidden;">
-            <div class="modal-header-custom" style="padding: 20px; background: white; border-bottom: 1px solid #eee;">
-                <span class="close-button" style="position: relative; top: 0; right: 0; float: right;">&times;</span>
-                <h2 style="margin: 0; text-align: center;">จัดการเมนูพิเศษ</h2>
-            </div>
-            <div class="modal-body-custom" style="padding: 20px; overflow-y: auto; flex-grow: 1;">
-                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #eee;">
-                    <h4 style="margin-top:0; color: #2c3e50; margin-bottom: 10px;"><i class="fas fa-plus-circle"></i> เพิ่มสินค้าใหม่</h4>
-                    <div class="custom-item-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0;">
-                        <input type="text" id="new-item-name" placeholder="ชื่อเมนู" style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
-                        <input type="text" id="new-item-thai" placeholder="ชื่อไทย (ถ้ามี)" style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
-                        <input type="number" id="new-item-price" placeholder="ราคาขาย" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
-                        <input type="number" id="new-item-cost" placeholder="ต้นทุน" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
-                        <select id="new-item-category" style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; background-color: white; color: #333; height: 45px; width: 100%; box-sizing: border-box;">
-                            <option value="" disabled selected>-- เลือกหมวดหมู่ --</option>
-                            <option value="bean">BEAN SPECIALS</option>
-                            <option value="beer">CRAFT BEER</option>
-                            <option value="matcha">MATCHA</option>
-                            <option value="bakery">BAKERY</option>
-                            <option value="coffee">Coffee</option>
-                            <option value="non-coffee">Non-Coffee</option>
-                            <option value="food">Food</option>
-                        </select>
-                    </div>
-                    <button id="save-new-item-btn" class="confirm-payment-btn" style="margin-top: 12px; background: #27ae60; font-size: 1rem;">บันทึกเมนู</button>
-                </div>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
-                <h4 style="color: #7f8c8d; margin-bottom: 10px;">รายการที่มีอยู่</h4>
-                <div id="dynamic-menu-list"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="sales-report-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>รายงานยอดขาย</h2>
-            <div id="sales-report-details"></div>
-            <div class="report-actions" style="flex-direction: column; gap: 10px;">
-                <div style="display: flex; gap: 10px; align-items: center; width: 100%; justify-content: center; background: #f8f9fa; padding: 10px; border-radius: 8px;">
-                    <div style="display: flex; flex-direction: column;">
-                        <label style="font-size: 0.8rem; color: #666;">ตั้งแต่:</label>
-                        <input type="date" id="export-start-date" style="padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
-                    </div>
-                    <span style="align-self: flex-end; padding-bottom: 5px;">-</span>
-                    <div style="display: flex; flex-direction: column;">
-                        <label style="font-size: 0.8rem; color: #666;">ถึง:</label>
-                        <input type="date" id="export-end-date" style="padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
-                    </div>
-                </div>
-                <button id="export-excel-btn" class="report-action-btn" style="background-color: #217346; color: white; width: 100%;"><i class="fas fa-file-excel"></i> ดาวน์โหลด Excel</button>
-                <div style="display: flex; gap: 10px; width: 100%;">
-                    <button id="delete-last-sale-btn" class="report-action-btn" style="flex: 1;">ลบรายการล่าสุด</button>
-                    <button id="reset-sales-btn" class="report-action-btn reset-btn" style="flex: 1;">รีเซ็ทยอดขายวันนี้</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="cash-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>ชำระด้วยเงินสด</h2>
-            <p class="total-due-text">ยอดที่ต้องชำระ: <span id="modal-total-due">0.00</span> บาท</p>
-            <input type="number" id="cash-received-input" class="cash-input" placeholder="จำนวนเงินที่รับมา">
-            <p class="change-text">เงินทอน: <span id="change-due">0.00</span> บาท</p>
-            <button id="confirm-cash-payment-btn">ยืนยันการชำระเงิน</button>
-        </div>
-    </div>
-
-    <div id="modifiers-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 id="modifiers-item-name">เลือกตัวเลือกเสริม</h2>
-            <div id="modifier-options-container"></div>
-            <button id="add-modified-item-to-order-btn">เพิ่มลงในออเดอร์</button>
-        </div>
-    </div>
-    
-    <div id="payment-qr-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>สแกนเพื่อชำระเงิน</h2>
-            <div id="modal-order-summary"></div>
-            <div id="modal-qr-code"></div>
-            <h3 id="modal-total-payment"></h3>
-            <button id="confirm-payment-btn" class="confirm-payment-btn"><i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน</button>
-        </div>
-    </div>
-
-    <div id="login-modal" class="modal" style="display: flex;">
-        <div class="modal-content" style="max-width: 350px;">
-            <h2><i class="fas fa-lock"></i> เข้าสู่ระบบ</h2>
-            <p style="margin-bottom: 1rem; color: #666;">กรุณาใส่รหัสผ่านเพื่อเริ่มใช้งาน</p>
-            <input type="password" id="login-pin-input" class="cash-input" placeholder="รหัสผ่าน" inputmode="numeric" style="margin: 0 auto 1.5rem auto;">
-            <button id="login-btn" class="confirm-payment-btn" style="margin-top: 0;">เข้าใช้งาน</button>
-        </div>
-    </div>
-
-    <div id="hold-order-modal" class="modal">
-        <div class="modal-content" style="max-width: 350px;">
-            <span class="close-button">&times;</span>
-            <h2>พักบิล / รอจ่าย</h2>
-            <p style="margin-bottom: 1rem;">ระบุชื่อลูกค้า หรือ เบอร์โต๊ะ:</p>
-            <input type="text" id="hold-order-name" class="cash-input" placeholder="เช่น โต๊ะ 5, เสื้อแดง">
-            <button id="confirm-hold-order-btn" class="confirm-payment-btn" style="background-color: #f39c12;">บันทึกพักบิล</button>
-        </div>
-    </div>
-
-    <div id="held-orders-list-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>รายการบิลที่พักไว้</h2>
-            <div id="held-orders-container" style="max-height: 400px; overflow-y: auto;"></div>
-        </div>
-    </div>
+    <div id="sweetness-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><h2>เลือกความหวาน</h2><div class="sweetness-options"><button class="sweetness-btn" data-level="100">หวาน 100%</button><button class="sweetness-btn" data-level="50">หวาน 50%</button><button class="sweetness-btn" data-level="0">ไม่หวาน 0%</button></div><button id="add-to-order-btn">เพิ่มลงในออเดอร์</button></div></div>
+    <div id="manage-menu-modal" class="modal"><div class="modal-content" style="max-width: 500px; padding: 0; overflow: hidden;"><div class="modal-header-custom" style="padding: 20px; background: white; border-bottom: 1px solid #eee;"><span class="close-button" style="position: relative; top: 0; right: 0; float: right;">&times;</span><h2 style="margin: 0; text-align: center;">จัดการเมนูพิเศษ</h2></div><div class="modal-body-custom" style="padding: 20px; overflow-y: auto; flex-grow: 1;"><div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #eee;"><h4 style="margin-top:0; color: #2c3e50; margin-bottom: 10px;"><i class="fas fa-plus-circle"></i> เพิ่มสินค้าใหม่</h4><div class="custom-item-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0;"><input type="text" id="new-item-name" placeholder="ชื่อเมนู" style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;"><input type="text" id="new-item-thai" placeholder="ชื่อไทย (ถ้ามี)" style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;"><input type="number" id="new-item-price" placeholder="ราคาขาย" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;"><input type="number" id="new-item-cost" placeholder="ต้นทุน" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;"><select id="new-item-category" style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; background-color: white; color: #333; height: 45px; width: 100%; box-sizing: border-box;"><option value="" disabled selected>-- เลือกหมวดหมู่ --</option><option value="bean">BEAN SPECIALS</option><option value="beer">CRAFT BEER</option><option value="matcha">MATCHA</option><option value="bakery">BAKERY</option><option value="coffee">Coffee</option><option value="non-coffee">Non-Coffee</option><option value="food">Food</option></select></div><button id="save-new-item-btn" class="confirm-payment-btn" style="margin-top: 12px; background: #27ae60; font-size: 1rem;">บันทึกเมนู</button></div><hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;"><h4 style="color: #7f8c8d; margin-bottom: 10px;">รายการที่มีอยู่</h4><div id="dynamic-menu-list"></div></div></div></div>
+    <div id="sales-report-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><h2>รายงานยอดขาย</h2><div id="sales-report-details"></div><div class="report-actions" style="flex-direction: column; gap: 10px;"><div style="display: flex; gap: 10px; align-items: center; width: 100%; justify-content: center; background: #f8f9fa; padding: 10px; border-radius: 8px;"><div style="display: flex; flex-direction: column;"><label style="font-size: 0.8rem; color: #666;">ตั้งแต่:</label><input type="date" id="export-start-date" style="padding: 5px; border: 1px solid #ddd; border-radius: 4px;"></div><span style="align-self: flex-end; padding-bottom: 5px;">-</span><div style="display: flex; flex-direction: column;"><label style="font-size: 0.8rem; color: #666;">ถึง:</label><input type="date" id="export-end-date" style="padding: 5px; border: 1px solid #ddd; border-radius: 4px;"></div></div><button id="export-excel-btn" class="report-action-btn" style="background-color: #217346; color: white; width: 100%;"><i class="fas fa-file-excel"></i> ดาวน์โหลด Excel</button><div style="display: flex; gap: 10px; width: 100%;"><button id="delete-last-sale-btn" class="report-action-btn" style="flex: 1;">ลบรายการล่าสุด</button><button id="reset-sales-btn" class="report-action-btn reset-btn" style="flex: 1;">รีเซ็ทยอดขายวันนี้</button></div></div></div></div>
+    <div id="cash-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><h2>ชำระด้วยเงินสด</h2><p class="total-due-text">ยอดที่ต้องชำระ: <span id="modal-total-due">0.00</span> บาท</p><input type="number" id="cash-received-input" class="cash-input" placeholder="จำนวนเงินที่รับมา"><p class="change-text">เงินทอน: <span id="change-due">0.00</span> บาท</p><button id="confirm-cash-payment-btn">ยืนยันการชำระเงิน</button></div></div>
+    <div id="modifiers-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><h2 id="modifiers-item-name">เลือกตัวเลือกเสริม</h2><div id="modifier-options-container"></div><button id="add-modified-item-to-order-btn">เพิ่มลงในออเดอร์</button></div></div>
+    <div id="custom-item-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><h2>เพิ่มรายการ/ราคาเอง</h2><div class="custom-item-form"><input type="text" id="custom-item-name-input" placeholder="ชื่อรายการ"><input type="number" id="custom-item-price-input" placeholder="ราคา (บาท)"></div><button id="add-custom-item-btn">เพิ่มลงในออเดอร์</button></div></div>
+    <div id="payment-qr-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><h2>สแกนเพื่อชำระเงิน</h2><div id="modal-order-summary"></div><div id="modal-qr-code"></div><h3 id="modal-total-payment"></h3><button id="confirm-payment-btn" class="confirm-payment-btn"><i class="fas fa-check-circle"></i> ยืนยันการชำระเงิน</button></div></div>
+    <div id="login-modal" class="modal" style="display: flex;"><div class="modal-content" style="max-width: 350px;"><h2><i class="fas fa-lock"></i> เข้าสู่ระบบ</h2><p style="margin-bottom: 1rem; color: #666;">กรุณาใส่รหัสผ่านเพื่อเริ่มใช้งาน</p><input type="password" id="login-pin-input" class="cash-input" placeholder="รหัสผ่าน" inputmode="numeric" style="margin: 0 auto 1.5rem auto;"><button id="login-btn" class="confirm-payment-btn" style="margin-top: 0;">เข้าใช้งาน</button></div></div>
+    <div id="hold-order-modal" class="modal"><div class="modal-content" style="max-width: 350px;"><span class="close-button">&times;</span><h2>พักบิล / รอจ่าย</h2><p style="margin-bottom: 1rem;">ระบุชื่อลูกค้า หรือ เบอร์โต๊ะ:</p><input type="text" id="hold-order-name" class="cash-input" placeholder="เช่น โต๊ะ 5, เสื้อแดง"><button id="confirm-hold-order-btn" class="confirm-payment-btn" style="background-color: #f39c12;">บันทึกพักบิล</button></div></div>
+    <div id="held-orders-list-modal" class="modal"><div class="modal-content"><span class="close-button">&times;</span><h2>รายการบิลที่พักไว้</h2><div id="held-orders-container" style="max-height: 400px; overflow-y: auto;"></div></div></div>
 
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
-    <script type="module" src="script.js?v=14.0"></script> 
+    <script type="module" src="script.js?v=15.0"></script> 
 </body>
 </html>
