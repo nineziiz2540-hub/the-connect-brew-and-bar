@@ -48,15 +48,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const cashReceivedInput = document.getElementById('cash-received-input');
     const changeDueSpan = document.getElementById('change-due');
     const confirmCashPaymentBtn = document.getElementById('confirm-cash-payment-btn');
-    const customItemBtn = document.getElementById('custom-item-btn');
+    // Removed customItemBtn elements
     const modifiersModal = document.getElementById('modifiers-modal');
     const modifiersItemName = document.getElementById('modifiers-item-name');
     const modifierOptionsContainer = document.getElementById('modifier-options-container');
     const addModifiedItemToOrderBtn = document.getElementById('add-modified-item-to-order-btn');
-    const customItemModal = document.getElementById('custom-item-modal');
-    const customItemNameInput = document.getElementById('custom-item-name-input');
-    const customItemPriceInput = document.getElementById('custom-item-price-input');
-    const addCustomItemBtn = document.getElementById('add-custom-item-btn');
+    
+    const manageMenuBtn = document.getElementById('manage-menu-btn');
+    const manageMenuModal = document.getElementById('manage-menu-modal');
+    const saveNewItemBtn = document.getElementById('save-new-item-btn');
+    const dynamicMenuList = document.getElementById('dynamic-menu-list');
+    
     const holdOrderBtn = document.getElementById('hold-order-btn');
     const holdOrderModal = document.getElementById('hold-order-modal');
     const confirmHoldOrderBtn = document.getElementById('confirm-hold-order-btn');
@@ -64,10 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewHeldOrdersBtn = document.getElementById('view-held-orders-btn');
     const heldOrdersListModal = document.getElementById('held-orders-list-modal');
     const heldOrdersContainer = document.getElementById('held-orders-container');
-    const manageMenuBtn = document.getElementById('manage-menu-btn');
-    const manageMenuModal = document.getElementById('manage-menu-modal');
-    const saveNewItemBtn = document.getElementById('save-new-item-btn');
-    const dynamicMenuList = document.getElementById('dynamic-menu-list');
     const exportExcelButton = document.getElementById('export-excel-btn');
 
     // --- LOGIN ---
@@ -95,8 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- STATIC DATA ---
-    
-    // 1. กลุ่มตัวเลือกย่อย (Options Group)
     const roastOptions = { 
         groupName: "ระดับการคั่ว (Roast)", 
         options: [
@@ -125,32 +121,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const extraOptions = { 
         groupName: "เพิ่มเติม", 
         options: [
-            { name: 'ปกติ', price: 0 }, 
-            { name: 'เพิ่ม 1 ช็อต', price: 20 }
-            // ตัดวิปครีมออกแล้ว
+            { name: 'ปกติ', price: 0 }, { name: 'เพิ่ม 1 ช็อต', price: 20 }
         ]
     };
 
-    // 2. จัดชุดตัวเลือก (Modifiers Sets)
-    
-    // ก. กาแฟใส่นม (มีครบ: คั่ว + หวาน + นม + เพิ่มช็อต)
     const stdCoffeeModifiers = [ roastOptions, sweetOptions, milkOptions, extraOptions ];
-
-    // ข. กาแฟดำ (มี: คั่ว + หวาน + เพิ่มช็อต) - ไม่มีนม
     const blackCoffeeModifiers = [ roastOptions, sweetOptions, extraOptions ];
-
-    // ค. เอสเพรสโซ่ช็อต (มีแค่คั่ว)
     const espressoModifiers = [ roastOptions ];
-
-    // ง. Matcha & Non-Coffee ใส่นม (มี: หวาน + นม) - ไม่มีคั่ว, ไม่มีเพิ่มช็อต
     const stdNonCoffeeModifiers = [ sweetOptions, milkOptions ];
-
-    // จ. Matcha & Non-Coffee ใส (มีแค่หวาน) - ไม่มีคั่ว, ไม่มีนม, ไม่มีเพิ่มช็อต
     const basicModifiers = [ sweetOptions ];
 
-
     const staticMenuData = [
-        // COFFEE (ใช้ modifiers ที่มี Roast)
+        // COFFEE
         { id: 'c-espresso-h', name: 'Espresso (Hot)', nameThai: 'เอสเพรสโซ่ (ร้อน)', price: 55, cost: 22.53, category: 'coffee', modifiers: espressoModifiers }, 
         { id: 'c-americano-h', name: 'Americano (Hot)', nameThai: 'อเมริกาโน่ (ร้อน)', price: 60, cost: 23.13, category: 'coffee', modifiers: blackCoffeeModifiers },
         { id: 'c-americano-i', name: 'Americano (Iced)', nameThai: 'อเมริกาโน่ (เย็น)', price: 60, cost: 23.61, category: 'coffee', modifiers: blackCoffeeModifiers },
@@ -166,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'c-coconut-cof', name: 'Coconut Coffee (Iced)', nameThai: 'โคโคนัท คอฟฟี่ (เย็น)', price: 70, cost: 28.31, category: 'coffee', modifiers: blackCoffeeModifiers },
         { id: 'c-affogato', name: 'Affogato Coffee', nameThai: 'อัฟโฟกาโต้ คอฟฟี่', price: 85, cost: 34.5, category: 'coffee', modifiers: [] }, 
 
-        // MATCHA (ไม่มี Roast, ไม่มี Extra)
+        // MATCHA
         { id: 'm-clear-uji-h', name: 'Clear Matcha Uji (Hot)', nameThai: 'เคลียร์ มัทฉะ อูจิ (ร้อน)', price: 70, cost: 29.26, category: 'matcha', modifiers: basicModifiers },
         { id: 'm-clear-uji-i', name: 'Clear Matcha Uji (Iced)', nameThai: 'เคลียร์ มัทฉะ อูจิ (เย็น)', price: 75, cost: 29.26, category: 'matcha', modifiers: basicModifiers },
         { id: 'm-clear-nishio-h', name: 'Clear Matcha Nishio (Hot)', nameThai: 'เคลียร์ มัทฉะ นิชิโอะ (ร้อน)', price: 135, cost: 74.38, category: 'matcha', modifiers: basicModifiers },
@@ -181,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'm-orange-nishio', name: 'Orange Matcha Nishio (Iced)', nameThai: 'ออเรนจ์ มัทฉะ นิชิโอะ (เย็น)', price: 160, cost: 80, category: 'matcha', modifiers: basicModifiers },
         { id: 'm-hojicha', name: 'Hojicha Latte (Iced)', nameThai: 'โฮจิฉะ ลาเต้ (เย็น)', price: 70, cost: 28.10, category: 'matcha', modifiers: stdNonCoffeeModifiers },
 
-        // NON COFFEE (ไม่มี Roast, ไม่มี Extra)
+        // NON COFFEE
         { id: 'n-thaitea', name: 'Thai Tea (Iced)', nameThai: 'ชาไทย (เย็น)', price: 55, cost: 11.54, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
         { id: 'n-greentea', name: 'Green Tea (Iced)', nameThai: 'ชาเขียว (เย็น)', price: 55, cost: 14.22, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
         { id: 'n-cocoa-h', name: 'Cocoa Latte (Hot)', nameThai: 'โกโก้ ลาเต้ (ร้อน)', price: 50, cost: 18.68, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
@@ -204,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNCTIONS ---
     
-    // โหลดเมนูพิเศษ
+    // 🔥 FIX: โหลดเสร็จแล้วค่อย Render
     const loadDynamicMenu = () => {
         const q = query(collection(db, "dynamic_menu_items"));
         onSnapshot(q, (snapshot) => {
@@ -222,21 +204,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const div = document.createElement('div');
                 div.className = 'menu-list-item';
-                
                 let catBadge = item.category.toUpperCase();
-                
                 div.innerHTML = `
                     <div class="menu-item-info">
                         <span class="menu-item-name">${item.name}</span>
-                        <span class="menu-item-meta">
-                            ${item.nameThai ? item.nameThai + ' • ' : ''} 
-                            ราคา ${item.price}฿ 
-                            <span style="background:#eee; padding:2px 6px; border-radius:4px; font-size:0.75rem; margin-left:5px;">${catBadge}</span>
-                        </span>
+                        <span class="menu-item-meta">${item.nameThai ? item.nameThai + ' • ' : ''} ราคา ${item.price}฿ <span style="background:#eee; padding:2px 6px; border-radius:4px; font-size:0.75rem; margin-left:5px;">${catBadge}</span></span>
                     </div>
-                    <button class="delete-menu-btn-pro" data-id="${doc.id}">
-                        <i class="fas fa-trash-alt"></i> ลบ
-                    </button>
+                    <button class="delete-menu-btn-pro" data-id="${doc.id}"><i class="fas fa-trash-alt"></i> ลบ</button>
                 `;
                 dynamicMenuList.appendChild(div);
             });
@@ -245,15 +219,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.addEventListener('click', async (e) => {
                     const btnEl = e.target.closest('button');
                     if(confirm('คุณต้องการลบเมนูนี้ใช่หรือไม่?')) {
-                        const id = btnEl.dataset.id;
-                        await deleteDoc(doc(db, "dynamic_menu_items", id));
+                        await deleteDoc(doc(db, "dynamic_menu_items", btnEl.dataset.id));
                     }
                 });
             });
 
+            // 🔥 Logic ใหม่: เรนเดอร์เมนูหลังจากข้อมูลมาครบแล้วเท่านั้น
             const activeTab = document.querySelector('.menu-tab.active');
             if (activeTab) {
                 renderMenuItems(activeTab.dataset.category);
+            } else {
+                renderMenuItems('coffee'); // ถ้ายังไม่มีอะไรเลือก ให้เลือก Coffee ก่อนเลย
             }
         });
     };
@@ -286,7 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderGroup('เมนูร้อน (Hot)', hotItems, '🔥', '#c0392b'); 
             renderGroup('เมนูเย็น (Iced)', icedItems, '❄️', '#2980b9'); 
             renderGroup('อื่นๆ (Other)', otherItems, '✨', '#f39c12'); 
-
         } else {
             items.forEach(item => createMenuCard(item, 'general'));
         }
@@ -296,7 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.className = 'menu-item-card';
         card.dataset.id = item.id;
-        
         let borderColor = '#ddd';
         if (type.includes('ร้อน')) borderColor = '#e74c3c';
         else if (type.includes('เย็น')) borderColor = '#3498db';
@@ -332,10 +306,8 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const itemId in order) {
             const item = order[itemId];
             const li = document.createElement('li');
-            const displayNameWithQuantity = `${item.name} (x${item.quantity})`;
-            
             li.innerHTML = `
-                <div class="item-info"><h4>${displayNameWithQuantity}</h4></div>
+                <div class="item-info"><h4>${item.name} (x${item.quantity})</h4></div>
                 <div class="item-quantity">
                     <button class="remove-item" data-id="${itemId}"><i class="fas fa-minus-circle"></i></button>
                     <span>${item.quantity}</span>
@@ -370,13 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (optionIndex === 0) radioInput.checked = true;
                 const label = document.createElement('label');
                 label.htmlFor = `group-${groupIndex}-option-${optionIndex}`;
-                const optionNameSpan = document.createElement('span');
-                optionNameSpan.textContent = option.name;
-                const priceAdjustSpan = document.createElement('span');
-                priceAdjustSpan.className = 'price-adjust';
-                if (option.price > 0) priceAdjustSpan.textContent = `(+${option.price})`;
-                label.appendChild(optionNameSpan);
-                label.appendChild(priceAdjustSpan);
+                label.innerHTML = `<span>${option.name}</span><span class="price-adjust">${option.price > 0 ? '(+' + option.price + ')' : ''}</span>`;
                 optionDiv.appendChild(radioInput);
                 optionDiv.appendChild(label);
                 groupDiv.appendChild(optionDiv);
@@ -397,10 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const q = query(collection(db, "orders"), where("createdAt", ">=", today));
                 const querySnapshot = await getDocs(q);
                 newQueueNumber = querySnapshot.size + 1;
-            } catch (error) {
-                console.error("Error getting queue number: ", error);
-                newQueueNumber = 0;
-            }
+            } catch (error) { newQueueNumber = 0; }
         }
         const orderData = {
             items: order,
@@ -415,18 +378,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         try {
             await addDoc(collection(db, "orders"), orderData);
-            order = {};
-            discountInput.value = '';
-            renderOrderList();
-        } catch (error) {
-            console.error("Error adding document: ", error);
-            alert("บันทึกไม่สำเร็จ!");
-        }
+            order = {}; discountInput.value = ''; renderOrderList();
+        } catch (error) { alert("บันทึกไม่สำเร็จ!"); }
     };
 
     const saveHeldOrder = async () => {
         const customerName = holdOrderNameInput.value.trim();
-        if (!customerName) { alert("กรุณาใส่ชื่อลูกค้า หรือ เบอร์โต๊ะ"); return; }
+        if (!customerName) { alert("กรุณาใส่ชื่อลูกค้า"); return; }
         const orderToHold = {
             items: order,
             subTotal: parseFloat(subTotalSpan.textContent),
@@ -439,13 +397,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         try {
             await addDoc(collection(db, "held_orders"), orderToHold);
-            alert(`พักบิล "${customerName}" เรียบร้อยแล้ว!`);
-            order = {};
-            discountInput.value = '';
-            holdOrderNameInput.value = '';
-            holdOrderModal.style.display = 'none';
-            renderOrderList();
-        } catch (e) { alert("เกิดข้อผิดพลาดในการพักบิล"); }
+            alert(`พักบิลเรียบร้อย!`);
+            order = {}; discountInput.value = ''; holdOrderNameInput.value = ''; holdOrderModal.style.display = 'none'; renderOrderList();
+        } catch (e) { alert("เกิดข้อผิดพลาด"); }
     };
 
     const fetchHeldOrders = async () => {
@@ -455,42 +409,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const q = query(collection(db, "held_orders"), orderBy("heldAt", "asc"));
             const querySnapshot = await getDocs(q);
             heldOrdersContainer.innerHTML = '';
-            if (querySnapshot.empty) {
-                heldOrdersContainer.innerHTML = '<p style="text-align:center; padding: 20px;">ไม่มีบิลที่พักไว้</p>';
-                return;
-            }
+            if (querySnapshot.empty) { heldOrdersContainer.innerHTML = '<p style="text-align:center; padding:20px;">ไม่มีบิลที่พักไว้</p>'; return; }
             querySnapshot.forEach(doc => {
                 const data = doc.data();
                 const card = document.createElement('div');
                 card.className = 'menu-item-card'; 
-                card.style.display = 'block';
-                card.style.width = '100%';
-                card.style.marginBottom = '10px';
-                card.style.textAlign = 'left';
-                let timeStr = '';
-                if (data.heldAt) timeStr = data.heldAt.toDate().toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'});
+                card.style.display = 'block'; card.style.width = '100%'; card.style.marginBottom = '10px'; card.style.textAlign = 'left';
+                let timeStr = data.heldAt ? data.heldAt.toDate().toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) : '';
                 card.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <h3 style="margin: 0; color: #d35400;">${data.customerName}</h3>
-                            <p style="margin: 5px 0; color: #7f8c8d;">ยอด: ${data.grandTotal.toFixed(2)} บาท (เวลา: ${timeStr})</p>
-                        </div>
-                        <button class="add-item" style="background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
-                            <i class="fas fa-undo"></i> ดึงบิลกลับมา
-                        </button>
+                        <div><h3 style="margin:0; color:#d35400;">${data.customerName}</h3><p style="margin:5px 0; color:#7f8c8d;">ยอด: ${data.grandTotal.toFixed(2)} บาท (${timeStr})</p></div>
+                        <button class="add-item" style="background:#27ae60; color:white; border:none; padding:8px 15px; border-radius:5px;">ดึงบิล</button>
                     </div>
                 `;
                 card.querySelector('button').addEventListener('click', async () => {
-                    if (Object.keys(order).length > 0) {
-                        if(!confirm("มีรายการค้างอยู่ในตะกร้า ต้องการทับด้วยบิลที่เลือกใช่หรือไม่?")) return;
-                    }
-                    order = data.items;
-                    discountInput.value = data.discount > 0 ? data.discount : '';
-                    discountType.value = data.discountType;
-                    renderOrderList();
-                    await deleteDoc(doc.ref);
-                    heldOrdersListModal.style.display = 'none';
-                    alert(`ดึงบิล "${data.customerName}" กลับมาแล้ว!`);
+                    if (Object.keys(order).length > 0 && !confirm("มีรายการค้างอยู่ ต้องการทับหรือไม่?")) return;
+                    order = data.items; discountInput.value = data.discount > 0 ? data.discount : ''; discountType.value = data.discountType;
+                    renderOrderList(); await deleteDoc(doc.ref); heldOrdersListModal.style.display = 'none';
                 });
                 heldOrdersContainer.appendChild(card);
             });
@@ -522,129 +457,53 @@ document.addEventListener('DOMContentLoaded', () => {
         new QRCode(containerElement, { text: payload, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.L });
     };
 
-    // --- REPORT FUNCTIONS (Refactored & Correct) ---
-    
-    // ฟังก์ชัน Export ที่ถูกต้อง (มี Date Picker)
     const exportSalesToCSV = async () => {
         const startDateInput = document.getElementById('export-start-date').value;
         const endDateInput = document.getElementById('export-end-date').value;
-
-        if (!startDateInput || !endDateInput) {
-            alert("กรุณาเลือก 'วันที่เริ่มต้น' และ 'วันที่สิ้นสุด' ก่อนครับ");
-            return;
-        }
-
-        if (!confirm(`ยืนยันดาวน์โหลดรายงาน\nตั้งแต่: ${startDateInput}\nถึง: ${endDateInput}`)) return;
-
+        if (!startDateInput || !endDateInput) { alert("กรุณาเลือกวัน"); return; }
+        if (!confirm(`ยืนยันดาวน์โหลดรายงาน?`)) return;
         try {
-            const startDate = new Date(startDateInput);
-            startDate.setHours(0, 0, 0, 0);
-            const endDate = new Date(endDateInput);
-            endDate.setHours(23, 59, 59, 999);
-
-            const q = query(
-                collection(db, "orders"), 
-                where("createdAt", ">=", startDate), 
-                where("createdAt", "<=", endDate),
-                orderBy("createdAt", "asc")
-            );
-            
+            const startDate = new Date(startDateInput); startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date(endDateInput); endDate.setHours(23, 59, 59, 999);
+            const q = query(collection(db, "orders"), where("createdAt", ">=", startDate), where("createdAt", "<=", endDate), orderBy("createdAt", "asc"));
             const querySnapshot = await getDocs(q);
-            
-            if (querySnapshot.empty) {
-                alert("ไม่พบข้อมูลยอดขายในช่วงวันที่เลือกครับ");
-                return;
-            }
-
+            if (querySnapshot.empty) { alert("ไม่พบข้อมูล"); return; }
             let csv = "\uFEFFวันที่,เวลา,คิวที่,รายการสินค้า,ยอดขาย (บาท),ต้นทุน (บาท),กำไร (บาท),รับเงินโดย\n";
-            
             querySnapshot.forEach(doc => {
-                const o = doc.data();
-                if(o.paymentMethod === 'Cancelled') return;
-
+                const o = doc.data(); if(o.paymentMethod === 'Cancelled') return;
                 const d = o.createdAt ? o.createdAt.toDate() : new Date();
-                let cost = 0;
-                let items = [];
-                for(let k in o.items) {
-                    items.push(`${o.items[k].name} x${o.items[k].quantity}`);
-                    cost += (o.items[k].cost || 0) * o.items[k].quantity;
-                }
-                const profit = o.grandTotal - cost;
-                csv += `${d.toLocaleDateString('th-TH')},${d.toLocaleTimeString('th-TH')},${o.queueNumber||'-'},"${items.join(', ')}",${o.grandTotal},${cost.toFixed(2)},${profit.toFixed(2)},${o.paymentMethod}\n`;
+                let cost = 0; let items = [];
+                for(let k in o.items) { items.push(`${o.items[k].name} x${o.items[k].quantity}`); cost += (o.items[k].cost || 0) * o.items[k].quantity; }
+                csv += `${d.toLocaleDateString('th-TH')},${d.toLocaleTimeString('th-TH')},${o.queueNumber||'-'},"${items.join(', ')}",${o.grandTotal},${cost.toFixed(2)},${(o.grandTotal-cost).toFixed(2)},${o.paymentMethod}\n`;
             });
-
-            const link = document.createElement("a");
-            link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
-            link.download = `sales_${startDateInput}_to_${endDateInput}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-        } catch (e) { 
-            console.error(e); 
-            if (e.message.includes("index")) {
-                alert("ระบบกำลังสร้าง Index ข้อมูลใหม่ (ทำครั้งเดียว) \nกรุณาเปิด Console (F12) แล้วคลิกลิงก์ที่ Firebase แจ้งเตือนครับ");
-            } else {
-                alert("Error: " + e.message); 
-            }
-        }
+            const link = document.createElement("a"); link.href = encodeURI("data:text/csv;charset=utf-8," + csv); link.download = `sales.csv`; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        } catch (e) { alert("Error: " + e.message); }
     };
 
     const showSalesReport = async () => {
-        salesReportDetails.innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> กำลังดึงข้อมูลยอดขาย...</h3>';
+        salesReportDetails.innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> กำลังโหลด...</h3>';
         salesReportModal.style.display = 'flex';
         try {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
             const q = query(collection(db, "orders"), where("createdAt", ">=", today), where("createdAt", "<", tomorrow));
             const querySnapshot = await getDocs(q);
-            let allOrders = [];
-            querySnapshot.forEach(doc => allOrders.push(doc.data()));
+            let allOrders = []; querySnapshot.forEach(doc => allOrders.push(doc.data()));
             allOrders.sort((a, b) => (a.createdAt && b.createdAt) ? a.createdAt.toMillis() - b.createdAt.toMillis() : 0);
-
-            let totalSalesAmount = 0, totalCashSales = 0, totalQRSales = 0, totalCost = 0, ordersHtml = ''; 
-            allOrders.forEach(orderData => {
-                if (orderData.paymentMethod === 'Cancelled') return; 
-                totalSalesAmount += orderData.grandTotal;
-                if (orderData.paymentMethod === 'Cash') totalCashSales += orderData.grandTotal;
-                else if (orderData.paymentMethod === 'QR') totalQRSales += orderData.grandTotal;
-                
-                const timeStr = orderData.createdAt ? orderData.createdAt.toDate().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) : 'N/A';
-                const paymentText = orderData.paymentMethod === 'Cash' ? '(เงินสด)' : '(QR Code)';
-                ordersHtml += `<details class="report-order-item"><summary><strong>คิวที่ ${orderData.queueNumber || 'N/A'} ${paymentText}</strong><span>(${timeStr})</span><strong>${orderData.grandTotal.toFixed(2)} บาท</strong></summary>`;
-                
-                let orderCost = 0;
-                let itemsHtml = '<div class="order-item-details">';
-                for (const itemId in orderData.items) {
-                    const item = orderData.items[itemId];
-                    const itemCost = item.cost || 0;
-                    const profit = (item.price * item.quantity) - (itemCost * item.quantity);
-                    orderCost += (itemCost * item.quantity);
-                    itemsHtml += `<p>• ${item.name} (x${item.quantity}) (กำไร: ${profit.toFixed(2)} บาท)</p>`;
-                }
-                itemsHtml += '</div>';
-                ordersHtml += itemsHtml + '</details>';
-                totalCost += orderCost; 
+            let total = 0, cash = 0, qr = 0, cost = 0, html = '';
+            allOrders.forEach(o => {
+                if (o.paymentMethod === 'Cancelled') return;
+                total += o.grandTotal;
+                if (o.paymentMethod === 'Cash') cash += o.grandTotal; else if (o.paymentMethod === 'QR') qr += o.grandTotal;
+                let c = 0; for(let k in o.items) c += (o.items[k].cost || 0) * o.items[k].quantity;
+                cost += c;
+                html += `<div style="border-bottom:1px solid #eee; padding:10px;"><b>คิว ${o.queueNumber}</b>: ${o.grandTotal}บ. (${o.paymentMethod})</div>`;
             });
-
-            const totalProfit = totalSalesAmount - totalCost;
-            let reportHTML = `<h3>ยอดขายรวม: ${totalSalesAmount.toFixed(2)} บาท</h3>`;
-            reportHTML += `<h4 class="sales-subtotal"> - ยอดเงินสด: ${totalCashSales.toFixed(2)} บาท</h4><h4 class="sales-subtotal"> - ยอด QR Code: ${totalQRSales.toFixed(2)} บาท</h4>`;
-            reportHTML += `<h3>ยอดต้นทุนรวม: ${totalCost.toFixed(2)} บาท</h3><h3>กำไรสุทธิ: ${totalProfit.toFixed(2)} บาท</h3>`;
-            reportHTML += '<hr><h4>รายการออเดอร์วันนี้:</h4><div class="order-list-container">' + ordersHtml + '</div>'; 
-            salesReportDetails.innerHTML = allOrders.length === 0 ? '<h3>ยังไม่มีรายการขายในวันนี้</h3>' : reportHTML;
-        } catch (error) { salesReportDetails.innerHTML = '<h3>เกิดข้อผิดพลาดในการโหลดรายงาน</h3>'; }
+            salesReportDetails.innerHTML = `<h3>ยอดรวม: ${total.toFixed(2)} บาท</h3><p>เงินสด: ${cash} | QR: ${qr}</p><p>กำไร: ${total - cost}</p><hr><div style="max-height:300px; overflow-y:auto;">${html}</div>`;
+        } catch (e) { salesReportDetails.innerHTML = 'Error'; }
     };
 
-    // --- EVENT LISTENERS ---
-    
-    // เชื่อมปุ่ม Export
-    if (exportExcelButton) {
-        exportExcelButton.addEventListener('click', exportSalesToCSV);
-    }
-
+    if (exportExcelButton) exportExcelButton.addEventListener('click', exportSalesToCSV);
     menuTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             menuTabs.forEach(t => t.classList.remove('active'));
@@ -652,7 +511,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderMenuItems(tab.getAttribute('data-category'));
         });
     });
-
     menuItemsContainer.addEventListener('click', (event) => {
         const itemCard = event.target.closest('.menu-item-card');
         if (!itemCard) return;
@@ -660,158 +518,81 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!foundItem) foundItem = dynamicMenuItems.find(item => item.id === itemCard.dataset.id);
         selectedItem = foundItem;
         if (!selectedItem) return;
-
         if (selectedItem.modifiers && selectedItem.modifiers.length > 0) {
             populateModifiersModal(selectedItem);
-        } else if (selectedItem.hasSweetness) {
+        } else if (selectedItem.hasSweetness) { 
             sweetnessModal.style.display = 'flex';
-            selectedSweetness = ''; 
-            sweetnessButtons.forEach(btn => btn.classList.remove('selected'));
+            selectedSweetness = ''; sweetnessButtons.forEach(btn => btn.classList.remove('selected'));
         } else {
             const orderId = selectedItem.id;
-            if (order[orderId]) order[orderId].quantity++;
-            else order[orderId] = { ...selectedItem, quantity: 1 };
+            if (order[orderId]) order[orderId].quantity++; else order[orderId] = { ...selectedItem, quantity: 1 };
             renderOrderList();
         }
     });
-    
     addToOrderButton.addEventListener('click', () => {
-        if (!selectedItem || selectedSweetness === '') { alert('กรุณาเลือกระดับความหวาน'); return; }
-        const sweetnessText = document.querySelector('.sweetness-btn.selected')?.textContent || '';
-        const displayName = `${selectedItem.name} (${sweetnessText})`;
-        const itemIdWithSweetness = `${selectedItem.id}-${selectedSweetness}`;
-        if (order[itemIdWithSweetness]) order[itemIdWithSweetness].quantity++;
-        else order[itemIdWithSweetness] = { id: itemIdWithSweetness, name: displayName, price: selectedItem.price, cost: selectedItem.cost, quantity: 1 };
-        renderOrderList();
-        sweetnessModal.style.display = 'none';
+        if (!selectedItem || selectedSweetness === '') { alert('กรุณาเลือกความหวาน'); return; }
+        const displayName = `${selectedItem.name} (${document.querySelector('.sweetness-btn.selected')?.textContent})`;
+        const id = `${selectedItem.id}-${selectedSweetness}`;
+        if (order[id]) order[id].quantity++; else order[id] = { id, name: displayName, price: selectedItem.price, cost: selectedItem.cost, quantity: 1 };
+        renderOrderList(); sweetnessModal.style.display = 'none';
     });
-
     addModifiedItemToOrderBtn.addEventListener('click', () => {
         let finalPrice = selectedItem.price;
-        const selectedOptionsNames = [];
-        const selectedOptionsIds = [];
-        document.querySelectorAll('#modifier-options-container input[type="radio"]:checked').forEach(radio => {
-            finalPrice += parseFloat(radio.value);
-            // ‼️ Logic เดิมที่ถูกต้อง: ดักจับคำว่า "ปกติ" (ทั้งที่มีและไม่มีวงเล็บ) ไม่ให้บันทึก
-            if (!radio.dataset.name.includes('(ปกติ)') && radio.dataset.name !== 'ปกติ') {
-                selectedOptionsNames.push(radio.dataset.name);
-            }
-            selectedOptionsIds.push(radio.dataset.name.replace(/[\s%]+/g, '-'));
+        let names = [], ids = [];
+        document.querySelectorAll('#modifier-options-container input[type="radio"]:checked').forEach(r => {
+            finalPrice += parseFloat(r.value);
+            if (!r.dataset.name.includes('ปกติ') && r.dataset.name !== 'ปกติ') names.push(r.dataset.name);
+            ids.push(r.dataset.name.replace(/[\s%]+/g, '-'));
         });
-        const displayName = selectedOptionsNames.length > 0 ? `${selectedItem.name} (${selectedOptionsNames.join(', ')})` : selectedItem.name;
-        const finalId = `${selectedItem.id}-${selectedOptionsIds.join('-')}`;
-        if (order[finalId]) order[finalId].quantity++;
-        else order[finalId] = { id: finalId, name: displayName, price: finalPrice, cost: selectedItem.cost, quantity: 1 };
-        renderOrderList();
-        modifiersModal.style.display = 'none';
+        const displayName = names.length > 0 ? `${selectedItem.name} (${names.join(', ')})` : selectedItem.name;
+        const id = `${selectedItem.id}-${ids.join('-')}`;
+        if (order[id]) order[id].quantity++; else order[id] = { id, name: displayName, price: finalPrice, cost: selectedItem.cost, quantity: 1 };
+        renderOrderList(); modifiersModal.style.display = 'none';
     });
+    
+    // Removed customItem logic here
 
-    customItemBtn.addEventListener('click', () => {
-        customItemNameInput.value = '';
-        customItemPriceInput.value = '';
-        customItemModal.style.display = 'flex';
-        customItemNameInput.focus();
-    });
-    customItemModal.addEventListener('click', (event) => { if (event.target !== customItemNameInput && event.target !== customItemPriceInput) { customItemNameInput.blur(); customItemPriceInput.blur(); }});
-    addCustomItemBtn.addEventListener('click', () => {
-        const name = customItemNameInput.value.trim();
-        const price = parseFloat(customItemPriceInput.value);
-        if (!name || isNaN(price) || price < 0) { alert('กรุณาใส่ชื่อและราคาให้ถูกต้อง'); return; }
-        const customId = `custom-${Date.now()}`;
-        order[customId] = { id: customId, name: name, price: price, cost: 0, quantity: 1 };
-        renderOrderList();
-        customItemModal.style.display = 'none';
-    });
-    orderList.addEventListener('click', (event) => {
-        const target = event.target.closest('button');
-        if (!target) return;
-        const itemId = target.getAttribute('data-id');
-        if (target.classList.contains('remove-item')) {
-            if (order[itemId] && order[itemId].quantity > 1) order[itemId].quantity--; else delete order[itemId];
-        } else if (target.classList.contains('add-item')) {
-            if (order[itemId]) order[itemId].quantity++;
-        } else if (target.classList.contains('delete-item-btn')) {
-            delete order[itemId];
-        }
+    orderList.addEventListener('click', (e) => {
+        const btn = e.target.closest('button'); if (!btn) return;
+        const id = btn.dataset.id;
+        if (btn.classList.contains('remove-item')) { if (order[id].quantity > 1) order[id].quantity--; else delete order[id]; }
+        else if (btn.classList.contains('add-item')) order[id].quantity++;
+        else if (btn.classList.contains('delete-item-btn')) delete order[id];
         renderOrderList();
     });
-    sweetnessButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            selectedSweetness = button.getAttribute('data-level');
-            sweetnessButtons.forEach(btn => btn.classList.remove('selected'));
-            button.classList.add('selected');
-        });
-    });
-    clearOrderBtn.addEventListener('click', () => { if (confirm('คุณต้องการล้างรายการในตะกร้าทั้งหมดใช่หรือไม่?')) { order = {}; discountInput.value = ''; renderOrderList(); }});
-    holdOrderBtn.addEventListener('click', () => { if (Object.keys(order).length === 0) { alert("ตะกร้าว่างเปล่า พักบิลไม่ได้ครับ"); return; } holdOrderModal.style.display = 'flex'; holdOrderNameInput.focus(); });
+    sweetnessButtons.forEach(b => b.addEventListener('click', () => { selectedSweetness = b.dataset.level; sweetnessButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); }));
+    clearOrderBtn.addEventListener('click', () => { if(confirm('ล้างรายการ?')) { order={}; discountInput.value=''; renderOrderList(); } });
+    holdOrderBtn.addEventListener('click', () => { if(Object.keys(order).length === 0) return; holdOrderModal.style.display='flex'; holdOrderNameInput.focus(); });
     confirmHoldOrderBtn.addEventListener('click', saveHeldOrder);
     viewHeldOrdersBtn.addEventListener('click', fetchHeldOrders);
-    payAndPrintButton.addEventListener('click', () => {
-        const grandTotal = parseFloat(grandTotalSpan.textContent);
-        if (grandTotal >= 0 && Object.keys(order).length > 0) {
-            generatePromptPayQR(grandTotal, document.getElementById('modal-qr-code'));
-            const summaryContainer = document.getElementById('modal-order-summary');
-            summaryContainer.innerHTML = '';
-            for (const itemId in order) summaryContainer.innerHTML += `<p>${order[itemId].name} (x${order[itemId].quantity})</p>`;
-            document.getElementById('modal-total-payment').textContent = `ยอดชำระ: ${grandTotal.toFixed(2)} บาท`;
-            document.getElementById('payment-qr-modal').style.display = 'flex';
-        } else alert('โปรดเลือกรายการสินค้าก่อนชำระเงิน');
-    });
-    document.getElementById('confirm-payment-btn').addEventListener('click', () => { finalizeOrder('QR'); document.getElementById('payment-qr-modal').style.display = 'none'; alert('บันทึกออเดอร์ QR เรียบร้อย!'); });
-    cashPaymentBtn.addEventListener('click', () => {
-        const grandTotal = parseFloat(grandTotalSpan.textContent);
-        if (grandTotal >= 0 && Object.keys(order).length > 0) {
-            modalTotalDueSpan.textContent = grandTotal.toFixed(2);
-            cashReceivedInput.value = '';
-            changeDueSpan.textContent = '0.00';
-            cashModal.style.display = 'flex';
-            cashReceivedInput.focus();
-        } else alert('โปรดเลือกรายการสินค้าก่อนชำระเงิน');
-    });
-    cashReceivedInput.addEventListener('input', () => {
-        const totalDue = parseFloat(modalTotalDueSpan.textContent);
-        const cashReceived = parseFloat(cashReceivedInput.value) || 0;
-        const change = cashReceived - totalDue;
-        changeDueSpan.textContent = change >= 0 ? change.toFixed(2) : '0.00';
-    });
-    cashModal.addEventListener('click', (event) => { if (event.target !== cashReceivedInput) cashReceivedInput.blur(); });
-    confirmCashPaymentBtn.addEventListener('click', () => {
-        cashReceivedInput.blur();
-        const totalDue = parseFloat(modalTotalDueSpan.textContent);
-        const cashReceived = parseFloat(cashReceivedInput.value) || 0;
-        if (cashReceived >= totalDue) { finalizeOrder('Cash'); cashModal.style.display = 'none'; alert('บันทึกออเดอร์เงินสดเรียบร้อย!'); } else alert('จำนวนเงินที่รับมาไม่เพียงพอ');
-    });
-    closeOrderButton.addEventListener('click', () => { if (Object.keys(order).length > 0) { if (confirm('คุณต้องการ "ยกเลิก" ออเดอร์นี้ใช่หรือไม่?')) { finalizeOrder('Cancelled'); alert('ออเดอร์ถูกยกเลิกเรียบร้อย'); } } else alert('ไม่มีรายการในออเดอร์'); });
-    discountInput.addEventListener('input', updateSummary);
-    discountType.addEventListener('change', updateSummary);
+    payAndPrintButton.addEventListener('click', () => { if(Object.keys(order).length > 0) { generatePromptPayQR(parseFloat(grandTotalSpan.textContent), document.getElementById('modal-qr-code')); document.getElementById('modal-total-payment').textContent = grandTotalSpan.textContent; document.getElementById('payment-qr-modal').style.display='flex'; } });
+    document.getElementById('confirm-payment-btn').addEventListener('click', () => { finalizeOrder('QR'); document.getElementById('payment-qr-modal').style.display='none'; });
+    cashPaymentBtn.addEventListener('click', () => { if(Object.keys(order).length > 0) { modalTotalDueSpan.textContent = grandTotalSpan.textContent; cashReceivedInput.value=''; changeDueSpan.textContent='0.00'; cashModal.style.display='flex'; cashReceivedInput.focus(); } });
+    cashReceivedInput.addEventListener('input', () => { changeDueSpan.textContent = (parseFloat(cashReceivedInput.value) - parseFloat(modalTotalDueSpan.textContent)).toFixed(2); });
+    confirmCashPaymentBtn.addEventListener('click', () => { if(parseFloat(cashReceivedInput.value) >= parseFloat(modalTotalDueSpan.textContent)) { finalizeOrder('Cash'); cashModal.style.display='none'; } else alert('เงินไม่พอ'); });
+    closeOrderButton.addEventListener('click', () => { if(Object.keys(order).length > 0 && confirm('ยกเลิก?')) finalizeOrder('Cancelled'); });
+    discountInput.addEventListener('input', updateSummary); discountType.addEventListener('change', updateSummary);
     salesReportButton.addEventListener('click', showSalesReport);
-    deleteLastSaleButton.addEventListener('click', () => { alert('ฟังก์ชันนี้ถูกปิดใช้งานชั่วคราว'); });
-    resetSalesButton.addEventListener('click', () => { alert('ฟังก์ชันนี้ถูกปิดใช้งานชั่วคราว'); });
-    document.querySelectorAll('.close-button').forEach(button => { button.addEventListener('click', () => { button.closest('.modal').style.display = 'none'; }); });
-    window.addEventListener('click', (event) => { if (event.target.classList.contains('modal')) {} });
-    const dismissDiscountKeyboard = (event) => { if (document.activeElement === discountInput && event.target !== discountInput) discountInput.blur(); };
-    window.addEventListener('click', dismissDiscountKeyboard);
-    window.addEventListener('touchstart', dismissDiscountKeyboard);
+    document.querySelectorAll('.close-button').forEach(b => b.addEventListener('click', () => b.closest('.modal').style.display='none'));
+    window.onclick = (e) => { if (e.target.classList.contains('modal')) {} }; 
 
-    manageMenuBtn.addEventListener('click', () => { manageMenuModal.style.display = 'flex'; });
+    manageMenuBtn.addEventListener('click', () => manageMenuModal.style.display='flex');
     saveNewItemBtn.addEventListener('click', async () => {
         const name = document.getElementById('new-item-name').value;
         const nameThai = document.getElementById('new-item-thai').value;
         const price = parseFloat(document.getElementById('new-item-price').value);
         const cost = parseFloat(document.getElementById('new-item-cost').value);
         const category = document.getElementById('new-item-category').value;
-        if(!name || isNaN(price) || isNaN(cost)) { alert('กรุณากรอกข้อมูลให้ครบ (ชื่อ, ราคา, ต้นทุน)'); return; }
+        if(!name || isNaN(price) || isNaN(cost)) { alert('กรุณากรอกข้อมูล'); return; }
         try {
             await addDoc(collection(db, "dynamic_menu_items"), { id: 'dyn-' + Date.now(), name, nameThai, price, cost, category, modifiers: [] });
-            alert('บันทึกเมนูสำเร็จ!');
+            alert('บันทึกสำเร็จ');
             document.getElementById('new-item-name').value = '';
-            document.getElementById('new-item-thai').value = '';
             document.getElementById('new-item-price').value = '';
             document.getElementById('new-item-cost').value = '';
-        } catch(e) { console.error(e); alert('บันทึกไม่สำเร็จ'); }
+        } catch(e) { console.error(e); alert('Error'); }
     });
 
-    // Initial Load
+    // Start
     loadDynamicMenu(); 
-    renderMenuItems('coffee'); 
 });
