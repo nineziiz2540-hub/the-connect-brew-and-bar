@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- STATIC DATA ---
     
-    // 1. กลุ่มตัวเลือกย่อย
+    // 1. กลุ่มตัวเลือกย่อย (Options Group)
     const roastOptions = { 
         groupName: "ระดับการคั่ว (Roast)", 
         options: [
@@ -126,26 +126,26 @@ document.addEventListener('DOMContentLoaded', () => {
         groupName: "เพิ่มเติม", 
         options: [
             { name: 'ปกติ', price: 0 }, 
-            { name: 'เพิ่ม 1 ช็อต', price: 20 } 
-            // ❌ ตัด "เพิ่มวิปครีม" ออกเรียบร้อยแล้วครับ
+            { name: 'เพิ่ม 1 ช็อต', price: 20 }
+            // ตัดวิปครีมออกแล้ว
         ]
     };
 
-    // 2. จัดชุดตัวเลือก (Modifiers)
+    // 2. จัดชุดตัวเลือก (Modifiers Sets)
     
-    // ก. กาแฟใส่นม (มีครบทุกอย่าง ยกเว้นวิปที่ตัดออก)
+    // ก. กาแฟใส่นม (มีครบ: คั่ว + หวาน + นม + เพิ่มช็อต)
     const stdCoffeeModifiers = [ roastOptions, sweetOptions, milkOptions, extraOptions ];
 
-    // ข. กาแฟดำ (ไม่มีนม)
+    // ข. กาแฟดำ (มี: คั่ว + หวาน + เพิ่มช็อต) - ไม่มีนม
     const blackCoffeeModifiers = [ roastOptions, sweetOptions, extraOptions ];
 
     // ค. เอสเพรสโซ่ช็อต (มีแค่คั่ว)
     const espressoModifiers = [ roastOptions ];
 
-    // ง. Matcha & Non-Coffee ใส่นม (เหลือแค่ หวาน + นม | ไม่มีคั่ว, ไม่มีเพิ่มช็อต)
+    // ง. Matcha & Non-Coffee ใส่นม (มี: หวาน + นม) - ไม่มีคั่ว, ไม่มีเพิ่มช็อต
     const stdNonCoffeeModifiers = [ sweetOptions, milkOptions ];
 
-    // จ. Matcha & Non-Coffee ใส (เหลือแค่ หวาน | ไม่มีคั่ว, ไม่มีนม, ไม่มีเพิ่มช็อต)
+    // จ. Matcha & Non-Coffee ใส (มีแค่หวาน) - ไม่มีคั่ว, ไม่มีนม, ไม่มีเพิ่มช็อต
     const basicModifiers = [ sweetOptions ];
 
 
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'c-coconut-cof', name: 'Coconut Coffee (Iced)', nameThai: 'โคโคนัท คอฟฟี่ (เย็น)', price: 70, cost: 28.31, category: 'coffee', modifiers: blackCoffeeModifiers },
         { id: 'c-affogato', name: 'Affogato Coffee', nameThai: 'อัฟโฟกาโต้ คอฟฟี่', price: 85, cost: 34.5, category: 'coffee', modifiers: [] }, 
 
-        // MATCHA (ไม่มี Roast, ไม่มี Extra, ไม่มีวิป)
+        // MATCHA (ไม่มี Roast, ไม่มี Extra)
         { id: 'm-clear-uji-h', name: 'Clear Matcha Uji (Hot)', nameThai: 'เคลียร์ มัทฉะ อูจิ (ร้อน)', price: 70, cost: 29.26, category: 'matcha', modifiers: basicModifiers },
         { id: 'm-clear-uji-i', name: 'Clear Matcha Uji (Iced)', nameThai: 'เคลียร์ มัทฉะ อูจิ (เย็น)', price: 75, cost: 29.26, category: 'matcha', modifiers: basicModifiers },
         { id: 'm-clear-nishio-h', name: 'Clear Matcha Nishio (Hot)', nameThai: 'เคลียร์ มัทฉะ นิชิโอะ (ร้อน)', price: 135, cost: 74.38, category: 'matcha', modifiers: basicModifiers },
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'm-orange-nishio', name: 'Orange Matcha Nishio (Iced)', nameThai: 'ออเรนจ์ มัทฉะ นิชิโอะ (เย็น)', price: 160, cost: 80, category: 'matcha', modifiers: basicModifiers },
         { id: 'm-hojicha', name: 'Hojicha Latte (Iced)', nameThai: 'โฮจิฉะ ลาเต้ (เย็น)', price: 70, cost: 28.10, category: 'matcha', modifiers: stdNonCoffeeModifiers },
 
-        // NON COFFEE (ไม่มี Roast, ไม่มี Extra, ไม่มีวิป)
+        // NON COFFEE (ไม่มี Roast, ไม่มี Extra)
         { id: 'n-thaitea', name: 'Thai Tea (Iced)', nameThai: 'ชาไทย (เย็น)', price: 55, cost: 11.54, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
         { id: 'n-greentea', name: 'Green Tea (Iced)', nameThai: 'ชาเขียว (เย็น)', price: 55, cost: 14.22, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
         { id: 'n-cocoa-h', name: 'Cocoa Latte (Hot)', nameThai: 'โกโก้ ลาเต้ (ร้อน)', price: 50, cost: 18.68, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
