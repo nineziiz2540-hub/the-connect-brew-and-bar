@@ -13,22 +13,23 @@
     <div class="main-container">
         <div class="menu-container">
             <div class="menu-title-row">
-                <h1>เมนู</h1>
-                <div class="header-actions">
-                    <button id="manage-menu-btn" class="custom-item-btn" style="background-color: #3498db; color: white;">
-                        <i class="fas fa-edit"></i> เมนูพิเศษ
-                    </button>
-
-                    <button id="view-held-orders-btn" class="custom-item-btn" style="background-color: #e67e22; color: white; border: none;">
-                        <i class="fas fa-clock"></i> บิลที่พักไว้
-                    </button>
-                    <button id="custom-item-btn" class="custom-item-btn"><i class="fas fa-plus"></i> เพิ่มเอง</button>
-                    <button id="sales-report-button" class="report-btn"><i class="fas fa-chart-line"></i> รายงาน</button>
-                    <a href="dashboard.html" class="report-btn" style="background-color: #34495e; text-decoration: none; display: flex; align-items: center; margin-right: 5px;">
-                    <i class="fas fa-chart-pie" style="margin-right: 5px;"></i> Dashboard
-                    </a>
-                </div>
-            </div>
+    <h1 style="margin:0; font-size:1.5rem; flex-shrink:0;">เมนู</h1>
+    <div class="header-actions" style="display:flex; gap:8px; align-items:center; flex-wrap:nowrap; overflow-x:auto;">
+        <button id="manage-menu-btn" class="custom-item-btn compact-btn" title="จัดการเมนู">
+            <i class="fas fa-edit"></i> <span class="btn-text">เพิ่มเมนู</span>
+        </button>
+        <button id="view-held-orders-btn" class="custom-item-btn compact-btn" style="background-color: #e67e22; color: white; border: none;" title="ดูบิลที่พักไว้">
+            <i class="fas fa-clock"></i> <span class="btn-text">บิลที่พักไว้</span>
+        </button>
+        <div style="width:1px; height:25px; background:#ddd; margin:0 5px;"></div>
+        <button id="sales-report-button" class="report-btn compact-btn" title="ดูรายงานยอดขาย">
+            <i class="fas fa-chart-line"></i> <span class="btn-text">รายงาน</span>
+        </button>
+        <a href="dashboard.html" class="report-btn compact-btn" style="background-color: #2c3e50; text-decoration: none; display: flex; align-items: center;" title="ไปหน้า Dashboard">
+            <i class="fas fa-chart-pie"></i> <span class="btn-text">Dashboard</span>
+        </a>
+    </div>
+</div>
             
             <div class="menu-tabs">
                 <button class="menu-tab active" data-category="coffee">COFFEE</button>

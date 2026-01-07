@@ -415,3 +415,28 @@ hr { border: none; height: 1px; background-color: var(--border-color); margin: 0
     color: white;
     box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
 }
+
+/* ปรับกล่องปุ่มให้ยืดหยุ่นและดันไปขวาสุด */
+.header-actions {
+    flex-grow: 1;
+    justify-content: flex-end; /* ดันปุ่มไปขวาสุด */
+    margin-left: 15px;
+}
+
+/* คลาสสำหรับปุ่มแบบกระชับ */
+.compact-btn {
+    padding: 8px 15px !important; /* ปรับขนาดปุ่มให้เล็กลง */
+    font-size: 0.95rem !important;
+    white-space: nowrap; /* ห้ามตัวหนังสือขึ้นบรรทัดใหม่ */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px; /* บังคับความสูงให้เท่ากันทุกปุ่ม */
+}
+
+/* ซ่อนตัวหนังสือเมื่อจอเล็กมากๆ (เช่น iPad แนวตั้ง) ให้เหลือแต่ไอคอน */
+@media (max-width: 1024px) {
+    .btn-text { display: none; } 
+    .compact-btn { padding: 8px 12px !important; }
+    .compact-btn i { margin: 0 !important; font-size: 1.1rem; }
+}
