@@ -10,17 +10,17 @@
     
     <style>
         :root {
-            --primary-bg: #f8f9fa; /* พื้นหลังสีเทาอ่อน สบายตา */
+            --primary-bg: #f8f9fa; /* สีพื้นหลังเทาอ่อน สบายตา */
             --card-bg: #ffffff;
             --text-main: #2d3436;
             --text-muted: #636e72;
             --sidebar-bg: #2c3e50;
-            --sidebar-width: 260px; /* ขยาย Sidebar ให้กว้างขึ้นนิดนึง */
+            --sidebar-width: 260px;
             --accent-color: #3498db;
-            --radius: 16px; /* ความมนของมุม */
+            --radius: 16px; /* ความมนของมุมการ์ด */
         }
 
-        * { box-sizing: border-box; } /* สำคัญมาก! ช่วยแก้ปัญหา layout ล้น */
+        * { box-sizing: border-box; }
 
         body { 
             font-family: 'Kanit', sans-serif; 
@@ -29,7 +29,7 @@
             color: var(--text-main); 
             display: flex; 
             min-height: 100vh; 
-            overflow-x: hidden; /* ห้ามเลื่อนซ้ายขวา */
+            overflow-x: hidden;
         }
 
         /* --- 1. Sidebar (เมนูซ้าย) --- */
@@ -37,7 +37,7 @@
             width: var(--sidebar-width);
             background: var(--sidebar-bg);
             color: white;
-            padding: 30px 20px; /* เพิ่ม padding บนล่าง */
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             position: fixed;
@@ -48,43 +48,35 @@
         
         .sidebar h2 { 
             font-size: 1.4rem; 
-            margin: 0 0 40px 10px; /* เว้นระยะห่างจากขอบซ้าย */
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            margin: 0 0 40px 10px;
+            display: flex; align-items: center; gap: 12px; 
+            font-weight: 600; letter-spacing: 0.5px;
         }
 
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
         .sidebar-menu li { margin-bottom: 12px; }
         
         .sidebar-menu a {
-            display: flex; 
-            align-items: center; 
-            gap: 15px;
-            color: #b2bec3; 
-            text-decoration: none; 
-            padding: 12px 20px; /* เพิ่มพื้นที่กด */
-            border-radius: 12px; 
-            transition: all 0.2s ease;
-            font-size: 1rem;
+            display: flex; align-items: center; gap: 15px;
+            color: #b2bec3; text-decoration: none; 
+            padding: 12px 20px; border-radius: 12px; 
+            transition: all 0.2s ease; font-size: 1rem;
         }
         
         .sidebar-menu a:hover, .sidebar-menu a.active { 
             background: rgba(255,255,255,0.1); 
-            color: white; 
-            transform: translateX(5px); /* ลูกเล่นขยับนิดๆ */
+            color: white; transform: translateX(5px);
         }
         
         /* --- 2. Main Content (เนื้อหาขวา) --- */
         .main-content {
             margin-left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width)); /* คำนวณพื้นที่ที่เหลือ */
-            padding: 40px; /* เว้นขอบรอบๆ ให้ดูโปร */
+            width: calc(100% - var(--sidebar-width));
+            padding: 40px;
             display: flex;
             flex-direction: column;
-            gap: 25px; /* ระยะห่างระหว่าง Section */
+            /* 🔥 ปรับแก้: เพิ่มระยะห่างระหว่าง Section ใหญ่ให้มากขึ้น */
+            gap: 50px; 
         }
 
         /* --- 3. Filter Bar (แถบเลือกวันที่) --- */
@@ -93,28 +85,21 @@
             padding: 20px 30px;
             border-radius: var(--radius);
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
+            display: flex; flex-wrap: wrap;
+            align-items: center; justify-content: space-between;
             gap: 20px;
         }
         
         .date-inputs { display: flex; gap: 10px; align-items: center; }
-        
         .date-inputs input { 
-            padding: 10px 15px; 
-            border: 1px solid #dfe6e9; 
-            border-radius: 8px; 
-            font-family: 'Kanit'; 
-            color: var(--text-main);
-            background: #fdfdfd;
+            padding: 10px 15px; border: 1px solid #dfe6e9; 
+            border-radius: 8px; font-family: 'Kanit'; color: var(--text-main); background: #fdfdfd;
         }
 
         .btn-primary {
-            background: var(--accent-color); color: white; border: none; padding: 10px 20px;
-            border-radius: 8px; cursor: pointer; font-family: 'Kanit'; font-weight: 500;
-            display: flex; align-items: center; gap: 8px;
+            background: var(--accent-color); color: white; border: none; 
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; 
+            font-family: 'Kanit'; font-weight: 500; display: flex; align-items: center; gap: 8px;
             transition: background 0.2s;
         }
         .btn-primary:hover { background: #2980b9; }
@@ -129,22 +114,17 @@
         /* --- 4. Stats Grid (กล่องยอดขาย) --- */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* ยืดหยุ่นตามหน้าจอ */
-            gap: 25px; /* เพิ่มช่องไฟ */
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            /* 🔥 ปรับแก้: เพิ่มช่องไฟระหว่างการ์ด */
+            gap: 30px; 
         }
 
         .stat-card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: transform 0.2s;
-            border-left: 5px solid transparent; /* เส้นสีด้านซ้าย */
+            background: var(--card-bg); padding: 25px; border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex;
+            align-items: center; justify-content: space-between;
+            transition: transform 0.2s; border-left: 5px solid transparent;
         }
-        
         .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
 
         .stat-info h3 { margin: 0; font-size: 0.95rem; color: var(--text-muted); font-weight: 400; }
@@ -152,54 +132,38 @@
         
         .stat-icon {
             width: 55px; height: 55px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
         }
 
-        /* Colors */
+        /* Colors for Stats */
         .card-sales { border-color: #3b82f6; } .card-sales .stat-icon { background: #eff6ff; color: #3b82f6; }
         .card-orders { border-color: #f59e0b; } .card-orders .stat-icon { background: #fffbeb; color: #f59e0b; }
         .card-profit { border-color: #10b981; } .card-profit .stat-icon { background: #ecfdf5; color: #10b981; }
         .card-avg { border-color: #8b5cf6; } .card-avg .stat-icon { background: #f5f3ff; color: #8b5cf6; }
 
-        /* --- 5. Charts Grid (แก้ปัญหากราฟล้น) --- */
+        /* --- 5. Charts Grid (กราฟ) --- */
         .charts-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* แบ่งครึ่งหน้าจอ */
-            gap: 25px; /* ช่องไฟ */
+            grid-template-columns: repeat(2, 1fr);
+            /* 🔥 ปรับแก้: เพิ่มช่องไฟระหว่างกราฟ */
+            gap: 30px;
         }
 
         .chart-card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            display: flex;
-            flex-direction: column;
-            
-            /* 🔥 สำคัญมาก: แก้ปัญหากราฟยืด */
-            min-width: 0; 
-            height: 400px; /* กำหนดความสูงตายตัว */
+            background: var(--card-bg); padding: 25px; border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex; flex-direction: column;
+            min-width: 0; height: 400px; /* ล็อคความสูง */
         }
 
         .chart-header { margin-bottom: 20px; border-bottom: 1px solid #f1f2f6; padding-bottom: 10px; }
         .chart-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
 
-        .chart-body {
-            flex-grow: 1;
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* ตัดส่วนเกิน */
-        }
+        .chart-body { flex-grow: 1; position: relative; width: 100%; height: 100%; overflow: hidden; }
 
         /* --- 6. Table (ตารางล่าสุด) --- */
         .table-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            overflow-x: auto;
+            background: var(--card-bg); padding: 30px; border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); overflow-x: auto;
         }
         
         table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 600px; }
@@ -212,21 +176,22 @@
         .badge-qr { background: #e0f2fe; color: #0284c7; }
         .badge-cash { background: #dcfce7; color: #16a34a; }
 
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 1024px) {
-            .sidebar { width: 80px; padding: 20px 10px; align-items: center; } /* ย่อเมนู */
-            .sidebar h2 span { display: none; } /* ซ่อนชื่อ */
-            .sidebar-menu a span { display: none; } /* ซ่อนข้อความเมนู */
+            .sidebar { width: 80px; padding: 20px 10px; align-items: center; }
+            .sidebar h2 span, .sidebar-menu a span, .sidebar .version-text { display: none; }
+            .sidebar h2 { margin-bottom: 30px; justify-content: center; margin-left: 0; }
             .sidebar-menu a { justify-content: center; padding: 15px; }
-            
-            .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 20px; }
-            .charts-container { grid-template-columns: 1fr; } /* กราฟเรียงเดี่ยวบนจอเล็ก */
+            .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 30px; gap: 40px; }
+            .charts-container { grid-template-columns: 1fr; }
         }
         
         @media (max-width: 768px) {
-            .sidebar { display: none; } /* ซ่อนเมนูบนมือถือ */
-            .main-content { margin-left: 0; width: 100%; padding: 15px; }
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; width: 100%; padding: 20px; gap: 30px; }
             .stats-grid { grid-template-columns: 1fr; }
+            .filter-container { flex-direction: column; align-items: stretch; }
+            .date-inputs { flex-direction: column; }
         }
     </style>
 </head>
@@ -235,11 +200,11 @@
     <nav class="sidebar">
         <h2><i class="fas fa-chart-pie" style="color: #3498db;"></i> <span>THE CONNECT</span></h2>
         <ul class="sidebar-menu" style="margin-top: 30px;">
-            <li><a href="#" class="active"><i class="fas fa-th-large"></i> <span>ภาพรวม</span></a></li>
-            <li><a href="index.html"><i class="fas fa-store"></i> <span>กลับหน้าร้าน</span></a></li>
+            <li><a href="#" class="active"><i class="fas fa-th-large"></i> <span>ภาพรวม (Overview)</span></a></li>
+            <li><a href="index.html"><i class="fas fa-store"></i> <span>กลับหน้าร้าน (POS)</span></a></li>
         </ul>
-        <div style="margin-top: auto; text-align: center; font-size: 0.8rem; color: #64748b;">
-            <span>v2.5 Pro</span>
+        <div class="version-text" style="margin-top: auto; text-align: center; font-size: 0.8rem; color: #64748b;">
+            <span>v2.6 Pro (Balanced UI)</span>
         </div>
     </nav>
 
@@ -248,7 +213,7 @@
         <div class="filter-container">
             <div>
                 <h1 style="margin: 0; font-size: 1.5rem; color: #2c3e50;">Executive Dashboard</h1>
-                <p style="margin: 5px 0 0; color: #95a5a6; font-size: 0.9rem;">สรุปผลการดำเนินงานประจำวัน</p>
+                <p style="margin: 5px 0 0; color: #95a5a6; font-size: 0.9rem;">สรุปผลการดำเนินงานและสถิติ</p>
             </div>
             
             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
@@ -277,61 +242,41 @@
             
             <div class="stats-grid">
                 <div class="stat-card card-sales">
-                    <div class="stat-info">
-                        <h3>ยอดขายรวม</h3>
-                        <p id="total-sales">0 ฿</p>
-                    </div>
+                    <div class="stat-info"><h3>ยอดขายรวม</h3><p id="total-sales">0 ฿</p></div>
                     <div class="stat-icon"><i class="fas fa-wallet"></i></div>
                 </div>
                 <div class="stat-card card-orders">
-                    <div class="stat-info">
-                        <h3>จำนวนออเดอร์</h3>
-                        <p id="total-orders">0</p>
-                    </div>
+                    <div class="stat-info"><h3>จำนวนออเดอร์</h3><p id="total-orders">0</p></div>
                     <div class="stat-icon"><i class="fas fa-receipt"></i></div>
                 </div>
                 <div class="stat-card card-profit">
-                    <div class="stat-info">
-                        <h3>กำไรโดยประมาณ</h3>
-                        <p id="total-profit">0 ฿</p>
-                    </div>
+                    <div class="stat-info"><h3>กำไรโดยประมาณ</h3><p id="total-profit">0 ฿</p></div>
                     <div class="stat-icon"><i class="fas fa-coins"></i></div>
                 </div>
                 <div class="stat-card card-avg">
-                    <div class="stat-info">
-                        <h3>เฉลี่ยต่อบิล</h3>
-                        <p id="avg-ticket">0 ฿</p>
-                    </div>
+                    <div class="stat-info"><h3>เฉลี่ยต่อบิล</h3><p id="avg-ticket">0 ฿</p></div>
                     <div class="stat-icon"><i class="fas fa-users"></i></div>
                 </div>
             </div>
 
             <div class="charts-container">
                 <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fas fa-crown" style="color: #f1c40f;"></i> 5 อันดับเมนูขายดี</h3>
-                    </div>
+                    <div class="chart-header"><h3><i class="fas fa-crown" style="color: #f1c40f;"></i> 5 อันดับเมนูขายดี</h3></div>
                     <div class="chart-body"><canvas id="topMenuChart"></canvas></div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fas fa-chart-line" style="color: #3498db;"></i> ยอดขายรายชั่วโมง (Peak Time)</h3>
-                    </div>
+                    <div class="chart-header"><h3><i class="fas fa-chart-line" style="color: #3498db;"></i> ยอดขายรายชั่วโมง (Peak Time)</h3></div>
                     <div class="chart-body"><canvas id="salesByHourChart"></canvas></div>
                 </div>
             </div>
 
             <div class="charts-container">
                 <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fas fa-mug-hot" style="color: #9b59b6;"></i> สัดส่วนหมวดหมู่สินค้า</h3>
-                    </div>
+                    <div class="chart-header"><h3><i class="fas fa-mug-hot" style="color: #9b59b6;"></i> สัดส่วนหมวดหมู่สินค้า</h3></div>
                     <div class="chart-body" style="padding: 0 40px;"><canvas id="categoryChart"></canvas></div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header">
-                        <h3><i class="fas fa-money-bill-wave" style="color: #2ecc71;"></i> ช่องทางการชำระเงิน</h3>
-                    </div>
+                    <div class="chart-header"><h3><i class="fas fa-money-bill-wave" style="color: #2ecc71;"></i> ช่องทางการชำระเงิน</h3></div>
                     <div class="chart-body" style="padding: 0 40px;"><canvas id="paymentChart"></canvas></div>
                 </div>
             </div>
@@ -350,8 +295,7 @@
                             <th style="width: 15%;">ชำระโดย</th>
                         </tr>
                     </thead>
-                    <tbody id="recent-orders-body">
-                        </tbody>
+                    <tbody id="recent-orders-body"></tbody>
                 </table>
             </div>
 
