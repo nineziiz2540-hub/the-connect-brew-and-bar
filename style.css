@@ -54,6 +54,33 @@ body {
     flex-shrink: 0;
 }
 
+/* 🔥 FIX: Header Actions (จัดปุ่มให้สมดุล เต็มพื้นที่) */
+.header-actions {
+    display: flex;
+    gap: 10px;
+    flex-grow: 1; /* ขยายให้เต็มพื้นที่ที่เหลือ */
+    margin-left: 20px; /* เว้นระยะจากคำว่า เมนู */
+    align-items: center;
+}
+
+.header-actions button, 
+.header-actions a {
+    flex: 1; /* บังคับให้ทุกปุ่มกว้างเท่ากัน */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap; /* ห้ามตัดคำ */
+    height: 45px; /* ความสูงมาตรฐาน */
+    font-size: 1rem;
+}
+
+.header-divider {
+    width: 1px;
+    height: 30px;
+    background-color: #e0e0e0;
+    margin: 0 5px;
+}
+
 /* ปุ่มแบบเดิม (Original Colorful Style) */
 .custom-item-btn {
     padding: 0.75rem 1.25rem;
@@ -63,10 +90,9 @@ body {
     color: var(--primary-color);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    font-size: 0.95rem;
     font-weight: 600;
 }
-.custom-item-btn:hover { background-color: var(--primary-color); color: #fff; }
+.custom-item-btn:hover { filter: brightness(95%); }
 
 .report-btn {
     padding: 0.75rem 1.25rem;
@@ -76,8 +102,21 @@ body {
     color: white;
     cursor: pointer;
     transition: background-color 0.2s;
-    font-size: 0.95rem;
     font-weight: 600;
+}
+.report-btn:hover { filter: brightness(90%); }
+
+.compact-btn {
+    /* Class เสริมสำหรับจัด layout */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Responsive: ถ้าจอเล็กมากๆ ให้ซ่อน text */
+@media (max-width: 1024px) {
+    .btn-text { display: none; }
+    .header-actions button i, .header-actions a i { margin: 0; font-size: 1.2rem; }
 }
 
 .menu-tabs {
@@ -173,16 +212,51 @@ h1 { font-size: 1.8rem; font-weight: 700; margin: 0; }
 .payment-buttons button:hover, .close-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
 #cash-payment-btn { background-color: var(--primary-color); } #pay-and-print-button { background-color: var(--success-color); } .close-btn { background-color: var(--secondary-color); margin-top: 0.75rem; }
 
-/* Modals */
+/* --- 5. Modal Styles --- */
 .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
-.modal-content { background-color: #fff; margin: 1rem; padding: 2rem; border-radius: var(--border-radius); text-align: center; position: relative; max-width: 500px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column; max-height: 85vh; }
+.modal-content { 
+    background-color: #fff; margin: 1rem; padding: 2rem; border-radius: var(--border-radius); text-align: center; position: relative; 
+    max-width: 500px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+    display: flex; flex-direction: column; max-height: 85vh; /* 🔥 Control modal height */
+}
 .close-button { color: #aaa; position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; font-weight: bold; cursor: pointer; }
 .sweetness-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
 .sweetness-btn { padding: 1rem; font-size: 1rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--light-gray); cursor: pointer; } .sweetness-btn.selected { background-color: #d3d3d3; border-color: #bbb; }
 #add-to-order-btn, #confirm-cash-payment-btn { margin-top: 1.5rem; padding: 1rem; font-size: 1.1rem; background-color: var(--primary-color); color: white; border: none; border-radius: var(--border-radius); width: 100%; cursor: pointer; }
 .total-due-text, .change-text { font-size: 1.4rem; font-weight: bold; margin-bottom: 1rem;} .cash-input { width: 80%; padding: 0.75rem; font-size: 1.5rem; text-align: center; border: 2px solid var(--border-color); border-radius: 8px; margin: 0 auto 1rem auto; }
 .report-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-shrink: 0; } .report-action-btn { flex: 1; padding: 0.75rem; font-size: 1rem; border-radius: 8px; border: none; cursor: pointer; background-color: var(--primary-color); color: white; } .reset-btn { background-color: var(--danger-color); }
-#sales-report-details { flex-grow: 1; overflow-y: auto; min-height: 0; text-align: left; }
+
+/* 🔥 FIX: Sales Report Scrolling (Separate Header and List) */
+#sales-report-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden; /* Disable scrolling on parent */
+    height: 100%;
+}
+.report-summary-fixed {
+    flex-shrink: 0;
+    background: #fff;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    z-index: 2;
+}
+.report-list-scrollable {
+    flex-grow: 1;
+    overflow-y: auto; /* Scroll only here */
+    padding-top: 10px;
+    /* Custom Scrollbar */
+    scrollbar-width: thin;
+}
+/* Order Items <details> Styling */
+.report-order-item { border: 1px solid #eee; margin-bottom: 8px; border-radius: 8px; overflow: hidden; }
+.report-order-item summary { background: #f8f9fa; padding: 12px; cursor: pointer; font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.report-order-item summary::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 0.8rem; color: #aaa; transition: transform 0.2s; }
+.report-order-item[open] summary::after { transform: rotate(180deg); }
+.order-item-details { padding: 10px 15px; background: #fff; border-top: 1px solid #eee; }
+.order-item-details p { margin: 5px 0; color: #555; font-size: 0.9rem; padding-left: 10px; border-left: 3px solid #eee; }
+
+/* Modifiers Scroll */
 #modifier-options-container { margin-top: 1.5rem; text-align: left; flex-grow: 1; overflow-y: auto; padding-right: 0.5rem; min-height: 0; }
 .modifier-group { margin-bottom: 1.5rem; } .modifier-group h3 { font-size: 1.1rem; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
 .modifier-group .option { display: flex; align-items: center; margin-bottom: 0.5rem; } .modifier-group input[type="radio"] { margin-right: 0.75rem; width: 20px; height: 20px; accent-color: var(--primary-color); }
@@ -200,7 +274,7 @@ h1 { font-size: 1.8rem; font-weight: 700; margin: 0; }
 .report-order-item summary::marker { content: '▶ '; color: var(--primary-color); } .report-order-item[open] summary::marker { content: '▼ '; }
 .order-item-details { padding: 1rem 1rem 1rem 2.5rem; background-color: #fff; text-align: left; } .order-item-details p { margin: 0 0 0.5rem 0; font-size: 0.9rem; }
 
-/* FIX Modal Overflow */
+/* FIX Modal Overflow: Manage Menu */
 #manage-menu-modal .modal-content { max-height: 85vh; display: flex; flex-direction: column; padding: 0; overflow: hidden; }
 .modal-header-custom { padding: 20px; background: white; border-bottom: 1px solid #eee; flex-shrink: 0; }
 .modal-body-custom { padding: 20px; overflow-y: auto; flex-grow: 1; }

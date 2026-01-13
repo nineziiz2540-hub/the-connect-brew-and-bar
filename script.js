@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAndhLwumGYso3DYBteCrfCTecPk3NPTfw",
@@ -16,13 +16,13 @@ const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // VARIABLES
+    // --- VARIABLES ---
     let dynamicMenuItems = []; 
     let order = {};
     let selectedItem = null;
     let selectedSweetness = '';
 
-    // DOM
+    // --- DOM Elements ---
     const menuItemsContainer = document.getElementById('menu-items');
     const orderList = document.getElementById('order-list');
     const subTotalSpan = document.getElementById('sub-total');
@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const salesReportButton = document.getElementById('sales-report-button');
     const salesReportDetails = document.getElementById('sales-report-details');
     const deleteLastSaleButton = document.getElementById('delete-last-sale-btn');
-    const resetSalesButton = document.getElementById('reset-sales-btn');
     const payAndPrintButton = document.getElementById('pay-and-print-button');
     const closeOrderButton = document.getElementById('close-order-button');
     const discountInput = document.getElementById('discount-input');
@@ -49,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const changeDueSpan = document.getElementById('change-due');
     const confirmCashPaymentBtn = document.getElementById('confirm-cash-payment-btn');
     
-    // Modifiers & Menu Management
     const modifiersModal = document.getElementById('modifiers-modal');
     const modifiersItemName = document.getElementById('modifiers-item-name');
     const modifierOptionsContainer = document.getElementById('modifier-options-container');
@@ -59,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveNewItemBtn = document.getElementById('save-new-item-btn');
     const dynamicMenuList = document.getElementById('dynamic-menu-list');
     
-    // Hold Order & Export
     const holdOrderBtn = document.getElementById('hold-order-btn');
     const holdOrderModal = document.getElementById('hold-order-modal');
     const confirmHoldOrderBtn = document.getElementById('confirm-hold-order-btn');
@@ -480,7 +477,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { alert("Error: " + e.message); }
     };
 
+    // 🔥 FIX 1: แก้ไข showSalesReport ให้ Fixed Header และใช้ <details>
     const showSalesReport = async () => {
+        // ใช้ 2 ส่วนแยกกัน: ส่วนสรุป (Static) กับ ส่วนรายการ (Scrollable)
         salesReportDetails.innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> กำลังโหลด...</h3>';
         salesReportModal.style.display = 'flex';
         try {
@@ -490,20 +489,94 @@ document.addEventListener('DOMContentLoaded', () => {
             const querySnapshot = await getDocs(q);
             let allOrders = []; querySnapshot.forEach(doc => allOrders.push(doc.data()));
             allOrders.sort((a, b) => (a.createdAt && b.createdAt) ? a.createdAt.toMillis() - b.createdAt.toMillis() : 0);
-            let total = 0, cash = 0, qr = 0, cost = 0, html = '';
+            
+            let total = 0, cash = 0, qr = 0, cost = 0, ordersHtml = '';
+            
             allOrders.forEach(o => {
                 if (o.paymentMethod === 'Cancelled') return;
                 total += o.grandTotal;
                 if (o.paymentMethod === 'Cash') cash += o.grandTotal; else if (o.paymentMethod === 'QR') qr += o.grandTotal;
-                let c = 0; for(let k in o.items) c += (o.items[k].cost || 0) * o.items[k].quantity;
-                cost += c;
-                html += `<div style="border-bottom:1px solid #eee; padding:10px;"><b>คิว ${o.queueNumber}</b>: ${o.grandTotal}บ. (${o.paymentMethod})</div>`;
+                
+                let orderItemsHtml = '<div class="order-item-details">';
+                let orderCost = 0;
+                for(let k in o.items) { 
+                    const item = o.items[k];
+                    orderCost += (item.cost || 0) * item.quantity;
+                    orderItemsHtml += `<p>• ${item.name} x${item.quantity}</p>`;
+                }
+                orderItemsHtml += '</div>';
+                cost += orderCost;
+
+                // 🔥 ใช้ <details> เพื่อให้กดดูได้เหมือนเดิม
+                const timeStr = o.createdAt ? o.createdAt.toDate().toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) : '';
+                ordersHtml += `
+                    <details class="report-order-item">
+                        <summary>
+                            <strong>คิว ${o.queueNumber || '-'}</strong> (${timeStr})
+                            <span style="float:right;">${o.grandTotal} บ. (${o.paymentMethod})</span>
+                        </summary>
+                        ${orderItemsHtml}
+                    </details>
+                `;
             });
-            salesReportDetails.innerHTML = `<h3>ยอดรวม: ${total.toFixed(2)} บาท</h3><p>เงินสด: ${cash} | QR: ${qr}</p><p>กำไร: ${total - cost}</p><hr><div style="max-height:300px; overflow-y:auto;">${html}</div>`;
-        } catch (e) { salesReportDetails.innerHTML = 'Error'; }
+
+            // สร้าง HTML 2 ส่วน
+            const summaryHtml = `
+                <div class="report-summary-fixed">
+                    <h3>ยอดรวม: ${total.toFixed(2)} บาท</h3>
+                    <p>เงินสด: ${cash} | QR: ${qr}</p>
+                    <p>กำไร: ${(total - cost).toFixed(2)} บาท</p>
+                    <hr>
+                </div>
+            `;
+            
+            const listHtml = `
+                <div class="report-list-scrollable">
+                    ${allOrders.length === 0 ? '<p style="text-align:center; padding:20px;">ไม่มีรายการขาย</p>' : ordersHtml}
+                </div>
+            `;
+
+            salesReportDetails.innerHTML = summaryHtml + listHtml;
+
+        } catch (e) { salesReportDetails.innerHTML = 'Error loading report'; console.error(e); }
+    };
+
+    // 🔥 FIX 2: ฟังก์ชันลบรายการล่าสุด (Delete Last Sale)
+    const deleteLastSale = async () => {
+        if(!confirm("ยืนยันลบรายการขาย 'ล่าสุด' ใช่หรือไม่? \n(การกระทำนี้ย้อนกลับไม่ได้)")) return;
+        
+        try {
+            // ค้นหาออเดอร์ล่าสุด
+            const q = query(collection(db, "orders"), orderBy("createdAt", "desc"), limit(1));
+            const querySnapshot = await getDocs(q);
+            
+            if (querySnapshot.empty) {
+                alert("ไม่พบรายการขายล่าสุดให้ลบ");
+                return;
+            }
+
+            const lastOrderDoc = querySnapshot.docs[0];
+            const orderData = lastOrderDoc.data();
+            
+            // ลบ
+            await deleteDoc(lastOrderDoc.ref);
+            
+            alert(`ลบรายการคิวที่ ${orderData.queueNumber} (${orderData.grandTotal} บาท) เรียบร้อยแล้ว`);
+            
+            // รีเฟรชรายงาน
+            showSalesReport();
+            
+        } catch(error) {
+            console.error("Error deleting sale:", error);
+            alert("เกิดข้อผิดพลาดในการลบ: " + error.message);
+        }
     };
 
     if (exportExcelButton) exportExcelButton.addEventListener('click', exportSalesToCSV);
+    
+    // เชื่อมปุ่มลบรายการล่าสุด
+    if (deleteLastSaleButton) deleteLastSaleButton.addEventListener('click', deleteLastSale);
+
     menuTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             menuTabs.forEach(t => t.classList.remove('active'));
