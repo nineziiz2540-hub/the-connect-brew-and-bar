@@ -74,6 +74,12 @@ body {
     font-size: 1rem;
 }
 
+.header-actions button i, 
+.header-actions a i {
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
 .header-divider {
     width: 1px;
     height: 30px;
@@ -170,7 +176,7 @@ body {
 }
 .menu-item-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--primary-color); }
 .menu-item-card h4 { margin: 0 0 0.3rem 0; font-size: 1rem; font-weight: 700; color: var(--text-color); line-height: 1.3; }
-.menu-item-card .thai-name { margin: 0 0 0.5rem 0; font-size: 0.85rem; color: #888; font-weight: normal; }
+.menu-item-card .thai-name { margin: 0 0 0.5rem 0; font-size: 0.95rem; color: #01020f; font-weight: 450; }
 .menu-item-card .price { margin: auto 0 0 0; color: var(--primary-color); font-weight: 800; font-size: 1.1rem; }
 
 /* --- 4. Order Container --- */
@@ -226,35 +232,101 @@ h1 { font-size: 1.8rem; font-weight: 700; margin: 0; }
 .total-due-text, .change-text { font-size: 1.4rem; font-weight: bold; margin-bottom: 1rem;} .cash-input { width: 80%; padding: 0.75rem; font-size: 1.5rem; text-align: center; border: 2px solid var(--border-color); border-radius: 8px; margin: 0 auto 1rem auto; }
 .report-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-shrink: 0; } .report-action-btn { flex: 1; padding: 0.75rem; font-size: 1rem; border-radius: 8px; border: none; cursor: pointer; background-color: var(--primary-color); color: white; } .reset-btn { background-color: var(--danger-color); }
 
-/* 🔥 FIX: Sales Report Scrolling (Separate Header and List) */
+/* --- 🔥 FIX: Sales Report Styles (ปรับปรุงใหม่ตามสั่ง) --- */
+
+/* กล่องรวมเนื้อหารายงาน */
 #sales-report-details {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    overflow: hidden; /* Disable scrolling on parent */
+    overflow: hidden; 
     height: 100%;
 }
+
+/* 1. ส่วนหัวสรุปยอด (Fixed) */
 .report-summary-fixed {
     flex-shrink: 0;
     background: #fff;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
+    padding: 0 10px 10px 10px; /* ลด Padding ด้านบนเป็น 0 เพื่อดันขึ้น */
+    text-align: left; /* ✅ จัดชิดซ้าย */
     z-index: 2;
 }
+
+/* ปรับตัวหนังสือ "ยอดรวม" ให้ดันขึ้นบน */
+.report-summary-fixed h3 {
+    margin-top: 0;    /* ✅ ลบระยะห่างด้านบน ดันขึ้นสุด */
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* ปรับตัวหนังสือ เงินสด/กำไร ให้ชิดซ้ายและสวยงาม */
+.report-summary-fixed p {
+    margin: 3px 0;
+    color: #2d3436;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* ✅ เส้นที่ 2 (เส้นคั่น hr): ปรับให้หนาและชัดขึ้น */
+.report-summary-fixed hr {
+    border: none;
+    height: 3px;        /* ความหนาเส้น */
+    background-color: #000000; /* สีเส้น (เทาเข้มขึ้น) */
+    margin: 15px 0 5px 0;
+}
+
+/* 2. ส่วนรายการออเดอร์ (Scrollable) */
 .report-list-scrollable {
     flex-grow: 1;
-    overflow-y: auto; /* Scroll only here */
-    padding-top: 10px;
-    /* Custom Scrollbar */
+    overflow-y: auto;
+    padding-top: 15px;
     scrollbar-width: thin;
 }
-/* Order Items <details> Styling */
-.report-order-item { border: 1px solid #eee; margin-bottom: 8px; border-radius: 8px; overflow: hidden; }
-.report-order-item summary { background: #f8f9fa; padding: 12px; cursor: pointer; font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-.report-order-item summary::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 0.8rem; color: #aaa; transition: transform 0.2s; }
+
+/* Styling รายการย่อย */
+.report-order-item { 
+    border: 1px solid #dfe6e9; /* ปรับสีขอบให้ชัดขึ้นนิดนึง */
+    margin-bottom: 8px; 
+    border-radius: 8px; 
+    overflow: hidden; 
+}
+
+.report-order-item summary { 
+    background: #f8f9fa; 
+    padding: 12px; 
+    cursor: pointer; 
+    font-size: 0.95rem; 
+    list-style: none; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    font-weight: 500;
+}
+
+/* ไอคอนลูกศร */
+.report-order-item summary::after { 
+    content: '\f078'; 
+    font-family: "Font Awesome 6 Free"; 
+    font-weight: 900; 
+    font-size: 0.8rem; 
+    color: #636e72; 
+    transition: transform 0.2s; 
+}
 .report-order-item[open] summary::after { transform: rotate(180deg); }
-.order-item-details { padding: 10px 15px; background: #fff; border-top: 1px solid #eee; }
-.order-item-details p { margin: 5px 0; color: #555; font-size: 0.9rem; padding-left: 10px; border-left: 3px solid #eee; }
+
+.order-item-details { 
+    padding: 10px 15px; 
+    background: #fff; 
+    border-top: 2px solid #eee; /* เส้นแบ่งในออเดอร์ */
+}
+.order-item-details p { 
+    margin: 5px 0; 
+    color: #636e72; 
+    font-size: 0.9rem; 
+    padding-left: 10px; 
+    border-left: 3px solid #74b9ff; /* เส้นสีฟ้าหน้าชื่อเมนู */
+}
 
 /* Modifiers Scroll */
 #modifier-options-container { margin-top: 1.5rem; text-align: left; flex-grow: 1; overflow-y: auto; padding-right: 0.5rem; min-height: 0; }
@@ -287,3 +359,22 @@ h1 { font-size: 1.8rem; font-weight: 700; margin: 0; }
 .delete-menu-btn-pro:hover { background: #e74c3c; color: white; box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3); }
 
 @media print { body * { visibility: hidden; } .order-container, .order-container * { visibility: visible; } body, .main-container { position: static !important; background-color: #fff; width: 100%; max-width: 300px; margin: 0; padding: 0; box-shadow: none; border: none; } .order-container { position: absolute; left: 0; top: 0; width: 100%; padding: 10px; } .order-header, #order-list .item-quantity, #order-list .delete-item-btn, #order-list .item-total-price, .summary-box p:first-child, .discount-section, .payment-buttons, .close-btn { display: none !important; } #order-timestamp { text-align: center; font-size: 0.9em; margin-bottom: 15px; border-bottom: 1px dashed #000; padding-bottom: 10px; } #order-list li { display: flex; justify-content: space-between; align-items: flex-start; padding: 4px 0; border: none; font-size: 0.9em; } #order-list .item-info h4 { margin: 0; font-size: 1em; font-weight: normal; } #order-list .item-info .sweetness-detail { display: block; } #print-qrcode-container { display: block !important; text-align: center; margin: 20px 0; } #print-qrcode-container img { margin: 0 auto; } .summary-box { border-top: 2px double #000; padding-top: 10px; } .summary-box hr { display: none; } .summary-box h3 { font-size: 1.4em; } }
+/* ปุ่มยกเลิกออเดอร์ (สีแดง) */
+.cancel-order-btn {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: var(--danger-color); /* ใช้สีแดง */
+    margin-top: 0.75rem;
+}
+.cancel-order-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    filter: brightness(90%);
+}

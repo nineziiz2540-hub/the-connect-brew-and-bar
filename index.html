@@ -38,9 +38,7 @@
                 <button class="menu-tab active" data-category="coffee">COFFEE</button>
                 <button class="menu-tab" data-category="matcha">MATCHA</button>
                 <button class="menu-tab" data-category="non-coffee">NON COFFEE</button>
-                <button class="menu-tab" data-category="bean">BEAN SPECIALS</button>
                 <button class="menu-tab" data-category="beer">CRAFT BEER</button>
-                <button class="menu-tab" data-category="food">FOOD</button>
                 <button class="menu-tab" data-category="bakery">BAKERY</button>
             </div>
             
@@ -91,7 +89,7 @@
                     <i class="fas fa-pause-circle"></i> พักบิล (ยังไม่จ่าย)
                 </button>
 
-                <button id="close-order-button" class="close-btn" style="border: none;">
+                <button id="close-order-button" class="cancel-order-btn" style="border: none;">
                     <i class="fas fa-times-circle"></i> ยกเลิกออเดอร์
                 </button>
             </div>
@@ -126,14 +124,12 @@
                         <input type="number" id="new-item-price" placeholder="ราคาขาย" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
                         <input type="number" id="new-item-cost" placeholder="ต้นทุน" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; width: 100%; box-sizing: border-box;">
                         <select id="new-item-category" style="grid-column: span 2; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; background-color: white; color: #333; height: 45px; width: 100%; box-sizing: border-box;">
-                            <option value="" disabled selected>-- เลือกหมวดหมู่ --</option>
-                            <option value="bean">BEAN SPECIALS</option>
-                            <option value="beer">CRAFT BEER</option>
-                            <option value="matcha">MATCHA</option>
-                            <option value="bakery">BAKERY</option>
-                            <option value="coffee">Coffee</option>
-                            <option value="non-coffee">Non-Coffee</option>
-                            <option value="food">Food</option>
+                            <option value="" disabled selected>-- กรุณาเลือกหมวดหมู่ --</option>
+                            <option value="coffee">COFFEE (กาแฟ)</option>
+                            <option value="matcha">MATCHA (มัทฉะ)</option>
+                            <option value="non-coffee">NON COFFEE (อื่นๆ)</option>
+                            <option value="beer">CRAFT BEER (เบียร์)</option>
+                            <option value="bakery">BAKERY (ขนม)</option>
                         </select>
                     </div>
                     <button id="save-new-item-btn" class="confirm-payment-btn" style="margin-top: 12px; background: #27ae60; font-size: 1rem;">บันทึกเมนู</button>
