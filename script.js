@@ -131,47 +131,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const staticMenuData = [
         // COFFEE
-        { id: 'c-espresso-h', name: 'Espresso (Hot)', nameThai: 'เอสเพรสโซ่ (ร้อน)', price: 55, cost: 22.53, category: 'coffee', modifiers: espressoModifiers }, 
-        { id: 'c-americano-h', name: 'Americano (Hot)', nameThai: 'อเมริกาโน่ (ร้อน)', price: 60, cost: 23.13, category: 'coffee', modifiers: blackCoffeeModifiers },
-        { id: 'c-americano-i', name: 'Americano (Iced)', nameThai: 'อเมริกาโน่ (เย็น)', price: 60, cost: 23.61, category: 'coffee', modifiers: blackCoffeeModifiers },
-        { id: 'c-latte-h', name: 'Latte (Hot)', nameThai: 'ลาเต้ (ร้อน)', price: 60, cost: 26, category: 'coffee', modifiers: stdCoffeeModifiers },
-        { id: 'c-latte-i', name: 'Latte (Iced)', nameThai: 'ลาเต้ (เย็น)', price: 70, cost: 24.74, category: 'coffee', modifiers: stdCoffeeModifiers },
-        { id: 'c-cappu-h', name: 'Cappuccino (Hot)', nameThai: 'คาปูชิโน่ (ร้อน)', price: 60, cost: 26, category: 'coffee', modifiers: stdCoffeeModifiers },
-        { id: 'c-cappu-i', name: 'Cappuccino (Iced)', nameThai: 'คาปูชิโน่ (เย็น)', price: 70, cost: 24.74, category: 'coffee', modifiers: stdCoffeeModifiers },
-        { id: 'c-esyen', name: 'Es Yen Thai Style (Iced)', nameThai: 'เอสเย็น (เย็น)', price: 70, cost: 26.38, category: 'coffee', modifiers: stdCoffeeModifiers },
-        { id: 'c-mocca-h', name: 'Mocca (Hot)', nameThai: 'มอคค่า (ร้อน)', price: 60, cost: 27, category: 'coffee', modifiers: stdCoffeeModifiers },
-        { id: 'c-mocca-i', name: 'Mocca (Iced)', nameThai: 'มอคค่า (เย็น)', price: 70, cost: 26.63, category: 'coffee', modifiers: stdCoffeeModifiers },
-        { id: 'c-caramel-mac', name: 'Caramel Macchiato (Iced)', nameThai: 'คาราเมล มัคคิอาโต้ (เย็น)', price: 70, cost: 25.49, category: 'coffee', modifiers: stdCoffeeModifiers },
-        { id: 'c-orange-cof', name: 'Orange Coffee (Iced)', nameThai: 'ออเรนจ์ คอฟฟี่ (เย็น)', price: 70, cost: 28.31, category: 'coffee', modifiers: blackCoffeeModifiers },
-        { id: 'c-coconut-cof', name: 'Coconut Coffee (Iced)', nameThai: 'โคโคนัท คอฟฟี่ (เย็น)', price: 70, cost: 28.31, category: 'coffee', modifiers: blackCoffeeModifiers },
+        { id: 'c-espresso-h', name: 'Espresso (Hot)', nameThai: 'เอสเพรสโซ่', price: 55, cost: 22.53, category: 'coffee', modifiers: espressoModifiers }, 
+        { id: 'c-americano-h', name: 'Americano (Hot)', nameThai: 'อเมริกาโน่', price: 60, cost: 23.13, category: 'coffee', modifiers: blackCoffeeModifiers },
+        { id: 'c-americano-i', name: 'Americano (Iced)', nameThai: 'อเมริกาโน่', price: 60, cost: 23.61, category: 'coffee', modifiers: blackCoffeeModifiers },
+        { id: 'c-latte-h', name: 'Latte (Hot)', nameThai: 'ลาเต้', price: 60, cost: 26, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-latte-i', name: 'Latte (Iced)', nameThai: 'ลาเต้', price: 70, cost: 24.74, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-cappu-h', name: 'Cappuccino (Hot)', nameThai: 'คาปูชิโน่', price: 60, cost: 26, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-cappu-i', name: 'Cappuccino (Iced)', nameThai: 'คาปูชิโน่', price: 70, cost: 24.74, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-esyen', name: 'Es Yen Thai Style (Iced)', nameThai: 'เอสเย็น', price: 70, cost: 26.38, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-mocca-h', name: 'Mocca (Hot)', nameThai: 'มอคค่า', price: 60, cost: 27, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-mocca-i', name: 'Mocca (Iced)', nameThai: 'มอคค่า', price: 70, cost: 26.63, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-caramel-mac', name: 'Caramel Macchiato (Iced)', nameThai: 'คาราเมล มัคคิอาโต้', price: 70, cost: 25.49, category: 'coffee', modifiers: stdCoffeeModifiers },
+        { id: 'c-orange-cof', name: 'Americano orange (Iced)', nameThai: 'อเมริกาโน่ ส้ม', price: 70, cost: 28.31, category: 'coffee', modifiers: blackCoffeeModifiers },
+        { id: 'c-coconut-cof', name: 'Americano coconut (Iced)', nameThai: 'อเมริกาโน่ มะพร้าว', price: 70, cost: 28.31, category: 'coffee', modifiers: blackCoffeeModifiers },
+        { id: 'c-honeylemon-cof', name: 'Americano honeylemon (Iced)', nameThai: 'อเมริกาโน่ น้ำผึ่งมะนาว', price: 75, cost: 35, category: 'coffee', modifiers: blackCoffeeModifiers },
         { id: 'c-affogato', name: 'Affogato Coffee', nameThai: 'อัฟโฟกาโต้ คอฟฟี่', price: 85, cost: 34.5, category: 'coffee', modifiers: [] }, 
 
         // MATCHA
-        { id: 'm-clear-uji-h', name: 'Clear Matcha Uji (Hot)', nameThai: 'เคลียร์ มัทฉะ อูจิ (ร้อน)', price: 70, cost: 29.26, category: 'matcha', modifiers: basicModifiers },
-        { id: 'm-clear-uji-i', name: 'Clear Matcha Uji (Iced)', nameThai: 'เคลียร์ มัทฉะ อูจิ (เย็น)', price: 75, cost: 29.26, category: 'matcha', modifiers: basicModifiers },
-        { id: 'm-clear-nishio-h', name: 'Clear Matcha Nishio (Hot)', nameThai: 'เคลียร์ มัทฉะ นิชิโอะ (ร้อน)', price: 135, cost: 74.38, category: 'matcha', modifiers: basicModifiers },
-        { id: 'm-clear-nishio-i', name: 'Clear Matcha Nishio (Iced)', nameThai: 'เคลียร์ มัทฉะ นิชิโอะ (เย็น)', price: 140, cost: 74.38, category: 'matcha', modifiers: basicModifiers },
-        { id: 'm-latte-uji-h', name: 'Matcha Latte Uji (Hot)', nameThai: 'มัทฉะ ลาเต้ อูจิ (ร้อน)', price: 80, cost: 35.07, category: 'matcha', modifiers: stdNonCoffeeModifiers },
-        { id: 'm-latte-uji-i', name: 'Matcha Latte Uji (Iced)', nameThai: 'มัทฉะ ลาเต้ อูจิ (เย็น)', price: 85, cost: 35.07, category: 'matcha', modifiers: stdNonCoffeeModifiers },
-        { id: 'm-latte-nishio-h', name: 'Matcha Latte Nishio (Hot)', nameThai: 'มัทฉะ ลาเต้ นิชิโอะ (ร้อน)', price: 155, cost: 80.19, category: 'matcha', modifiers: stdNonCoffeeModifiers },
-        { id: 'm-latte-nishio-i', name: 'Matcha Latte Nishio (Iced)', nameThai: 'มัทฉะ ลาเต้ นิชิโอะ (เย็น)', price: 160, cost: 80.19, category: 'matcha', modifiers: stdNonCoffeeModifiers },
-        { id: 'm-coco-uji', name: 'Coconut Matcha Uji (Iced)', nameThai: 'โคโคนัท มัทฉะ อูจิ (เย็น)', price: 85, cost: 35, category: 'matcha', modifiers: basicModifiers },
-        { id: 'm-coco-nishio', name: 'Coconut Matcha Nishio (Iced)', nameThai: 'โคโคนัท มัทฉะ นิชิโอะ (เย็น)', price: 160, cost: 80, category: 'matcha', modifiers: basicModifiers },
-        { id: 'm-orange-uji', name: 'Orange Matcha Uji (Iced)', nameThai: 'ออเรนจ์ มัทฉะ อูจิ (เย็น)', price: 85, cost: 35, category: 'matcha', modifiers: basicModifiers },
-        { id: 'm-orange-nishio', name: 'Orange Matcha Nishio (Iced)', nameThai: 'ออเรนจ์ มัทฉะ นิชิโอะ (เย็น)', price: 160, cost: 80, category: 'matcha', modifiers: basicModifiers },
-        { id: 'm-hojicha', name: 'Hojicha Latte (Iced)', nameThai: 'โฮจิฉะ ลาเต้ (เย็น)', price: 70, cost: 28.10, category: 'matcha', modifiers: stdNonCoffeeModifiers },
+        { id: 'm-clear-uji-h', name: 'Clear Matcha Uji (Hot)', nameThai: 'เคลียร์ มัทฉะ อูจิ', price: 70, cost: 29.26, category: 'matcha', modifiers: basicModifiers },
+        { id: 'm-clear-uji-i', name: 'Clear Matcha Uji (Iced)', nameThai: 'เคลียร์ มัทฉะ อูจิ', price: 75, cost: 29.26, category: 'matcha', modifiers: basicModifiers },
+        { id: 'm-clear-nishio-h', name: 'Clear Matcha Nishio (Hot)', nameThai: 'เคลียร์ มัทฉะ นิชิโอะ', price: 135, cost: 74.38, category: 'matcha', modifiers: basicModifiers },
+        { id: 'm-clear-nishio-i', name: 'Clear Matcha Nishio (Iced)', nameThai: 'เคลียร์ มัทฉะ นิชิโอะ', price: 140, cost: 74.38, category: 'matcha', modifiers: basicModifiers },
+        { id: 'm-latte-uji-h', name: 'Matcha Latte Uji (Hot)', nameThai: 'มัทฉะ ลาเต้ อูจิ', price: 80, cost: 35.07, category: 'matcha', modifiers: stdNonCoffeeModifiers },
+        { id: 'm-latte-uji-i', name: 'Matcha Latte Uji (Iced)', nameThai: 'มัทฉะ ลาเต้ อูจิ', price: 85, cost: 35.07, category: 'matcha', modifiers: stdNonCoffeeModifiers },
+        { id: 'm-latte-nishio-h', name: 'Matcha Latte Nishio (Hot)', nameThai: 'มัทฉะ ลาเต้ นิชิโอะ', price: 155, cost: 80.19, category: 'matcha', modifiers: stdNonCoffeeModifiers },
+        { id: 'm-latte-nishio-i', name: 'Matcha Latte Nishio (Iced)', nameThai: 'มัทฉะ ลาเต้ นิชิโอะ', price: 160, cost: 80.19, category: 'matcha', modifiers: stdNonCoffeeModifiers },
+        { id: 'm-coco-uji', name: 'Coconut Matcha Uji (Iced)', nameThai: 'โคโคนัท มัทฉะ อูจิ', price: 85, cost: 35, category: 'matcha', modifiers: basicModifiers },
+        { id: 'm-coco-nishio', name: 'Coconut Matcha Nishio (Iced)', nameThai: 'โคโคนัท มัทฉะ นิชิโอะ', price: 160, cost: 80, category: 'matcha', modifiers: basicModifiers },
+        { id: 'm-orange-uji', name: 'Orange Matcha Uji (Iced)', nameThai: 'ออเรนจ์ มัทฉะ อูจิ', price: 85, cost: 35, category: 'matcha', modifiers: basicModifiers },
+        { id: 'm-orange-nishio', name: 'Orange Matcha Nishio (Iced)', nameThai: 'ออเรนจ์ มัทฉะ นิชิโอะ', price: 160, cost: 80, category: 'matcha', modifiers: basicModifiers },
+        { id: 'm-hojicha', name: 'Hojicha Latte (Iced)', nameThai: 'โฮจิฉะ ลาเต้', price: 70, cost: 28.10, category: 'matcha', modifiers: stdNonCoffeeModifiers },
 
         // NON COFFEE
-        { id: 'n-thaitea', name: 'Thai Tea (Iced)', nameThai: 'ชาไทย (เย็น)', price: 55, cost: 11.54, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
-        { id: 'n-greentea', name: 'Green Tea (Iced)', nameThai: 'ชาเขียว (เย็น)', price: 55, cost: 14.22, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
-        { id: 'n-cocoa-h', name: 'Cocoa Latte (Hot)', nameThai: 'โกโก้ ลาเต้ (ร้อน)', price: 50, cost: 18.68, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
-        { id: 'n-cocoa-i', name: 'Cocoa Latte (Iced)', nameThai: 'โกโก้ ลาเต้ (เย็น)', price: 55, cost: 18.97, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
-        { id: 'n-milk-h', name: 'Fresh Milk (Hot)', nameThai: 'นมสด (ร้อน)', price: 40, cost: 13.33, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
-        { id: 'n-milk-i', name: 'Fresh Milk (Iced)', nameThai: 'นมสด (เย็น)', price: 45, cost: 13.61, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
-        { id: 'n-lemontea', name: 'Lemon Tea (Iced)', nameThai: 'ชามะนาว (เย็น)', price: 40, cost: 8, category: 'non-coffee', modifiers: basicModifiers },
-        { id: 'n-honeylemon', name: 'Honey Lemon (Iced)', nameThai: 'น้ำผึ้งมะนาว (เย็น)', price: 40, cost: 7, category: 'non-coffee', modifiers: basicModifiers },
-        { id: 'n-caramel-h', name: 'Caramel Milk (Hot)', nameThai: 'คาราเมล มิลค์ (ร้อน)', price: 40, cost: 15.11, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
-        { id: 'n-caramel-i', name: 'Caramel Milk (Iced)', nameThai: 'คาราเมล มิลค์ (เย็น)', price: 40, cost: 15.11, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
+        { id: 'n-thaitea', name: 'Thai Tea (Iced)', nameThai: 'ชาไทย', price: 55, cost: 11.54, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
+        { id: 'n-greentea', name: 'Green Tea (Iced)', nameThai: 'ชาเขียว', price: 55, cost: 14.22, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
+        { id: 'n-cocoa-h', name: 'Cocoa Latte (Hot)', nameThai: 'โกโก้ ลาเต้', price: 50, cost: 18.68, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
+        { id: 'n-cocoa-i', name: 'Cocoa Latte (Iced)', nameThai: 'โกโก้ ลาเต้', price: 55, cost: 18.97, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
+        { id: 'n-milk-h', name: 'Fresh Milk (Hot)', nameThai: 'นมสด', price: 40, cost: 13.33, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
+        { id: 'n-milk-i', name: 'Fresh Milk (Iced)', nameThai: 'นมสด', price: 45, cost: 13.61, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
+        { id: 'n-lemontea', name: 'Lemon Tea (Iced)', nameThai: 'ชามะนาว', price: 40, cost: 8, category: 'non-coffee', modifiers: basicModifiers },
+        { id: 'n-honeylemon', name: 'Honey Lemon (Iced)', nameThai: 'น้ำผึ้งมะนาว', price: 40, cost: 7, category: 'non-coffee', modifiers: basicModifiers },
+        { id: 'n-caramel-h', name: 'Caramel Milk (Hot)', nameThai: 'คาราเมล มิลค์', price: 40, cost: 15.11, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
+        { id: 'n-caramel-i', name: 'Caramel Milk (Iced)', nameThai: 'คาราเมล มิลค์', price: 40, cost: 15.11, category: 'non-coffee', modifiers: stdNonCoffeeModifiers },
         { id: 'n-orange', name: 'Orange Juice', nameThai: 'น้ำส้ม', price: 40, cost: 10, category: 'non-coffee', modifiers: [] },
         { id: 'n-coconut', name: 'Coconut Juice', nameThai: 'น้ำมะพร้าว', price: 40, cost: 10, category: 'non-coffee', modifiers: [] },
 
@@ -234,8 +235,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const items = allItems.filter(item => item.category === category);
 
         if (['coffee', 'matcha', 'non-coffee', 'bean'].includes(category)) {
-            const hotItems = items.filter(i => i.name.includes('(Hot)') || (i.nameThai && i.nameThai.includes('(ร้อน)')));
-            const icedItems = items.filter(i => i.name.includes('(Iced)') || (i.nameThai && i.nameThai.includes('(เย็น)')));
+            const hotItems = items.filter(i => 
+                i.name.includes('(Hot)') || 
+                (i.nameThai && i.nameThai.includes('(ร้อน)')) || 
+                i.type === 'coffee_hot' // ✅ ถ้า type เป็นกาแฟร้อน ให้เข้ากลุ่มนี้
+            );
+
+            const icedItems = items.filter(i => 
+                i.name.includes('(Iced)') || 
+                (i.nameThai && i.nameThai.includes('(เย็น)')) || 
+                i.type === 'coffee_iced' || // ✅ ถ้า type เป็นกาแฟเย็น
+                i.type === 'coffee_icedmix' ||  // ✅ หรือเป็น เป็นกาแฟผสมผลไม้ 
+                i.type === 'matcha_cocoa' ||       // ✅ หรือเป็นเครื่องดื่มทั่วไป 
+                i.type === 'soda_tea' ||       // ✅ หรือเป็นเครื่องดื่มทั่วไป 
+                i.type === 'beer'           // ✅ หรือเบียร์
+            );
+
             const otherItems = items.filter(i => !hotItems.includes(i) && !icedItems.includes(i));
 
             const renderGroup = (title, groupItems, icon, color) => {
@@ -265,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.className = 'menu-item-card';
         card.dataset.id = item.id;
+        
         let borderColor = '#ddd';
         if (type.includes('ร้อน')) borderColor = '#e74c3c';
         else if (type.includes('เย็น')) borderColor = '#3498db';
@@ -272,8 +288,27 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (item.category === 'beer') borderColor = '#f1c40f';
 
         card.style.borderLeft = `5px solid ${borderColor}`;
-        const thaiNameHtml = item.nameThai ? `<p class="thai-name">(${item.nameThai})</p>` : '';
-        card.innerHTML = `<h4>${item.name}</h4>${thaiNameHtml}<p class="price">${item.price.toFixed(0)}</p>`;
+
+        // 🔥 LOGIC ใหม่: สลับชื่อไทยขึ้นก่อน & ตัดคำว่า (Hot)/(Iced)
+        
+        // 1. เตรียมชื่อไทย (ถ้ามีให้ใช้เลย ถ้าไม่มีใช้ชื่ออังกฤษแทน)
+        let mainName = item.nameThai ? item.nameThai : item.name;
+        
+        // 2. เตรียมชื่ออังกฤษ (ตัดคำว่า (Hot), (Iced) ออกเพื่อให้สะอาดตา)
+        let subName = item.name.replace(/\(Hot\)|\(Iced\)/g, '').trim(); 
+        
+        // ถ้าชื่อไทยกับอังกฤษเหมือนกัน (เช่น เมนูทับศัพท์) ไม่ต้องโชว์บรรทัดสอง
+        let subNameHtml = (item.nameThai && subName !== mainName) 
+            ? `<p class="sub-name">${subName}</p>` 
+            : '';
+
+        // 3. สร้าง HTML
+        card.innerHTML = `
+            <h4>${mainName}</h4>
+            ${subNameHtml}
+            <p class="price">${item.price.toFixed(0)}</p>
+        `;
+        
         menuItemsContainer.appendChild(card);
     };
     
@@ -651,13 +686,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const price = parseFloat(document.getElementById('new-item-price').value);
         const cost = parseFloat(document.getElementById('new-item-cost').value);
         const category = document.getElementById('new-item-category').value;
-        if(!name || isNaN(price) || isNaN(cost)) { alert('กรุณากรอกข้อมูล'); return; }
+        const type = document.getElementById('new-item-type').value; // รับค่ารูปแบบมา
+
+        if(!name || isNaN(price) || isNaN(cost) || !category || !type) { 
+            alert('กรุณากรอกข้อมูลให้ครบทุกช่อง (รวมถึงรูปแบบเมนู)'); 
+            return; 
+        }
+
+        // 🔥 กำหนดตัวเลือกเสริม (Modifiers) ตามรูปแบบที่เลือก
+        let selectedModifiers = [];
+        
+        if (type === 'coffee_hot') {
+            selectedModifiers = [roastOptions, sweetOptions, extraOptions];
+        } else if (type === 'coffee_iced') {
+            selectedModifiers = [roastOptions, sweetOptions, milkOptions, extraOptions];
+        } else if (type === 'matcha_cocoa') { 
+            // ✅ สำหรับ มัทฉะ, โกโก้, ชาไทย (เอานมด้วย)
+            selectedModifiers = [sweetOptions, milkOptions]; 
+        } else if (type === 'soda_tea') { 
+            // ✅ สำหรับ ชามะนาว, โซดา (เอาแค่หวาน ไม่เอานม)
+            selectedModifiers = [sweetOptions]; 
+        }
+        // ถ้าเป็น 'none' (ขนม) ก็จะเป็น [] ว่างๆ ตาม default
+
         try {
-            await addDoc(collection(db, "dynamic_menu_items"), { id: 'dyn-' + Date.now(), name, nameThai, price, cost, category, modifiers: [] });
+            await addDoc(collection(db, "dynamic_menu_items"), { 
+                id: 'dyn-' + Date.now(), 
+                name, 
+                nameThai, 
+                price, 
+                cost, 
+                category,
+                type: type, 
+                modifiers: selectedModifiers // ✅ บันทึกตัวเลือกเสริมลงไปด้วย!
+            });
+            
             alert('บันทึกสำเร็จ');
+            // เคลียร์ค่า
             document.getElementById('new-item-name').value = '';
+            document.getElementById('new-item-thai').value = '';
             document.getElementById('new-item-price').value = '';
             document.getElementById('new-item-cost').value = '';
+            document.getElementById('new-item-category').selectedIndex = 0;
+            document.getElementById('new-item-type').selectedIndex = 0;
+            
         } catch(e) { console.error(e); alert('Error'); }
     });
 
