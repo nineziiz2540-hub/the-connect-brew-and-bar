@@ -177,7 +177,7 @@ body {
 .menu-item-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--primary-color); }
 .menu-item-card h4 {
     margin: 0 0 2px 0;       /* 🔥 ลดระยะห่างด้านล่างเหลือแค่ 2px (เดิม 6px) */
-    font-size: 1.05rem;      /* 🔥 ลดขนาดลงนิดนึง (เดิม 1.1rem) */
+    font-size: 1.2rem;      /* 🔥 ลดขนาดลงนิดนึง (เดิม 1.1rem) */
     font-weight: 700;
     color: #2d3436;
     line-height: 1.3;
